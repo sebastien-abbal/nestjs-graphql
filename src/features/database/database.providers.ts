@@ -1,14 +1,14 @@
-import { defaultConfig } from '@config';
+import { constants, defaultConfig } from '@config';
 import * as envVar from 'env-var';
 import { createConnection } from 'typeorm';
 
 export const databaseProviders = [
   {
-    name: 'postgres-db',
-    provide: 'postgres-connection',
+    name: constants.databases.postgres.name,
+    provide: constants.databases.postgres.providerName,
     useFactory: async () =>
       await createConnection({
-        name: 'postgres-db',
+        name: constants.databases.postgres.name,
         type: 'postgres',
         host: envVar.get('PG_HOST').required().asString(),
         port: envVar.get('PG_PORT').required().asInt(),
@@ -16,7 +16,7 @@ export const databaseProviders = [
         password: envVar.get('PG_PASSWORD').required().asString(),
         database: envVar.get('PG_DATABASE').required().asString(),
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: defaultConfig().env !== 'prod',
+        synchronize: !['prod', 'preprod'].includes(defaultConfig().env),
       }),
   },
 ];

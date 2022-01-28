@@ -53,7 +53,7 @@ describe('DefaultModule (e2e)', () => {
   });
 
   afterAll(async () => {
-    await databaseService.clearConnections();
-    await app.close();
+    await databaseService?.clearConnections();
+    await app?.close();
   });
 });

@@ -70,7 +70,7 @@ describe('Default module (controllers)', () => {
   });
 
   afterAll(async () => {
-    await databaseService.clearConnections();
-    await app.close();
+    await databaseService?.clearConnections();
+    await app?.close();
   });
 });

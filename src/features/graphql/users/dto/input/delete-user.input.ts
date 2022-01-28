@@ -3,7 +3,7 @@ import { IsNotEmpty } from 'class-validator';
 
 @InputType()
 export class DeleteUserInput {
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
   userID: string;
 }

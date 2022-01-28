@@ -4,4 +4,10 @@ export const constants = {
     company: 'Sébastien ABBAL',
     envsAvailable: ['prod', 'preprod', 'dev', 'test'],
   },
+  databases: {
+    postgres: {
+      name: 'postgres-db',
+      providerName: 'POSTGRES_CONNECTION',
+    },
+  },
 };

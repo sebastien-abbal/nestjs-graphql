@@ -1,20 +1,29 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsBoolean, IsInt, IsNotEmpty, IsOptional } from 'class-validator';
+import { Field, InputType } from '@nestjs/graphql';
+import { IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 
 @InputType()
 export class UpdateUserInput {
-  @Field()
+  @Field(() => String)
   @IsNotEmpty()
   userID: string;
 
-  @Field(() => Int)
+  @Field(() => String)
+  @IsOptional()
+  @IsEmail()
+  email?: string;
+
+  @Field(() => String)
   @IsOptional()
   @IsNotEmpty()
-  @IsInt()
-  age?: number;
+  firstName?: string;
 
-  @Field({ nullable: true })
+  @Field(() => String)
   @IsOptional()
-  @IsBoolean()
-  isSubscribed?: boolean;
+  @IsNotEmpty()
+  lastName?: string;
+
+  @Field(() => String)
+  @IsOptional()
+  @IsNotEmpty()
+  password?: string;
 }

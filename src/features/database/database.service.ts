@@ -1,6 +1,6 @@
+import { databaseProviders } from '@features/database/database.providers';
 import { Injectable } from '@nestjs/common';
 import { getConnection } from 'typeorm';
-import { databaseProviders } from './database.providers';
 
 @Injectable()
 export class DatabaseService {
