@@ -1,0 +1,35 @@
+name: CI-PREPROD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Actions checkout
+        uses: actions/checkout@v2
+
+      - name: Set up node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '12'
+
+      # Build
+      - name: Install packages
+        run: yarn
+
+      - name: Build app
+        run: yarn build
+
+      # Test (unit + e2e)
+      - name: Test app
+        run: yarn test
+        env:
+          APP_PORT: 3000
+          APP_HOST: localhost
+          NODE_ENV: test
+          JWT_SECRET: xxx-xxx-xxx-xxx
