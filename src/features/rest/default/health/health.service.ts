@@ -14,7 +14,9 @@ export class HealthService {
         return 'error';
       }
     } catch (err) {
-      return this.configService.get('env') === 'dev' ? err.message : 'error';
+      return this.configService.get<string>('env') === 'dev'
+        ? err.message
+        : 'error';
     }
   };
 }

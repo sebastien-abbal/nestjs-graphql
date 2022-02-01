@@ -1,5 +1,5 @@
-import { databaseProviders } from '@features/database/database.providers';
-import { HealthService } from '@features/default/health/health.service';
+import { HealthService } from '@features/rest/default/health/health.service';
+import { databaseProviders } from '@features/_database/database.providers';
 import { Controller, Get } from '@nestjs/common';
 
 @Controller()
@@ -10,10 +10,9 @@ export class HealthController {
   getHealthCheck() {
     const details = {};
     for (const provider of databaseProviders) {
-      details[`db_${provider.name}`] =
-        this.healthService.getTypeOrmConnectionStatus({
-          name: provider.name,
-        });
+      details[provider.name] = this.healthService.getTypeOrmConnectionStatus({
+        name: provider.name,
+      });
     }
 
     return {

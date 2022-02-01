@@ -7,6 +7,7 @@ import {
 } from '@features/graphql/users/dto';
 import { User } from '@features/graphql/users/entities';
 import { Inject, Injectable } from '@nestjs/common';
+import { hash } from 'bcryptjs';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -17,7 +18,10 @@ export class UsersService {
   ) {}
 
   public async createUser(createUserData: CreateUserInput): Promise<User> {
-    const user = await this.usersRepository.save(createUserData);
+    const user = await this.usersRepository.save({
+      ...createUserData,
+      password: await hash(createUserData.password, 10),
+    });
     return user;
   }
 

@@ -4,23 +4,23 @@ import { IsArray, IsOptional, IsString } from 'class-validator';
 
 @ArgsType()
 export class GetUsersArgs {
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   @IsArray()
   @IsOptional()
-  userIDs: string[];
+  userIDs?: string[];
 
-  @Field(() => [UserRole])
+  @Field(() => [UserRole], { nullable: true })
   @IsArray()
   @IsOptional()
-  userRoles: UserRole[];
+  userRoles?: UserRole[];
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  firstName: string;
+  firstName?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @IsString()
   @IsOptional()
-  lastName: string;
+  lastName?: string;
 }

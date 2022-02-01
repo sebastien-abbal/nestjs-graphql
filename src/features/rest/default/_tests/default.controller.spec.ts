@@ -1,13 +1,13 @@
 import { defaultConfig } from '@config';
-import { DatabaseModule } from '@features/database/database.module';
-import { DatabaseService } from '@features/database/database.service';
-import { ConfigController } from '@features/default/config/config.controller';
-import { HealthController } from '@features/default/health/health.controller';
-import { HealthService } from '@features/default/health/health.service';
+import { ConfigController } from '@features/rest/default/config/config.controller';
+import { HealthController } from '@features/rest/default/health/health.controller';
+import { HealthService } from '@features/rest/default/health/health.service';
 import {
   HomeController,
   WELCOME_MESSAGE,
-} from '@features/default/home/home.controller';
+} from '@features/rest/default/home/home.controller';
+import { DatabaseModule } from '@features/_database/database.module';
+import { DatabaseService } from '@features/_database/database.service';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 

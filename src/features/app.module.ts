@@ -1,42 +1,27 @@
-import { constants, defaultConfig, graphqlConfig } from '@config';
-import { DatabaseModule } from '@features/database/database.module';
-import { DefaultModule } from '@features/default/default.module';
+import { ConfigModule } from '@config';
+import { AppService } from '@features/app.service';
 import { GraphQLModule } from '@features/graphql/graphql.module';
+import { RestModule } from '@features/rest/rest.module';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { logger } from '@utils';
 
 @Module({
-  imports: [
-    ConfigModule.forRoot({
-      envFilePath: '.env',
-      isGlobal: true,
-      load: [defaultConfig, graphqlConfig],
-    }),
-    DefaultModule,
-    GraphQLModule,
-    DatabaseModule,
-  ],
+  imports: [ConfigModule, GraphQLModule, RestModule],
   controllers: [],
-  providers: [],
+  providers: [AppService],
 })
 export class AppModule {
-  constructor(private readonly configService: ConfigService) {
-    if (!constants.app.envsAvailable.includes(configService.get('env'))) {
-      logger.error(
-        `❌ [${configService.get(
-          'env',
-        )}] env is not found in the app available envs (${constants.app.envsAvailable.join(
-          ',',
-        )})`,
-      );
-      process.exit(1);
-    }
+  constructor(
+    private readonly appService: AppService,
+    private readonly configService: ConfigService,
+  ) {
+    if (!this.appService.checkEnv()) process.exit();
 
     logger.debug(
-      `✅ Server started on ${this.configService.get(
+      `✅ Server started on ${this.configService.get<string>(
         'host',
-      )} (port: ${this.configService.get('port')}).`,
+      )} (port: ${this.configService.get<number>('port')}).`,
     );
   }
 }
