@@ -15,6 +15,7 @@ import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
       sortSchema: true,
       debug: graphqlConfig().isDebugEnabled,
       introspection: true,
+      context: ({ req }) => ({ headers: req.headers }),
       playground: graphqlConfig().isPlaygroundEnabled
         ? {
             settings: { 'schema.polling.enable': false },

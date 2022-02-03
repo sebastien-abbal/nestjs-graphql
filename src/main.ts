@@ -14,6 +14,8 @@ async function bootstrap() {
 
   // Logger
   if (config.isLoggerEnabled) app.useLogger(app.get(Logger));
+
+  // Validation
   app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);

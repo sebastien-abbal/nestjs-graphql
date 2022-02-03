@@ -4,7 +4,7 @@ export type AuthTokenType = 'ACCESS_TOKEN' | 'REFRESH_TOKEN';
 export interface AuthTokenPayload {
   userID: string;
   type: AuthTokenType;
-  role: UserRole;
+  roles: UserRole[];
   iat?: number;
   exp?: number;
 }

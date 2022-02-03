@@ -8,17 +8,21 @@ import {
 import { User } from '@features/graphql/users/entities';
 import { UsersService } from '@features/graphql/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { GraphQLAuth } from './../../_auth/auth.decorators';
+import { UserRole } from './users.enums';
 
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
   @Query(() => User, { name: 'user', nullable: true })
+  @GraphQLAuth(UserRole.USER)
   async getUser(@Args() getUserArgs: GetUserArgs): Promise<User> {
     return this.usersService.getUser(getUserArgs);
   }
 
   @Query(() => [User], { name: 'users', nullable: 'items' })
+  @GraphQLAuth(UserRole.MODERATOR, UserRole.ADMIN)
   async getUsers(@Args() getUsersArgs: GetUsersArgs): Promise<User[]> {
     return this.usersService.getUsers(getUsersArgs);
   }
@@ -31,6 +35,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
+  @GraphQLAuth(UserRole.USER)
   async updateUser(
     @Args('updateUserData') updateUserData: UpdateUserInput,
   ): Promise<void> {
@@ -38,6 +43,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
+  @GraphQLAuth(UserRole.USER)
   async deleteUser(
     @Args('deleteUserData') deleteUserData: DeleteUserInput,
   ): Promise<void> {

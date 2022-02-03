@@ -32,9 +32,12 @@ export class UsersService {
   }
 
   public async getUser(getUserArgs: GetUserArgs): Promise<User> {
-    const { userID } = getUserArgs;
+    const { userID, email } = getUserArgs;
     const user = await this.usersRepository.findOne({
-      where: { id: userID, deletedAt: null },
+      where: [
+        { id: userID, deletedAt: null },
+        { email, deletedAt: null },
+      ],
     });
     return user;
   }
@@ -42,10 +45,10 @@ export class UsersService {
   public async getUsers(getUsersArgs: GetUsersArgs): Promise<User[]> {
     const { userIDs, userRoles, firstName, lastName } = getUsersArgs;
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
-    if (userIDs.length)
+    if (userIDs?.length)
       queryBuilder.andWhere('user.id IN (:...userIDs)', { userIDs });
 
-    if (userRoles.length)
+    if (userRoles?.length)
       queryBuilder.andWhere('user.role IN (:...userRoles)', { userRoles });
 
     if (firstName)

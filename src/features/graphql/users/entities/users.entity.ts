@@ -25,9 +25,9 @@ export class User {
   @Field(() => String)
   password: string;
 
-  @Column({ enum: UserRole, default: 'USER' })
-  @Field(() => UserRole)
-  role: UserRole;
+  @Column({ type: 'enum', enum: UserRole, array: true, default: ['USER'] })
+  @Field(() => [UserRole])
+  roles: UserRole[];
 
   @Column('text', { nullable: true })
   @Field(() => String)

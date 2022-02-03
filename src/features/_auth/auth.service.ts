@@ -16,7 +16,7 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
-  private createToken({
+  public createToken({
     user,
     type,
   }: {
@@ -25,7 +25,7 @@ export class AuthService {
   }): string {
     const payload: AuthTokenPayload = {
       userID: user.id,
-      role: user.role,
+      roles: user.roles,
       type,
     };
     return this.jwtService.sign(payload, {

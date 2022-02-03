@@ -1,6 +1,7 @@
 import { constants } from '@config';
-import { RestAuthGuard } from '@features/_auth/guards';
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { UserRole } from '@features/graphql/users/users.enums';
+import { RestAuth } from '@features/_auth/auth.decorators';
+import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
 @Controller()
@@ -8,7 +9,7 @@ export class ConfigController {
   constructor(private configService: ConfigService) {}
 
   @Get('_config')
-  @UseGuards(RestAuthGuard)
+  @RestAuth(UserRole.ADMIN)
   getConfig() {
     return {
       name: constants.app.name,

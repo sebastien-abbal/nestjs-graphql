@@ -1,14 +1,25 @@
+import { defaultConfig } from '@config';
 import { RestModule } from '@features/rest/rest.module';
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import serverlessExpress from '@vendia/serverless-express';
 import { Callback, Context, Handler } from 'aws-lambda';
 
 let server: Handler;
 
 async function bootstrap() {
+  const config = defaultConfig();
+
   const app = await NestFactory.create(RestModule);
+
+  const reflector = new Reflector();
+
+  // Logger
+  if (config.isLoggerEnabled) app.useLogger(app.get(Logger));
+
+  // Validation
   app.useGlobalPipes(new ValidationPipe());
+
   await app.init();
 
   const expressApp = app.getHttpAdapter().getInstance();

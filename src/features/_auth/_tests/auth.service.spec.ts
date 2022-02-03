@@ -6,7 +6,9 @@ import { AuthService } from '@features/_auth/auth.service';
 import { JwtStrategy } from '@features/_auth/strategies';
 import { DatabaseModule } from '@features/_database/database.module';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';
+import { AuthModule } from '../auth.module';
 
 describe('Auth module (Services)', () => {
   let usersService: UsersService;
@@ -17,7 +19,9 @@ describe('Auth module (Services)', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       imports: [
+        AuthModule,
         DatabaseModule,
+        PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.register({
           secret: jwtConfig().jwtSecret,
         }),
