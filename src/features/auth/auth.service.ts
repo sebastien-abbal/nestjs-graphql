@@ -1,7 +1,6 @@
+import { AuthResult, AuthUserInput } from '@features/auth/types';
 import { User } from '@features/graphql/users/entities';
 import { UsersService } from '@features/graphql/users/users.service';
-import { SignInUserModel } from '@features/_auth/auth.models';
-import { AuthUserInput } from '@features/_auth/dto';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -49,7 +48,7 @@ export class AuthService {
     }
   }
 
-  public async signIn(authUserData: AuthUserInput): Promise<SignInUserModel> {
+  public async signIn(authUserData: AuthUserInput): Promise<AuthResult> {
     const { email, password } = authUserData;
 
     const user = await this.usersService.getUser({ email });

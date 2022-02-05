@@ -38,19 +38,19 @@ input UpdateUserInput {
 Types
 """
 type Mutation {
-  createUser(createUserData: CreateUserInput!): User!
-  deleteUser(deleteUserData: DeleteUserInput!): User!
-  updateUser(updateUserData: UpdateUserInput!): User!
+  createUser(createUserData: CreateUserInput!): UserResult!
+  deleteUser(deleteUserData: DeleteUserInput!): UserResult!
+  updateUser(updateUserData: UpdateUserInput!): UserResult!
 }
 
 type Query {
-  user(email: String, userID: String): User
+  user(email: String, userID: String): UserPayload!
   users(
     firstName: String
     lastName: String
     userIDs: [String!]
     userRoles: [UserRole!]
-  ): [User]!
+  ): UsersPayload!
 }
 
 type User {
@@ -69,3 +69,31 @@ type User {
   roles: [UserRole!]!
   updatedAt: DateTime!
 }
+
+"""
+Results & errors (typenames)
+"""
+type UserResult {
+  user: User!
+}
+
+type UserResults {
+  users: [User]
+}
+
+type UserNotFoundError {
+  code: String!
+}
+
+type UserEmailAlreadyTakenError {
+  code: String!
+}
+
+"""
+Unions
+"""
+union UserPayload = UserResult | UserNotFoundError
+
+union UsersPayload = UserResults
+
+union UserCreateUserPayload = UserResult | UserEmailAlreadyTakenError

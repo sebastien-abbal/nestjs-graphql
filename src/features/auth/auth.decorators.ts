@@ -2,7 +2,7 @@ import {
   GraphQLAuthGuard,
   RestAuthGuard,
   RolesGuard,
-} from '@features/_auth/guards';
+} from '@features/auth/guards';
 import { UserRole } from '@generated/graphql.schema';
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 

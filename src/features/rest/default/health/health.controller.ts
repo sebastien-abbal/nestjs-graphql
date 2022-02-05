@@ -1,5 +1,5 @@
+import { databaseProviders } from '@features/database/database.providers';
 import { HealthService } from '@features/rest/default/health/health.service';
-import { databaseProviders } from '@features/_database/database.providers';
 import { Controller, Get } from '@nestjs/common';
 
 @Controller()

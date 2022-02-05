@@ -1,10 +1,10 @@
 import { jwtConfig } from '@config';
+import { AuthService } from '@features/auth/auth.service';
+import { JwtStrategy } from '@features/auth/strategies';
+import { DatabaseModule } from '@features/database/database.module';
 import { User } from '@features/graphql/users/entities';
 import { usersProviders } from '@features/graphql/users/users.providers';
 import { UsersService } from '@features/graphql/users/users.service';
-import { AuthService } from '@features/_auth/auth.service';
-import { JwtStrategy } from '@features/_auth/strategies';
-import { DatabaseModule } from '@features/_database/database.module';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { Test, TestingModule } from '@nestjs/testing';

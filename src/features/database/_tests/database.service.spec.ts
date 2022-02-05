@@ -1,4 +1,4 @@
-import { DatabaseService } from '@features/_database/database.service';
+import { DatabaseService } from '@features/database/database.service';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('DatabaseService', () => {

@@ -55,7 +55,7 @@ const serverlessConfiguration: AWS = {
   },
   functions: {
     graphql: {
-      handler: 'dist/src/features/graphql/_lambda.handler',
+      handler: 'dist/src/features/graphql/lambda.handler',
       events: [
         {
           http: {
@@ -66,7 +66,7 @@ const serverlessConfiguration: AWS = {
       ],
     },
     rest: {
-      handler: 'dist/src/features/rest/_lambda.handler',
+      handler: 'dist/src/features/rest/lambda.handler',
       events: [
         {
           http: {

@@ -1,11 +1,11 @@
+import { User } from '@features/graphql/users/entities';
 import {
   CreateUserInput,
   DeleteUserInput,
   GetUserArgs,
   GetUsersArgs,
   UpdateUserInput,
-} from '@features/graphql/users/dto';
-import { User } from '@features/graphql/users/entities';
+} from '@features/graphql/users/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { hash } from 'bcryptjs';
 import { Repository } from 'typeorm';

@@ -1,0 +1,32 @@
+"""
+Inputs
+"""
+input AuthUserInput {
+  email: String!
+  password: String!
+}
+
+"""
+Types
+"""
+type Mutation {
+  signIn(authUserData: AuthUserInput!): SignInPayload!
+}
+
+"""
+Results & errors (typenames)
+"""
+type AuthResult {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+type WrongCredentialsError {
+  code: String!
+}
+
+"""
+Unions
+"""
+union SignInPayload = AuthResult | WrongCredentialsError

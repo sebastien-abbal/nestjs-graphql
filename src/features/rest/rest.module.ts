@@ -1,7 +1,7 @@
 import { ConfigModule } from '@config';
 import { AppService } from '@features/app.service';
+import { AuthModule } from '@features/auth/auth.module';
 import { DefaultModule } from '@features/rest/default/default.module';
-import { AuthModule } from '@features/_auth/auth.module';
 import { Module } from '@nestjs/common';
 
 @Module({

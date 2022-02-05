@@ -1,7 +1,7 @@
 import { ConfigModule, graphqlConfig } from '@config';
 import { AppService } from '@features/app.service';
+import { AuthModule } from '@features/auth/auth.module';
 import { UsersModule } from '@features/graphql/users/users.module';
-import { AuthModule } from '@features/_auth/auth.module';
 import { Module } from '@nestjs/common';
 import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';

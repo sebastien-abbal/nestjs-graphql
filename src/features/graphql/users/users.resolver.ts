@@ -1,52 +1,69 @@
+import { GraphQLAuth } from '@features/auth/auth.decorators';
 import {
   CreateUserInput,
   DeleteUserInput,
   GetUserArgs,
   GetUsersArgs,
   UpdateUserInput,
-} from '@features/graphql/users/dto';
-import { User } from '@features/graphql/users/entities';
+  UserEmailAlreadyTakenError,
+  UserNotFoundError,
+  UserPayload,
+  UserResult,
+  UsersPayload,
+} from '@features/graphql/users/types';
 import { UsersService } from '@features/graphql/users/users.service';
-import { GraphQLAuth } from '@features/_auth/auth.decorators';
 import { UserRole } from '@generated/graphql.schema';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { generateError, generateResult, GraphQLTNError } from '@utils';
 
-@Resolver(() => User)
+@Resolver(() => UserResult)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
 
-  @Query(() => User, { name: 'user', nullable: true })
+  @Query(() => UserPayload, { name: 'user', nullable: true })
   @GraphQLAuth(UserRole.USER)
-  async getUser(@Args() getUserArgs: GetUserArgs): Promise<User> {
-    return this.usersService.getUser(getUserArgs);
+  async getUser(
+    @Args() getUserArgs: GetUserArgs,
+  ): Promise<typeof UserPayload | GraphQLTNError> {
+    const user = await this.usersService.getUser(getUserArgs);
+    if (!user) return generateError(UserNotFoundError.name);
+    return generateResult({ user });
   }
 
-  @Query(() => [User], { name: 'users', nullable: 'items' })
+  @Query(() => [UsersPayload], { name: 'users', nullable: 'items' })
   @GraphQLAuth(UserRole.MODERATOR, UserRole.ADMIN)
-  async getUsers(@Args() getUsersArgs: GetUsersArgs): Promise<User[]> {
-    return this.usersService.getUsers(getUsersArgs);
+  async getUsers(
+    @Args() getUsersArgs: GetUsersArgs,
+  ): Promise<typeof UsersPayload | GraphQLTNError> {
+    const users = await this.usersService.getUsers(getUsersArgs);
+
+    return generateResult({ users });
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResult)
   async createUser(
     @Args('createUserData') createUserData: CreateUserInput,
-  ): Promise<User> {
-    return this.usersService.createUser(createUserData);
+  ): Promise<typeof UsersPayload | GraphQLTNError> {
+    const isUserAlreadyExists = this.getUser({ email: createUserData.email });
+    if (isUserAlreadyExists)
+      return generateError(UserEmailAlreadyTakenError.name);
+    const user = await this.usersService.createUser(createUserData);
+    return generateResult({ user });
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResult)
   @GraphQLAuth(UserRole.USER)
   async updateUser(
     @Args('updateUserData') updateUserData: UpdateUserInput,
-  ): Promise<void> {
+  ): Promise<void | GraphQLTNError> {
     return this.usersService.updateUser(updateUserData);
   }
 
-  @Mutation(() => User)
+  @Mutation(() => UserResult)
   @GraphQLAuth(UserRole.USER)
   async deleteUser(
     @Args('deleteUserData') deleteUserData: DeleteUserInput,
-  ): Promise<void> {
+  ): Promise<void | GraphQLTNError> {
     return this.usersService.deleteUser(deleteUserData);
   }
 }
