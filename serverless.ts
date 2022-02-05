@@ -65,23 +65,23 @@ const serverlessConfiguration: AWS = {
         },
       ],
     },
-    // rest: {
-    //   handler: 'dist/src/features/rest/_lambda.handler',
-    //   events: [
-    //     {
-    //       http: {
-    //         method: 'ANY',
-    //         path: '/',
-    //       },
-    //     },
-    //     {
-    //       http: {
-    //         method: 'ANY',
-    //         path: '{proxy+}',
-    //       },
-    //     },
-    //   ],
-    // },
+    rest: {
+      handler: 'dist/src/features/rest/_lambda.handler',
+      events: [
+        {
+          http: {
+            method: 'ANY',
+            path: '/',
+          },
+        },
+        {
+          http: {
+            method: 'ANY',
+            path: '{proxy+}',
+          },
+        },
+      ],
+    },
   },
 };
 

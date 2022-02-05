@@ -1,7 +1,7 @@
 import { defaultConfig } from '@config';
+import { GraphQLModule } from '@features/graphql/graphql.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
-import { GraphQLModule } from '@nestjs/graphql';
+import { NestFactory } from '@nestjs/core';
 import serverlessExpress from '@vendia/serverless-express';
 import { Callback, Context, Handler } from 'aws-lambda';
 
@@ -11,8 +11,6 @@ async function bootstrap() {
   const config = defaultConfig();
 
   const app = await NestFactory.create(GraphQLModule);
-
-  const reflector = new Reflector();
 
   // Logger
   if (config.isLoggerEnabled) app.useLogger(app.get(Logger));

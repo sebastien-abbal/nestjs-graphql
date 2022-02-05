@@ -15,7 +15,7 @@
     "start:dev": "nest start --watch",
     "sls:offline": "yarn build && sls offline",
     "sls:online": "yarn build && sls deploy",
-    "start": "yarn start:prod",
+    "start": "node ./dist/src/main.js",
     "stop": "pm2 delete ecosystem.config.js"
   },
   "dependencies": {
