@@ -1,4 +1,4 @@
-import { UserRole } from '@features/graphql/users/users.enums';
+import { UserRole } from '@generated/graphql.schema';
 
 export type AuthTokenType = 'ACCESS_TOKEN' | 'REFRESH_TOKEN';
 export interface AuthTokenPayload {

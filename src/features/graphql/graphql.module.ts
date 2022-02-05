@@ -4,18 +4,22 @@ import { UsersModule } from '@features/graphql/users/users.module';
 import { AuthModule } from '@features/_auth/auth.module';
 import { Module } from '@nestjs/common';
 import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule,
     AuthModule,
     NESTJSGraphQLModule.forRoot({
-      installSubscriptionHandlers: true,
-      autoSchemaFile: graphqlConfig().generatedSchemaFileLocation,
-      sortSchema: true,
+      typePaths: ['./**/*.graphql'],
+      definitions: {
+        path: join(process.cwd(), 'generated/graphql.schema.ts'),
+      },
+      autoSchemaFile: false,
+      sortSchema: false,
       debug: graphqlConfig().isDebugEnabled,
       introspection: true,
-      context: ({ req }) => ({ headers: req.headers }),
+      context: ({ req }) => ({ req }),
       playground: graphqlConfig().isPlaygroundEnabled
         ? {
             settings: { 'schema.polling.enable': false },

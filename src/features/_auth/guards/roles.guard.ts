@@ -1,5 +1,5 @@
 import { User } from '@features/graphql/users/entities';
-import { UserRole } from '@features/graphql/users/users.enums';
+import { UserRole } from '@generated/graphql.schema';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';

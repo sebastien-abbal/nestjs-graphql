@@ -1,4 +1,4 @@
-import { UserRole } from '@features/graphql/users/users.enums';
+import { UserRole } from '@generated/graphql.schema';
 import { ArgsType, Field } from '@nestjs/graphql';
 import { IsArray, IsOptional, IsString } from 'class-validator';
 

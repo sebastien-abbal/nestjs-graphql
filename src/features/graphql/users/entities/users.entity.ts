@@ -1,4 +1,4 @@
-import { UserRole } from '@features/graphql/users/users.enums';
+import { UserRole } from '@generated/graphql.schema';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 

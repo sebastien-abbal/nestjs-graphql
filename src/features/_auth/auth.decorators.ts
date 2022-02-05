@@ -1,9 +1,9 @@
-import { UserRole } from '@features/graphql/users/users.enums';
 import {
   GraphQLAuthGuard,
   RestAuthGuard,
   RolesGuard,
 } from '@features/_auth/guards';
+import { UserRole } from '@generated/graphql.schema';
 import { applyDecorators, SetMetadata, UseGuards } from '@nestjs/common';
 
 export const GraphQLAuth = (...roles: UserRole[]) => {

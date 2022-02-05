@@ -1,0 +1,71 @@
+"""
+Scalars
+"""
+scalar DateTime
+
+"""
+Enums
+"""
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+"""
+Inputs
+"""
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
+
+input DeleteUserInput {
+  userID: String!
+}
+
+input UpdateUserInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  userID: String!
+}
+
+"""
+Types
+"""
+type Mutation {
+  createUser(createUserData: CreateUserInput!): User!
+  deleteUser(deleteUserData: DeleteUserInput!): User!
+  updateUser(updateUserData: UpdateUserInput!): User!
+}
+
+type Query {
+  user(email: String, userID: String): User
+  users(
+    firstName: String
+    lastName: String
+    userIDs: [String!]
+    userRoles: [UserRole!]
+  ): [User]!
+}
+
+type User {
+  createdAt: DateTime!
+  deletedAt: DateTime!
+  email: String!
+  firstName: String!
+  id: String!
+  isEmailVerified: Boolean!
+  isPhoneVerified: Boolean!
+  lastLoginAt: DateTime!
+  lastName: String!
+  password: String!
+  phoneIndex: String!
+  phoneNumber: String!
+  roles: [UserRole!]!
+  updatedAt: DateTime!
+}

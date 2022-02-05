@@ -1,6 +1,6 @@
 import { constants } from '@config';
-import { UserRole } from '@features/graphql/users/users.enums';
 import { RestAuth } from '@features/_auth/auth.decorators';
+import { UserRole } from '@generated/graphql.schema';
 import { Controller, Get } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 

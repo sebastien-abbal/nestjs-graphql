@@ -7,9 +7,9 @@ import {
 } from '@features/graphql/users/dto';
 import { User } from '@features/graphql/users/entities';
 import { UsersService } from '@features/graphql/users/users.service';
+import { GraphQLAuth } from '@features/_auth/auth.decorators';
+import { UserRole } from '@generated/graphql.schema';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GraphQLAuth } from './../../_auth/auth.decorators';
-import { UserRole } from './users.enums';
 
 @Resolver(() => User)
 export class UsersResolver {
