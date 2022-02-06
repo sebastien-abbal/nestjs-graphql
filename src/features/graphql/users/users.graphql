@@ -38,7 +38,7 @@ input UpdateUserInput {
 Types
 """
 type Mutation {
-  createUser(createUserData: CreateUserInput!): UserResult!
+  createUser(createUserData: CreateUserInput!): CreateUserPayload!
   deleteUser(deleteUserData: DeleteUserInput!): UserResult!
   updateUser(updateUserData: UpdateUserInput!): UserResult!
 }
@@ -63,7 +63,6 @@ type User {
   isPhoneVerified: Boolean!
   lastLoginAt: DateTime!
   lastName: String!
-  password: String!
   phoneIndex: String!
   phoneNumber: String!
   roles: [UserRole!]!
@@ -93,7 +92,6 @@ type UserEmailAlreadyTakenError {
 Unions
 """
 union UserPayload = UserResult | UserNotFoundError
-
 union UsersPayload = UserResults
 
-union UserCreateUserPayload = UserResult | UserEmailAlreadyTakenError
+union CreateUserPayload = UserResult | UserEmailAlreadyTakenError

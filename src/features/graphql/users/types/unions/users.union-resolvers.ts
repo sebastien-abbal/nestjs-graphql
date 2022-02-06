@@ -1,3 +1,4 @@
+import { UserResult, UserResults } from '@features/graphql/users/types';
 import { ResolveField, Resolver } from '@nestjs/graphql';
 import { GraphQLTNError } from '@utils';
 
@@ -5,7 +6,7 @@ import { GraphQLTNError } from '@utils';
 export class UserPayloadResolver {
   @ResolveField()
   __resolveType(payload: any) {
-    if (!(payload instanceof GraphQLTNError)) return 'UserResult';
+    if (!(payload instanceof GraphQLTNError)) return UserResult.name;
     return payload.code;
   }
 }
@@ -13,8 +14,17 @@ export class UserPayloadResolver {
 @Resolver('UsersPayload')
 export class UsersPayloadResolver {
   @ResolveField()
-  __resolveType(payload) {
-    if (!(payload instanceof GraphQLTNError)) return 'UserResults';
+  __resolveType(payload: any) {
+    if (!(payload instanceof GraphQLTNError)) return UserResults.name;
+    return payload.code;
+  }
+}
+
+@Resolver('CreateUserPayload')
+export class CreateUserPayloadResolver {
+  @ResolveField()
+  __resolveType(payload: any) {
+    if (!(payload instanceof GraphQLTNError)) return UserResult.name;
     return payload.code;
   }
 }

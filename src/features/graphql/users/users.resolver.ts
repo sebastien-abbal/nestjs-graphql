@@ -1,6 +1,7 @@
 import { GraphQLAuth } from '@features/auth/auth.decorators';
 import {
   CreateUserInput,
+  CreateUserPayload,
   DeleteUserInput,
   GetUserArgs,
   GetUsersArgs,
@@ -31,7 +32,7 @@ export class UsersResolver {
   }
 
   @Query(() => [UsersPayload], { name: 'users', nullable: 'items' })
-  @GraphQLAuth(UserRole.MODERATOR, UserRole.ADMIN)
+  @GraphQLAuth(UserRole.ADMIN)
   async getUsers(
     @Args() getUsersArgs: GetUsersArgs,
   ): Promise<typeof UsersPayload | GraphQLTNError> {
@@ -43,7 +44,7 @@ export class UsersResolver {
   @Mutation(() => UserResult)
   async createUser(
     @Args('createUserData') createUserData: CreateUserInput,
-  ): Promise<typeof UsersPayload | GraphQLTNError> {
+  ): Promise<typeof CreateUserPayload | GraphQLTNError> {
     const isUserAlreadyExists = this.getUser({ email: createUserData.email });
     if (isUserAlreadyExists)
       return generateError(UserEmailAlreadyTakenError.name);

@@ -10,9 +10,9 @@ import { UserPayloadResolver, UsersPayloadResolver } from './types';
   providers: [
     ...usersProviders,
     UsersResolver,
+    UsersService,
     UserPayloadResolver,
     UsersPayloadResolver,
-    UsersService,
   ],
 })
 export class UsersModule {}

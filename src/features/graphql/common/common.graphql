@@ -1,0 +1,30 @@
+"""
+Types
+"""
+type Query {
+  health: HealthPayload!
+}
+
+"""
+Results & errors (typenames)
+"""
+type DeletionResult {
+  isDeleted: Boolean!
+}
+
+type HealthResult {
+  status: String!
+}
+
+type HealthFailedError {
+  code: String!
+}
+
+type NotAuthorizedError {
+  code: String!
+}
+
+"""
+Unions
+"""
+union HealthPayload = HealthResult | HealthFailedError

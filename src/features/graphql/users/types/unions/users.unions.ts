@@ -1,4 +1,5 @@
 import {
+  UserEmailAlreadyTakenError,
   UserNotFoundError,
   UserResult,
   UserResults,
@@ -13,4 +14,9 @@ export const UserPayload = createUnionType({
 export const UsersPayload = createUnionType({
   name: 'UsersPayload',
   types: () => [UserResults],
+});
+
+export const CreateUserPayload = createUnionType({
+  name: 'CreateUserPayload',
+  types: () => [UserResult, UserEmailAlreadyTakenError],
 });

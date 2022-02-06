@@ -4,7 +4,7 @@ import { UsersService } from '@features/graphql/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { AuthTokenPayload, AuthTokenType } from '@types';
+import { AuthTokenType, IAuthTokenPayload } from '@types';
 import { compare } from 'bcryptjs';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class AuthService {
     user: User;
     type: AuthTokenType;
   }): string {
-    const payload: AuthTokenPayload = {
+    const payload: IAuthTokenPayload = {
       userID: user.id,
       roles: user.roles,
       type,
@@ -39,7 +39,7 @@ export class AuthService {
     });
   }
 
-  public authenticateToken({ token }: { token: string }): AuthTokenPayload {
+  public authenticateToken({ token }: { token: string }): IAuthTokenPayload {
     try {
       const decodedToken = this.jwtService.verify(token);
       return decodedToken;

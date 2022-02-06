@@ -22,7 +22,6 @@ export class User {
   email: string;
 
   @Column('text')
-  @Field(() => String)
   password: string;
 
   @Column({ type: 'enum', enum: UserRole, array: true, default: ['USER'] })

@@ -22,10 +22,10 @@ import { SignInPayloadResolver } from './types';
   ],
   providers: [
     ...usersProviders,
+    AuthResolver,
     UsersService,
     AuthService,
     JwtStrategy,
-    AuthResolver,
     SignInPayloadResolver,
   ],
   exports: [],

@@ -2,7 +2,7 @@ import { UsersService } from '@features/graphql/users/users.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
-import { AuthTokenPayload } from '@types';
+import { IAuthTokenPayload } from '@types';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: AuthTokenPayload) {
+  async validate(payload: IAuthTokenPayload) {
     const { userID } = payload;
     if (!userID) throw new UnauthorizedException();
 
