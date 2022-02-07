@@ -1,5 +1,4 @@
-import { defaultConfig } from '@config';
-import { DatabaseModule } from '@features/database/database.module';
+import { ConfigModule } from '@features/config/config.module';
 import { DatabaseService } from '@features/database/database.service';
 import { ConfigController } from '@features/rest/default/config/config.controller';
 import { HealthController } from '@features/rest/default/health/health.controller';
@@ -8,7 +7,6 @@ import {
   HomeController,
   WELCOME_MESSAGE,
 } from '@features/rest/default/home/home.controller';
-import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Default module (controllers)', () => {
@@ -18,18 +16,9 @@ describe('Default module (controllers)', () => {
   let healthController: HealthController;
   let configController: ConfigController;
 
-  let databaseService: DatabaseService;
-
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      imports: [
-        ConfigModule.forRoot({
-          envFilePath: '.env',
-          isGlobal: true,
-          load: [() => defaultConfig],
-        }),
-        DatabaseModule,
-      ],
+      imports: [ConfigModule],
       controllers: [HomeController, HealthController, ConfigController],
       providers: [HealthService, DatabaseService],
     }).compile();
@@ -38,16 +27,27 @@ describe('Default module (controllers)', () => {
     healthController = app.get<HealthController>(HealthController);
     configController = app.get<ConfigController>(ConfigController);
 
-    databaseService = app.get<DatabaseService>(DatabaseService);
+    // mock healthController
+    healthController.getHealthCheck = jest
+      .fn()
+      .mockReturnValue({ status: 'ok', details: {} });
   });
 
   describe('Home controller', () => {
+    it('should be defined', () => {
+      expect(homeController).toBeDefined();
+    });
+
     it('should return welcome message', () => {
       expect(homeController.getWelcome()).toBe(WELCOME_MESSAGE);
     });
   });
 
   describe('Health controller', () => {
+    it('should be defined', () => {
+      expect(healthController).toBeDefined();
+    });
+
     it('should return a status "ok"', () => {
       expect(healthController.getHealthCheck()).toEqual(
         expect.objectContaining({
@@ -58,6 +58,10 @@ describe('Default module (controllers)', () => {
   });
 
   describe('Config controller', () => {
+    it('should be defined', () => {
+      expect(configController).toBeDefined();
+    });
+
     it('should return config payload', () => {
       expect(configController.getConfig()).toMatchObject({
         name: expect.any(String),
@@ -70,7 +74,6 @@ describe('Default module (controllers)', () => {
   });
 
   afterAll(async () => {
-    await databaseService?.clearConnections();
     await app?.close();
   });
 });
