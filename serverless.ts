@@ -42,6 +42,10 @@ const serverlessConfiguration: AWS = {
       PG_DATABASE: envVar.get('PG_DATABASE').required().asString(),
       PG_USER: envVar.get('PG_USER').required().asString(),
       PG_PASSWORD: envVar.get('PG_PASSWORD').required().asString(),
+      GQL_IS_AUTO_SCHEMA: envVar
+        .get('GQL_IS_AUTO_SCHEMA')
+        .default('false')
+        .asString(),
       JWT_SECRET: envVar.get('JWT_SECRET').required().asString(),
       JWT_ACCESS_TOKEN_EXPIRATION_TIME: envVar
         .get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')
@@ -51,6 +55,7 @@ const serverlessConfiguration: AWS = {
         .get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')
         .required()
         .asString(),
+      ENCRYPTION_KEY: envVar.get('ENCRYPTION_KEY').required().asString(),
     },
   },
   functions: {
