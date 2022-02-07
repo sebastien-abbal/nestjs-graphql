@@ -34,10 +34,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input DeleteUserInput {
-  userID: String!
-}
-
 union DeleteUserPayload = DeletionResult | NotAuthorizedError
 
 type DeletionResult {
@@ -63,10 +59,10 @@ input GetUsersFiltersInput {
 
 type Mutation {
   createUser(createUserData: CreateUserInput!): CreateUserPayload!
-  deleteUser(deleteUserData: DeleteUserInput!): DeleteUserPayload!
+  deleteUser(userID: String!): DeleteUserPayload!
   signInAnonymous: SignInAnonymousPayload!
   signInUser(authUserData: AuthUserInput!): SignInUserPayload!
-  updateUser(updateUserData: UpdateUserInput!): UpdateUserPayload!
+  updateUser(updateUserData: UpdateUserInput!, userID: String!): UpdateUserPayload!
 }
 
 type NotAuthorizedError implements Error {
@@ -102,7 +98,6 @@ input UpdateUserInput {
   password: String
   phoneIndex: String
   phoneNumber: String
-  userID: String!
 }
 
 union UpdateUserPayload = NotAuthorizedError | UserResult

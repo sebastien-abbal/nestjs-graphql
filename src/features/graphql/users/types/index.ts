@@ -1,7 +1,6 @@
 export * from './enums/users-anonymous.enums';
 export * from './enums/users-role.enums';
 export * from './input/create-user.input';
-export * from './input/delete-user.input';
 export * from './input/get-user.input';
 export * from './input/get-users.input';
 export * from './input/update-user.input';

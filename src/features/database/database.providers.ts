@@ -1,19 +1,20 @@
 import { config, constants } from '@config';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection, getConnection, getConnectionManager } from 'typeorm';
 
 export const databaseProviders = [
   {
     name: constants.databases.postgres.name,
     provide: constants.databases.postgres.providerName,
     useFactory: async () => {
-      let connection = null;
-      try {
-        connection = getConnection(constants.databases.postgres.name);
-      } catch (err) {}
+      const connectionManager = getConnectionManager();
 
-      return connection
-        ? connection
-        : await createConnection(config.pgDatabase);
+      const connection = !connectionManager.has(
+        constants.databases.postgres.providerName,
+      )
+        ? await createConnection(config.pgDatabase)
+        : getConnection(constants.databases.postgres.providerName);
+
+      return connection;
     },
   },
 ];

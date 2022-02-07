@@ -17,7 +17,9 @@ export class GraphQLAuthResolver {
   async signInUser(
     @Args('authUserData') authUserData: AuthUserInput,
   ): Promise<typeof SignInUserPayload | GraphQLTNError> {
-    const signInUserPayload = await this.authService.signInUser(authUserData);
+    const signInUserPayload = await this.authService.signInUser({
+      data: authUserData,
+    });
 
     if (!signInUserPayload.user || !signInUserPayload.accessToken)
       return generateError(WrongCredentialsError.name);

@@ -44,11 +44,11 @@ export class User {
   @Field(() => Boolean)
   isEmailVerified: boolean;
 
-  @Column({ type: 'date', default: new Date() })
+  @Column({ type: 'date', default: () => 'NOW()' })
   @Field(() => Date)
   lastLoginAt: Date;
 
-  @Column({ type: 'date', default: new Date() })
+  @Column({ type: 'date', default: () => 'NOW()' })
   @Field(() => Date)
   createdAt: Date;
 

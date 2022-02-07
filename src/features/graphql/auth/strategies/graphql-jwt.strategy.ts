@@ -24,7 +24,7 @@ export class GraphQLJwtStrategy extends PassportStrategy(Strategy) {
     if (roles && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return null;
     if (!userID) return null;
 
-    const user = await this.usersService.getUser({ userID });
+    const user = await this.usersService.getUser({ filters: { userID } });
 
     return user;
   }

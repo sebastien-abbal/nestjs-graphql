@@ -10,7 +10,6 @@ import { User } from '@features/graphql/users/entities';
 import {
   CreateUserInput,
   CreateUserPayload,
-  DeleteUserInput,
   DeleteUserPayload,
   GetUserFiltersInput,
   GetUsersFiltersInput,
@@ -27,6 +26,7 @@ import {
 import { UsersService } from '@features/graphql/users/users.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { generateError, generateResult, GraphQLTNError } from '@utils';
+import { UserIDRequiredFilter } from './types/users.args';
 
 @Resolver(() => UserResult)
 export class UsersResolver {
@@ -37,7 +37,9 @@ export class UsersResolver {
   async getUser(
     @Args('getUserFiltersData') getUserFiltersData: GetUserFiltersInput,
   ): Promise<typeof UserPayload | GraphQLTNError> {
-    const user = await this.usersService.getUser(getUserFiltersData);
+    const user = await this.usersService.getUser({
+      filters: getUserFiltersData,
+    });
     if (!user) return generateError(UserNotFoundError.name);
     return generateResult({ user });
   }
@@ -49,7 +51,7 @@ export class UsersResolver {
     @Args() { take, skip }: ResourcesFilters,
   ): Promise<typeof UsersPayload | GraphQLTNError> {
     const users = await this.usersService.getUsers({
-      getUsersFiltersData,
+      filters: getUsersFiltersData,
       take,
       skip,
     });
@@ -65,7 +67,7 @@ export class UsersResolver {
     const isUserAlreadyExists = this.getUser({ email: createUserData.email });
     if (isUserAlreadyExists)
       return generateError(UserEmailAlreadyTakenError.name);
-    const user = await this.usersService.createUser(createUserData);
+    const user = await this.usersService.createUser({ data: createUserData });
     return generateResult({ user });
   }
 
@@ -73,10 +75,11 @@ export class UsersResolver {
   @GraphQLAuth(UserRole.USER)
   async updateUser(
     @Args('updateUserData') updateUserData: UpdateUserInput,
+    @Args() { userID }: UserIDRequiredFilter,
   ): Promise<typeof UpdateUserPayload | GraphQLTNError> {
-    await this.usersService.updateUser(updateUserData);
+    await this.usersService.updateUser({ userID, data: updateUserData });
 
-    const user = this.getUser({ userID: updateUserData.userID });
+    const user = this.getUser({ userID });
 
     return generateResult({ user });
   }
@@ -84,17 +87,17 @@ export class UsersResolver {
   @Mutation(() => DeleteUserPayload)
   @GraphQLAuth(UserRole.USER)
   async deleteUser(
-    @Args('deleteUserData') deleteUserData: DeleteUserInput,
+    @Args() { userID }: UserIDRequiredFilter,
     @GraphQLCurrentUser() user: User,
   ): Promise<typeof DeleteUserPayload | GraphQLTNError> {
     if (
       !user.roles.includes(UserRole.ADMIN) &&
       !user.roles.includes(UserRole.MODERATOR) &&
-      user.id !== deleteUserData.userID
+      user.id !== userID
     )
       return generateError(NotAuthorizedError.name);
 
-    await this.usersService.deleteUser(deleteUserData);
+    await this.usersService.deleteUser({ userID });
 
     return generateResult({ isDeleted: true });
   }

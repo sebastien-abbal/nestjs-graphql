@@ -24,7 +24,7 @@ export class RestJwtStrategy extends PassportStrategy(Strategy) {
     if (roles && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return null;
     if (!userID) throw new UnauthorizedException();
 
-    const user = await this.usersService.getUser({ userID });
+    const user = await this.usersService.getUser({ filters: { userID } });
     if (!user) throw new UnauthorizedException();
 
     return user;

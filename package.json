@@ -6,18 +6,15 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "typeorm": "ts-node -r tsconfig-paths/register -T ./node_modules/typeorm/cli.js --config src/config/pg.config.ts",
-    "typeorm:migration": "yarn typeorm migration:generate -d generated/migrations -n ",
+    "typeorm": "ts-node -r tsconfig-paths/register -T ./node_modules/typeorm/cli.js --config ./bin/database/pg.config.ts",
+    "typeorm:migration:generate": "yarn typeorm migration:generate -d generated/migrations -n ",
+    "typeorm:migration:run": "yarn typeorm migration:run",
     "build:nest": "nest build",
     "build": "run-s build:*",
     "test": "jest",
-    "studio": "yarn prisma studio",
-    "migrate:deploy": "yarn prisma migrate deploy --preview-feature",
-    "migrate:dev": "yarn prisma migrate dev --preview-feature",
     "start:dev": "nest start --watch",
-    "sls:offline": "yarn build && sls offline",
-    "sls:online": "yarn build && sls deploy",
-    "start": "node ./dist/src/main.js"
+    "sls:offline": "yarn build && sh ./bin/serverless/sls-offline.sh",
+    "sls:online": "yarn build && sh ./bin/serverless/sls-deploy.sh"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",

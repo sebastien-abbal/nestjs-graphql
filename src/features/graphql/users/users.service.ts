@@ -2,7 +2,6 @@ import { constants } from '@config';
 import { User } from '@features/graphql/users/entities';
 import {
   CreateUserInput,
-  DeleteUserInput,
   GetUserFiltersInput,
   GetUsersFiltersInput,
   UpdateUserInput,
@@ -19,8 +18,12 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  public async getUser(getUserFiltersData: GetUserFiltersInput): Promise<User> {
-    const { userID, email } = getUserFiltersData;
+  public async getUser({
+    filters,
+  }: {
+    filters: GetUserFiltersInput;
+  }): Promise<User> {
+    const { userID, email } = filters;
 
     const user = await this.usersRepository.findOne({
       where: [
@@ -32,15 +35,15 @@ export class UsersService {
   }
 
   public async getUsers({
-    getUsersFiltersData,
+    filters,
     skip,
     take,
   }: {
-    getUsersFiltersData: GetUsersFiltersInput;
+    filters: GetUsersFiltersInput;
     skip?: number;
     take?: number;
   }): Promise<User[]> {
-    const { userIDs, userRoles, firstName, lastName } = getUsersFiltersData;
+    const { userIDs, userRoles, firstName, lastName } = filters;
 
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
     if (userIDs?.length)
@@ -68,23 +71,27 @@ export class UsersService {
     return users;
   }
 
-  public async createUser(createUserData: CreateUserInput): Promise<User> {
+  public async createUser({ data }: { data: CreateUserInput }): Promise<User> {
     const user = await this.usersRepository.save({
-      ...createUserData,
-      password: await hash(createUserData.password, 10),
+      ...data,
+      password: await hash(data.password, 10),
     });
     return user;
   }
 
-  public async updateUser(updateUserData: UpdateUserInput): Promise<User> {
-    const { userID, ...data } = updateUserData;
+  public async updateUser({
+    userID,
+    data,
+  }: {
+    userID: string;
+    data: UpdateUserInput;
+  }): Promise<User> {
     await this.usersRepository.update(userID, data);
-    const user = this.getUser({ userID });
+    const user = this.getUser({ filters: { userID } });
     return user;
   }
 
-  public async deleteUser(deleteUserData: DeleteUserInput): Promise<void> {
-    const { userID } = deleteUserData;
+  public async deleteUser({ userID }: { userID: string }): Promise<void> {
     await this.usersRepository.update(userID, {
       deletedAt: new Date(),
     });

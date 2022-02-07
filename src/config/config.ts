@@ -50,7 +50,7 @@ export class Config {
     };
 
     this.pgDatabase = {
-      name: constants.databases.postgres.name,
+      name: constants.databases.postgres.providerName,
       type: 'postgres',
       host: envVar.get('PG_HOST').required().asString(),
       port: envVar.get('PG_PORT').required().asInt(),
@@ -58,8 +58,11 @@ export class Config {
       password: envVar.get('PG_PASSWORD').required().asString(),
       database: envVar.get('PG_DATABASE').required().asString(),
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      cache: [PROD_ENV, PREPROD_ENV].includes(this.env),
       synchronize: false,
       dropSchema: false,
+      logging: false,
+      migrations: [__dirname + '../../generated/migrations/*{.ts,.js}'],
       cli: {
         migrationsDir: join(process.cwd(), 'generated/migrations'),
       },

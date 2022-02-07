@@ -53,12 +53,14 @@ export class GraphQLAuthService {
     }
   }
 
-  public async signInUser(
-    authUserData: AuthUserInput,
-  ): Promise<AuthUserResult> {
-    const { email, password } = authUserData;
+  public async signInUser({
+    data,
+  }: {
+    data: AuthUserInput;
+  }): Promise<AuthUserResult> {
+    const { email, password } = data;
 
-    const user = await this.usersService.getUser({ email });
+    const user = await this.usersService.getUser({ filters: { email } });
 
     if (user) {
       const isPasswordValid = await compare(password, user.password);

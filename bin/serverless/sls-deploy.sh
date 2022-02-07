@@ -18,7 +18,7 @@ if [ "$1" != "prod" ] && [ "$1" != "preprod" ] && [ "$1" != "dev" ]; then
 fi
 
 if [ "$1" != "$NODE_ENV" ]; then
-	echo "❌ Your current ";
+	echo "❌ Env provided does not match with you NODE_ENV in .env file.";
 	exit 1;
 fi
 
