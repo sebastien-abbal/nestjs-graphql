@@ -1,27 +1,24 @@
 import { ConfigModule, graphqlConfig } from '@config';
 import { AppService } from '@features/app.service';
-import { AuthModule } from '@features/auth/auth.module';
+import { GraphQLAuthModule } from '@features/graphql/auth/auth.module';
 import { CommonModule } from '@features/graphql/common/common.module';
 import { UsersModule } from '@features/graphql/users/users.module';
+import { GraphQLComplexityPlugin } from '@features/graphql/_plugins';
 import { Module } from '@nestjs/common';
 import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
-import { ComplexityPlugin } from './_plugins/complexity.plugin';
 
 @Module({
   imports: [
     ConfigModule,
-    AuthModule,
+    GraphQLAuthModule,
     NESTJSGraphQLModule.forRoot({
-      typePaths: ['./**/*.graphql'],
-      definitions: {
-        path: join(process.cwd(), 'generated/graphql.schema.ts'),
-      },
-      autoSchemaFile: false,
-      sortSchema: false,
+      typePaths: ['./**/*.gql'],
+      autoSchemaFile: graphqlConfig().isSchemaAuto
+        ? graphqlConfig().schemaFilePath
+        : false,
+      sortSchema: true,
       debug: graphqlConfig().isDebugEnabled,
       introspection: true,
-      context: ({ req }) => ({ req }),
       playground: graphqlConfig().isPlaygroundEnabled
         ? {
             settings: { 'schema.polling.enable': false },
@@ -31,7 +28,7 @@ import { ComplexityPlugin } from './_plugins/complexity.plugin';
     UsersModule,
     CommonModule,
   ],
-  providers: [AppService, ComplexityPlugin],
+  providers: [AppService, GraphQLComplexityPlugin],
 })
 export class GraphQLModule {
   constructor(private readonly appService: AppService) {

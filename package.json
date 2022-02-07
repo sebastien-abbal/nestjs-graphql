@@ -6,8 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build:graphql": "ts-node generate-typings",
-    "build:schema": "nest build",
+    "build:nest": "nest build",
     "build": "run-s build:*",
     "test": "jest",
     "studio": "yarn prisma studio",
@@ -16,8 +15,7 @@
     "start:dev": "nest start --watch",
     "sls:offline": "yarn build && sls offline",
     "sls:online": "yarn build && sls deploy",
-    "start": "node ./dist/src/main.js",
-    "stop": "pm2 delete ecosystem.config.js"
+    "start": "node ./dist/src/main.js"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -30,6 +28,7 @@
     "@nestjs/typeorm": "^8.0.3",
     "@vendia/serverless-express": "^4.5.3",
     "apollo-server-express": "^3.6.2",
+    "apollo-server-plugin-base": "^3.5.1",
     "aws-lambda": "^1.0.7",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",

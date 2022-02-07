@@ -1,0 +1,145 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthResult {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+input AuthUserInput {
+  email: String!
+  password: String!
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+}
+
+union CreateUserPayload = UserEmailAlreadyTakenError | UserResult
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input DeleteUserInput {
+  userID: String!
+}
+
+union DeleteUserPayload = DeletionResult | NotAuthorizedError
+
+type DeletionResult {
+  isDeleted: Boolean!
+}
+
+interface Error {
+  code: String!
+  message: String
+}
+
+input GetUserFiltersInput {
+  email: String
+  userID: String
+}
+
+input GetUsersFiltersInput {
+  firstName: String
+  lastName: String
+  userIDs: [String!]
+  userRoles: [UserRole!]
+}
+
+type Mutation {
+  createUser(createUserData: CreateUserInput!): CreateUserPayload!
+  deleteUser(deleteUserData: DeleteUserInput!): DeleteUserPayload!
+  signIn(authUserData: AuthUserInput!): SignInPayload!
+  updateUser(updateUserData: UpdateUserInput!): UpdateUserPayload!
+}
+
+type NotAuthorizedError implements Error {
+  code: String!
+  message: String
+}
+
+type Query {
+  test: TestPayload!
+  user(getUserFiltersData: GetUserFiltersInput!): UserPayload!
+  users(getUsersFiltersData: GetUsersFiltersInput!, skip: Int = 0, take: Int = 20): UsersPayload!
+}
+
+union SignInPayload = AuthResult | WrongCredentialsError
+
+type TestFailedError implements Error {
+  code: String!
+  message: String
+}
+
+union TestPayload = TestFailedError | TestResult
+
+type TestResult {
+  status: String!
+}
+
+input UpdateUserInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  userID: String!
+}
+
+union UpdateUserPayload = NotAuthorizedError | UserResult
+
+type User {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  email: String!
+  firstName: String!
+  id: String!
+  isEmailVerified: Boolean!
+  isPhoneVerified: Boolean!
+  lastLoginAt: DateTime!
+  lastName: String!
+  phoneIndex: String
+  phoneNumber: String
+  roles: [UserRole!]!
+  updatedAt: DateTime
+}
+
+type UserEmailAlreadyTakenError implements Error {
+  code: String!
+  message: String
+}
+
+type UserNotFoundError implements Error {
+  code: String!
+  message: String
+}
+
+union UserPayload = UserNotFoundError | UserResult
+
+type UserResult {
+  user: User!
+}
+
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+union UsersPayload = UsersResult
+
+type UsersResult {
+  users: [User!]!
+}
+
+type WrongCredentialsError implements Error {
+  code: String!
+  message: String
+}

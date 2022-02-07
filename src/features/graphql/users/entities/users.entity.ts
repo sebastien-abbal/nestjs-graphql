@@ -1,4 +1,4 @@
-import { UserRole } from '@generated/graphql.schema';
+import { UserRole } from '@features/graphql/users/types';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -25,15 +25,15 @@ export class User {
   password: string;
 
   @Column({ type: 'enum', enum: UserRole, array: true, default: ['USER'] })
-  @Field(() => [UserRole])
+  @Field(() => [UserRole], { complexity: 2 })
   roles: UserRole[];
 
   @Column('text', { nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   phoneIndex?: string;
 
   @Column('text', { nullable: true })
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   phoneNumber?: string;
 
   @Column({ type: 'boolean', default: false })
@@ -53,10 +53,10 @@ export class User {
   createdAt: Date;
 
   @Column({ type: 'date', nullable: true })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   updatedAt?: Date;
 
   @Column({ type: 'date', nullable: true })
-  @Field(() => Date)
+  @Field(() => Date, { nullable: true })
   deletedAt?: Date;
 }

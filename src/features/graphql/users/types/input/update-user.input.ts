@@ -22,7 +22,7 @@ export class UpdateUserInput {
   @IsString()
   lastName?: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String, { nullable: true, complexity: 2 })
   @IsOptional()
   @IsString()
   password?: string;

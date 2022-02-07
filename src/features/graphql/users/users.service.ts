@@ -1,12 +1,14 @@
+import { constants } from '@config';
 import { User } from '@features/graphql/users/entities';
 import {
   CreateUserInput,
   DeleteUserInput,
-  GetUserArgs,
-  GetUsersArgs,
+  GetUserFiltersInput,
+  GetUsersFiltersInput,
   UpdateUserInput,
 } from '@features/graphql/users/types';
 import { Inject, Injectable } from '@nestjs/common';
+import { clamp } from '@utils';
 import { hash } from 'bcryptjs';
 import { Repository } from 'typeorm';
 
@@ -17,22 +19,9 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  public async createUser(createUserData: CreateUserInput): Promise<User> {
-    const user = await this.usersRepository.save({
-      ...createUserData,
-      password: await hash(createUserData.password, 10),
-    });
-    return user;
-  }
+  public async getUser(getUserFiltersData: GetUserFiltersInput): Promise<User> {
+    const { userID, email } = getUserFiltersData;
 
-  public async updateUser(updateUserData: UpdateUserInput): Promise<void> {
-    const { userID, ...data } = updateUserData;
-    const user = await this.usersRepository.update(userID, data);
-    console.log(user);
-  }
-
-  public async getUser(getUserArgs: GetUserArgs): Promise<User> {
-    const { userID, email } = getUserArgs;
     const user = await this.usersRepository.findOne({
       where: [
         { id: userID, deletedAt: null },
@@ -42,8 +31,17 @@ export class UsersService {
     return user;
   }
 
-  public async getUsers(getUsersArgs: GetUsersArgs): Promise<User[]> {
-    const { userIDs, userRoles, firstName, lastName } = getUsersArgs;
+  public async getUsers({
+    getUsersFiltersData,
+    skip,
+    take,
+  }: {
+    getUsersFiltersData: GetUsersFiltersInput;
+    skip?: number;
+    take?: number;
+  }): Promise<User[]> {
+    const { userIDs, userRoles, firstName, lastName } = getUsersFiltersData;
+
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
     if (userIDs?.length)
       queryBuilder.andWhere('user.id IN (:...userIDs)', { userIDs });
@@ -57,15 +55,38 @@ export class UsersService {
     if (lastName)
       queryBuilder.andWhere('user.lastName LIKE %lastName%', { lastName });
 
+    queryBuilder.take(
+      clamp(
+        constants.graphql.query.minResults,
+        constants.graphql.query.maxResults,
+        take,
+      ),
+    );
+    queryBuilder.skip(skip ? skip : constants.graphql.query.defaultSkip);
+
     const users = await queryBuilder.getMany();
     return users;
   }
 
+  public async createUser(createUserData: CreateUserInput): Promise<User> {
+    const user = await this.usersRepository.save({
+      ...createUserData,
+      password: await hash(createUserData.password, 10),
+    });
+    return user;
+  }
+
+  public async updateUser(updateUserData: UpdateUserInput): Promise<User> {
+    const { userID, ...data } = updateUserData;
+    await this.usersRepository.update(userID, data);
+    const user = this.getUser({ userID });
+    return user;
+  }
+
   public async deleteUser(deleteUserData: DeleteUserInput): Promise<void> {
     const { userID } = deleteUserData;
-    const user = await this.usersRepository.update(userID, {
+    await this.usersRepository.update(userID, {
       deletedAt: new Date(),
     });
-    console.log(user);
   }
 }

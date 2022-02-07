@@ -1,13 +1,18 @@
+import { Error } from '@features/graphql/common/types/common.interfaces';
 import { Field, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
-export class HealthFailedError {
-  @Field(() => String, { defaultValue: HealthFailedError.name })
+@ObjectType({
+  implements: () => [Error],
+})
+export class TestFailedError implements Error {
+  @Field(() => String, { defaultValue: TestFailedError.name })
   code: string;
 }
 
-@ObjectType()
-export class NotAuthorizedError {
+@ObjectType({
+  implements: () => [Error],
+})
+export class NotAuthorizedError implements Error {
   @Field(() => String, { defaultValue: NotAuthorizedError.name })
   code: string;
 }

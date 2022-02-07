@@ -1,4 +1,4 @@
-import { graphqlConfig } from '@config';
+import { constants } from '@config';
 import { PayloadTooLargeException } from '@nestjs/common';
 import { GraphQLSchemaHost, Plugin } from '@nestjs/graphql';
 import {
@@ -12,11 +12,10 @@ import {
 } from 'graphql-query-complexity';
 
 @Plugin()
-export class ComplexityPlugin implements ApolloServerPlugin {
+export class GraphQLComplexityPlugin implements ApolloServerPlugin {
   constructor(private gqlSchemaHost: GraphQLSchemaHost) {}
 
   async requestDidStart(): Promise<GraphQLRequestListener> {
-    const maxComplexity = graphqlConfig().maxComplexity;
     const { schema } = this.gqlSchemaHost;
 
     return {
@@ -28,12 +27,14 @@ export class ComplexityPlugin implements ApolloServerPlugin {
           variables: request.variables,
           estimators: [
             fieldExtensionsEstimator(),
-            simpleEstimator({ defaultComplexity: 1 }),
+            simpleEstimator({
+              defaultComplexity: constants.graphql.complexity.defaultValue,
+            }),
           ],
         });
-        if (complexity > maxComplexity) {
+        if (complexity > constants.graphql.complexity.max) {
           throw new PayloadTooLargeException(
-            `Query is too complex: ${complexity} points. Maximum allowed complexity: ${maxComplexity}.`,
+            `Query is too complex: ${complexity} points. Maximum allowed complexity: ${constants.graphql.complexity.max}.`,
           );
         }
       },

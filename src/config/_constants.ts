@@ -10,4 +10,16 @@ export const constants = {
       providerName: 'POSTGRES_CONNECTION',
     },
   },
+  graphql: {
+    complexity: {
+      max: 50,
+      defaultValue: 1,
+    },
+    query: {
+      defaultTakeResults: 20,
+      defaultSkip: 0,
+      maxResults: 100,
+      minResults: 1,
+    },
+  },
 };

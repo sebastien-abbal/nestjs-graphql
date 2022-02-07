@@ -7,7 +7,7 @@ export class DeletionResult {
 }
 
 @ObjectType()
-export class HealthResult {
+export class TestResult {
   @Field(() => String)
   status: string;
 }
