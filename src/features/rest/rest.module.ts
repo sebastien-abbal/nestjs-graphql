@@ -1,5 +1,5 @@
-import { ConfigModule } from '@config';
 import { AppService } from '@features/app.service';
+import { ConfigModule } from '@features/config/config.module';
 import { RestAuthModule } from '@features/rest/auth/auth.module';
 import { DefaultModule } from '@features/rest/default/default.module';
 import { Module } from '@nestjs/common';

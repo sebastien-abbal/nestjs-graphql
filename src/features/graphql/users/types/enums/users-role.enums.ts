@@ -5,5 +5,4 @@ export enum UserRole {
   MODERATOR = 'MODERATOR',
   USER = 'USER',
 }
-
 registerEnumType(UserRole, { name: 'UserRole' });

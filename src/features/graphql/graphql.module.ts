@@ -1,5 +1,6 @@
-import { ConfigModule, graphqlConfig } from '@config';
+import { config } from '@config';
 import { AppService } from '@features/app.service';
+import { ConfigModule } from '@features/config/config.module';
 import { GraphQLAuthModule } from '@features/graphql/auth/auth.module';
 import { CommonModule } from '@features/graphql/common/common.module';
 import { UsersModule } from '@features/graphql/users/users.module';
@@ -13,13 +14,13 @@ import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
     GraphQLAuthModule,
     NESTJSGraphQLModule.forRoot({
       typePaths: ['./**/*.gql'],
-      autoSchemaFile: graphqlConfig().isSchemaAuto
-        ? graphqlConfig().schemaFilePath
+      autoSchemaFile: config.graphql.isSchemaAuto
+        ? config.graphql.schemaFilePath
         : false,
       sortSchema: true,
-      debug: graphqlConfig().isDebugEnabled,
+      debug: config.graphql.isDebugEnabled,
       introspection: true,
-      playground: graphqlConfig().isPlaygroundEnabled
+      playground: config.graphql.isPlaygroundEnabled
         ? {
             settings: { 'schema.polling.enable': false },
           }

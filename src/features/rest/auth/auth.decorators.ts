@@ -1,4 +1,3 @@
-import { UserRole } from '@features/graphql/users/types';
 import { RestAuthGuard, RestRolesGuard } from '@features/rest/auth/guards';
 import {
   applyDecorators,
@@ -7,8 +6,9 @@ import {
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
+import { AuthUserRole } from '@types';
 
-export const RestAuth = (...roles: UserRole[]) => {
+export const RestAuth = (...roles: AuthUserRole[]) => {
   return applyDecorators(
     SetMetadata('roles', roles),
     UseGuards(RestAuthGuard, RestRolesGuard),

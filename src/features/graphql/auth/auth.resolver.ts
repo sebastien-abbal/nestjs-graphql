@@ -1,26 +1,36 @@
 import { GraphQLAuthService } from '@features/graphql/auth/auth.service';
 import {
-  AuthResult,
   AuthUserInput,
-  SignInPayload,
+  AuthUserResult,
+  SignInAnonymousPayload,
+  SignInUserPayload,
   WrongCredentialsError,
 } from '@features/graphql/auth/types';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { generateError, generateResult, GraphQLTNError } from '@utils';
 
-@Resolver(() => AuthResult)
+@Resolver(() => AuthUserResult)
 export class GraphQLAuthResolver {
   constructor(private readonly authService: GraphQLAuthService) {}
 
-  @Mutation(() => SignInPayload)
-  async signIn(
+  @Mutation(() => SignInUserPayload)
+  async signInUser(
     @Args('authUserData') authUserData: AuthUserInput,
-  ): Promise<typeof SignInPayload | GraphQLTNError> {
-    const signInPayload = await this.authService.signIn(authUserData);
+  ): Promise<typeof SignInUserPayload | GraphQLTNError> {
+    const signInUserPayload = await this.authService.signInUser(authUserData);
 
-    if (!signInPayload.user || !signInPayload.accessToken)
+    if (!signInUserPayload.user || !signInUserPayload.accessToken)
       return generateError(WrongCredentialsError.name);
 
-    return generateResult(signInPayload);
+    return generateResult(signInUserPayload);
+  }
+
+  @Mutation(() => SignInAnonymousPayload)
+  async signInAnonymous(): Promise<
+    typeof SignInAnonymousPayload | GraphQLTNError
+  > {
+    const signInAnonymousPayload = await this.authService.signInAnonymous();
+
+    return generateResult(signInAnonymousPayload);
   }
 }

@@ -6,6 +6,8 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
+    "typeorm": "ts-node -r tsconfig-paths/register -T ./node_modules/typeorm/cli.js --config src/config/pg.config.ts",
+    "typeorm:migration": "yarn typeorm migration:generate -d generated/migrations -n ",
     "build:nest": "nest build",
     "build": "run-s build:*",
     "test": "jest",

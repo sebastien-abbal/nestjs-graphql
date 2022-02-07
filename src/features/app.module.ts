@@ -1,5 +1,5 @@
-import { ConfigModule } from '@config';
 import { AppService } from '@features/app.service';
+import { ConfigModule } from '@features/config/config.module';
 import { GraphQLModule } from '@features/graphql/graphql.module';
 import { RestModule } from '@features/rest/rest.module';
 import { Module } from '@nestjs/common';

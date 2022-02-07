@@ -26,7 +26,7 @@ describe('Default module (controllers)', () => {
         ConfigModule.forRoot({
           envFilePath: '.env',
           isGlobal: true,
-          load: [defaultConfig],
+          load: [() => defaultConfig],
         }),
         DatabaseModule,
       ],

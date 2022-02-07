@@ -1,3 +1,4 @@
+import { DEV_ENV } from '@config';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { getConnection } from 'typeorm';
@@ -8,13 +9,13 @@ export class HealthService {
 
   getTypeOrmConnectionStatus = ({ name }: { name: string }): string => {
     try {
-      if (!!getConnection(name)) {
+      if (Boolean(getConnection(name))) {
         return 'ok';
       } else {
         return 'error';
       }
     } catch (err) {
-      return this.configService.get<string>('env') === 'dev'
+      return this.configService.get<string>('env') === DEV_ENV
         ? err.message
         : 'error';
     }

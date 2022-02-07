@@ -21,6 +21,7 @@ import {
   UserPayload,
   UserResult,
   UserRole,
+  UserRoleNotRegistered,
   UsersPayload,
 } from '@features/graphql/users/types';
 import { UsersService } from '@features/graphql/users/users.service';
@@ -57,6 +58,7 @@ export class UsersResolver {
   }
 
   @Mutation(() => CreateUserPayload)
+  @GraphQLAuth(UserRoleNotRegistered.ANONYMOUS)
   async createUser(
     @Args('createUserData') createUserData: CreateUserInput,
   ): Promise<typeof CreateUserPayload | GraphQLTNError> {

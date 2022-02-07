@@ -1,3 +1,4 @@
+import { UserRoleNotRegistered } from '@features/graphql/users/types';
 import { UsersService } from '@features/graphql/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -19,7 +20,8 @@ export class GraphQLJwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: IAuthTokenPayload) {
-    const { userID } = payload;
+    const { userID, roles } = payload;
+    if (roles && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return null;
     if (!userID) return null;
 
     const user = await this.usersService.getUser({ userID });

@@ -2,15 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthResult {
+type AuthAnonymousResult {
   accessToken: String!
   refreshToken: String!
-  user: User!
 }
 
 input AuthUserInput {
   email: String!
   password: String!
+}
+
+type AuthUserResult {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
 }
 
 input CreateUserInput {
@@ -57,7 +62,8 @@ input GetUsersFiltersInput {
 type Mutation {
   createUser(createUserData: CreateUserInput!): CreateUserPayload!
   deleteUser(deleteUserData: DeleteUserInput!): DeleteUserPayload!
-  signIn(authUserData: AuthUserInput!): SignInPayload!
+  signInAnonymous: SignInAnonymousPayload!
+  signInUser(authUserData: AuthUserInput!): SignInUserPayload!
   updateUser(updateUserData: UpdateUserInput!): UpdateUserPayload!
 }
 
@@ -72,7 +78,9 @@ type Query {
   users(getUsersFiltersData: GetUsersFiltersInput!, skip: Int = 0, take: Int = 20): UsersPayload!
 }
 
-union SignInPayload = AuthResult | WrongCredentialsError
+union SignInAnonymousPayload = AuthAnonymousResult
+
+union SignInUserPayload = AuthUserResult | WrongCredentialsError
 
 type TestFailedError implements Error {
   code: String!

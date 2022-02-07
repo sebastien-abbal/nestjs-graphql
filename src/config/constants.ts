@@ -1,8 +1,17 @@
+import { EnvType } from '@types';
+
+export const PROD_ENV: EnvType = 'prod';
+export const PREPROD_ENV: EnvType = 'preprod';
+export const DEV_ENV: EnvType = 'dev';
+export const TEST_ENV: EnvType = 'test';
+
 export const constants = {
   app: {
     name: 'GraphQL nest API',
     company: 'Sébastien ABBAL',
-    envsAvailable: ['prod', 'preprod', 'dev', 'test'],
+    envsAvailable: [PROD_ENV, PREPROD_ENV, DEV_ENV, TEST_ENV],
+    localhost: 'localhost',
+    port: 3000,
   },
   databases: {
     postgres: {

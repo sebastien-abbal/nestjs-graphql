@@ -1,19 +1,19 @@
-import { defaultConfig } from '@config';
+import { config } from '@config';
 import { AppModule } from '@features/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 
 async function bootstrap() {
-  const config = defaultConfig();
-
   const app = await NestFactory.create(AppModule, {
-    logger: config.isLoggerEnabled ? [] : ['warn', 'debug', 'error', 'verbose'],
-    bufferLogs: config.isLoggerEnabled,
+    logger: config.app.isLoggerEnabled
+      ? []
+      : ['warn', 'debug', 'error', 'verbose'],
+    bufferLogs: config.app.isLoggerEnabled,
   });
 
   // Logger
-  if (config.isLoggerEnabled) app.useLogger(app.get(Logger));
+  if (config.app.isLoggerEnabled) app.useLogger(app.get(Logger));
 
   // Validation
   app.useGlobalPipes(new ValidationPipe());

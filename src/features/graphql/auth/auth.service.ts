@@ -1,5 +1,10 @@
-import { AuthResult, AuthUserInput } from '@features/graphql/auth/types';
+import {
+  AuthAnonymousResult,
+  AuthUserInput,
+  AuthUserResult,
+} from '@features/graphql/auth/types';
 import { User } from '@features/graphql/users/entities';
+import { UserRoleNotRegistered } from '@features/graphql/users/types';
 import { UsersService } from '@features/graphql/users/users.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -16,15 +21,15 @@ export class GraphQLAuthService {
   ) {}
 
   public createToken({
-    user,
     type,
+    user,
   }: {
-    user: User;
     type: AuthTokenType;
+    user?: User;
   }): string {
     const payload: IAuthTokenPayload = {
-      userID: user.id,
-      roles: user.roles,
+      userID: user ? user.id : null,
+      roles: user ? user.roles : [UserRoleNotRegistered.ANONYMOUS],
       type,
     };
     return this.jwtService.sign(payload, {
@@ -48,7 +53,9 @@ export class GraphQLAuthService {
     }
   }
 
-  public async signIn(authUserData: AuthUserInput): Promise<AuthResult> {
+  public async signInUser(
+    authUserData: AuthUserInput,
+  ): Promise<AuthUserResult> {
     const { email, password } = authUserData;
 
     const user = await this.usersService.getUser({ email });
@@ -67,6 +74,13 @@ export class GraphQLAuthService {
       user: null,
       accessToken: null,
       refreshToken: null,
+    };
+  }
+
+  public async signInAnonymous(): Promise<AuthAnonymousResult> {
+    return {
+      accessToken: this.createToken({ type: 'ACCESS_TOKEN' }),
+      refreshToken: this.createToken({ type: 'REFRESH_TOKEN' }),
     };
   }
 }

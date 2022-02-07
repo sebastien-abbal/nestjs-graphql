@@ -1,4 +1,4 @@
-import { defaultConfig } from '@config';
+import { config } from '@config';
 import { RestModule } from '@features/rest/rest.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -8,12 +8,10 @@ import { Callback, Context, Handler } from 'aws-lambda';
 let server: Handler;
 
 async function bootstrap() {
-  const config = defaultConfig();
-
   const app = await NestFactory.create(RestModule);
 
   // Logger
-  if (config.isLoggerEnabled) app.useLogger(app.get(Logger));
+  if (config.app.isLoggerEnabled) app.useLogger(app.get(Logger));
 
   // Validation
   app.useGlobalPipes(new ValidationPipe());
