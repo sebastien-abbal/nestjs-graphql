@@ -23,6 +23,8 @@ input CreateUserInput {
   firstName: String!
   lastName: String!
   password: String!
+  phoneIndex: String
+  phoneNumber: String
 }
 
 union CreateUserPayload = UserEmailAlreadyTakenError | UserResult
@@ -98,6 +100,8 @@ input UpdateUserInput {
   firstName: String
   lastName: String
   password: String
+  phoneIndex: String
+  phoneNumber: String
   userID: String!
 }
 

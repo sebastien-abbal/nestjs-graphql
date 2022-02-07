@@ -26,4 +26,14 @@ export class UpdateUserInput {
   @IsOptional()
   @IsString()
   password?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  phoneIndex?: string;
+
+  @Field(() => String, { nullable: true })
+  @IsString()
+  @IsOptional()
+  phoneNumber?: string;
 }
