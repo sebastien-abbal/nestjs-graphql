@@ -41,13 +41,15 @@ export class UsersResolver {
       filters: getUserFiltersData,
     });
     if (!user) return generateError(UserNotFoundError.name);
+
     return generateResult({ user });
   }
 
   @Query(() => UsersPayload, { name: 'users' })
-  @GraphQLAuth(UserRole.ADMIN)
+  @GraphQLAuth(UserRole.USER)
   async getUsers(
-    @Args('getUsersFiltersData') getUsersFiltersData: GetUsersFiltersInput,
+    @Args('getUsersFiltersData', { nullable: true })
+    getUsersFiltersData: GetUsersFiltersInput,
     @Args() { take, skip }: ResourcesFilters,
   ): Promise<typeof UsersPayload | GraphQLTNError> {
     const users = await this.usersService.getUsers({
@@ -64,9 +66,15 @@ export class UsersResolver {
   async createUser(
     @Args('createUserData') createUserData: CreateUserInput,
   ): Promise<typeof CreateUserPayload | GraphQLTNError> {
-    const isUserAlreadyExists = this.getUser({ email: createUserData.email });
+    const isUserAlreadyExists = Boolean(
+      await this.usersService.getUser({
+        filters: { email: createUserData.email },
+      }),
+    );
+
     if (isUserAlreadyExists)
       return generateError(UserEmailAlreadyTakenError.name);
+
     const user = await this.usersService.createUser({ data: createUserData });
     return generateResult({ user });
   }

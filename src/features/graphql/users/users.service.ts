@@ -43,20 +43,23 @@ export class UsersService {
     skip?: number;
     take?: number;
   }): Promise<User[]> {
-    const { userIDs, userRoles, firstName, lastName } = filters;
-
     const queryBuilder = this.usersRepository.createQueryBuilder('user');
-    if (userIDs?.length)
-      queryBuilder.andWhere('user.id IN (:...userIDs)', { userIDs });
 
-    if (userRoles?.length)
-      queryBuilder.andWhere('user.role IN (:...userRoles)', { userRoles });
+    if (filters) {
+      const { userIDs, userRoles, firstName, lastName } = filters;
 
-    if (firstName)
-      queryBuilder.andWhere('user.firstname LIKE %firstName%', { firstName });
+      if (userIDs?.length)
+        queryBuilder.andWhere('user.id IN (:...userIDs)', { userIDs });
 
-    if (lastName)
-      queryBuilder.andWhere('user.lastName LIKE %lastName%', { lastName });
+      if (userRoles?.length)
+        queryBuilder.andWhere('user.role IN (:...userRoles)', { userRoles });
+
+      if (firstName)
+        queryBuilder.andWhere('user.firstname LIKE %firstName%', { firstName });
+
+      if (lastName)
+        queryBuilder.andWhere('user.lastName LIKE %lastName%', { lastName });
+    }
 
     queryBuilder.take(
       clamp(

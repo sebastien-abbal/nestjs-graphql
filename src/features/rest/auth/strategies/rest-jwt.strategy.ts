@@ -21,7 +21,7 @@ export class RestJwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: IAuthTokenPayload) {
     const { userID, roles } = payload;
-    if (roles && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return null;
+    if (roles && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return {};
     if (!userID) throw new UnauthorizedException();
 
     const user = await this.usersService.getUser({ filters: { userID } });

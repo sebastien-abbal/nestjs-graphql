@@ -73,7 +73,7 @@ type NotAuthorizedError implements Error {
 type Query {
   test: TestPayload!
   user(getUserFiltersData: GetUserFiltersInput!): UserPayload!
-  users(getUsersFiltersData: GetUsersFiltersInput!, skip: Int = 0, take: Int = 20): UsersPayload!
+  users(getUsersFiltersData: GetUsersFiltersInput, skip: Int = 0, take: Int = 20): UsersPayload!
 }
 
 union SignInAnonymousPayload = AuthAnonymousResult

@@ -26,7 +26,11 @@ export class GraphQLRolesGuard implements CanActivate {
 
     const user = request?.user;
 
-    if (!user && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return true;
+    if (
+      !Object.keys(user).length &&
+      roles.includes(UserRoleNotRegistered.ANONYMOUS)
+    )
+      return true;
 
     return user && user.roles && hasRole(user);
   }
