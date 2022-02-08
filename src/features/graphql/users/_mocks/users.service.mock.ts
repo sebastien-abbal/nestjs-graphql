@@ -23,7 +23,7 @@ export const MOCKED_USER: User = {
   updatedAt: new Date(),
 };
 
-export const mockedHealthService = {
+export const mockedUsersService = {
   getUser: async ({ filters }: { filters: GetUserFiltersInput }) =>
     jest.fn().mockResolvedValue(MOCKED_USER),
   getUsers: async ({
