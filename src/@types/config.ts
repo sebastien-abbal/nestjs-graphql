@@ -20,7 +20,6 @@ export interface IConfigJwt {
 }
 
 export interface IConfigGraphQL {
-  isSchemaAuto: boolean;
   schemaFilePath: string;
   isPlaygroundEnabled: boolean;
   isDebugEnabled: boolean;

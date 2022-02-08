@@ -12,15 +12,10 @@ if [ -z "$NODE_ENV" ]; then
 	exit 1;
 fi
 
-if [ "$1" != "prod" ] && [ "$1" != "preprod" ] && [ "$1" != "dev" ]; then
-	echo "❌ Missing or wrong env parameter. (ex: yarn deploy [prod,preprod,dev])";
+if [ -z "$AWS_REGION" ]; then
+	echo "❌ AWS_REGION not found in your .env";
 	exit 1;
 fi
 
-if [ "$1" != "$NODE_ENV" ]; then
-	echo "❌ Env provided does not match with you NODE_ENV in .env file.";
-	exit 1;
-fi
-
-sls deploy --stage $1 --region eu-west-3;
+sls deploy;
 exit 1;

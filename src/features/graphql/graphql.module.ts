@@ -14,9 +14,7 @@ import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
     GraphQLAuthModule,
     NESTJSGraphQLModule.forRoot({
       typePaths: ['./**/*.gql'],
-      autoSchemaFile: config.graphql.isSchemaAuto
-        ? config.graphql.schemaFilePath
-        : false,
+      autoSchemaFile: true,
       sortSchema: true,
       debug: config.graphql.isDebugEnabled,
       introspection: true,

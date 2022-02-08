@@ -35,7 +35,6 @@ jobs:
           PG_DATABASE: db-test
           PG_USER: root
           PG_PASSWORD: password
-          GQL_IS_AUTO_SCHEMA: false
           JWT_SECRET: xxx-xxx-xxx-xxx
           JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
           JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000

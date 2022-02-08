@@ -12,5 +12,10 @@ if [ -z "$NODE_ENV" ]; then
 	exit 1;
 fi
 
-sls offline;
+if [ -z "$AWS_REGION" ]; then
+	echo "❌ AWS_REGION not found in your .env";
+	exit 1;
+fi
+
+sls offline --allowCache;
 exit 1;

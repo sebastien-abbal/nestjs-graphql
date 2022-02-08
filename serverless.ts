@@ -1,4 +1,5 @@
 import type { AWS } from '@serverless/typescript';
+import { AwsRegion } from '@types';
 import { config as dotEnvConfig } from 'dotenv';
 import * as envVar from 'env-var';
 import packageConfig from './package.json';
@@ -26,10 +27,15 @@ const serverlessConfiguration: AWS = {
       noPrependStageInUrl: true,
     },
   },
+  package: {
+    individually: true,
+  },
   provider: {
     name: 'aws',
-    lambdaHashingVersion: '20201221',
+    stage: envVar.get('NODE_ENV').required().asString(),
     runtime: 'nodejs12.x',
+    region: envVar.get('AWS_REGION').required().asString() as AwsRegion,
+    lambdaHashingVersion: '20201221',
     apiGateway: {
       shouldStartNameWithService: true,
     },
@@ -42,10 +48,6 @@ const serverlessConfiguration: AWS = {
       PG_DATABASE: envVar.get('PG_DATABASE').required().asString(),
       PG_USER: envVar.get('PG_USER').required().asString(),
       PG_PASSWORD: envVar.get('PG_PASSWORD').required().asString(),
-      GQL_IS_AUTO_SCHEMA: envVar
-        .get('GQL_IS_AUTO_SCHEMA')
-        .default('false')
-        .asString(),
       JWT_SECRET: envVar.get('JWT_SECRET').required().asString(),
       JWT_ACCESS_TOKEN_EXPIRATION_TIME: envVar
         .get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')
@@ -61,6 +63,8 @@ const serverlessConfiguration: AWS = {
   functions: {
     graphql: {
       handler: 'dist/src/features/graphql/lambda.handler',
+      timeout: 60,
+      memorySize: 512,
       events: [
         {
           http: {
@@ -72,6 +76,8 @@ const serverlessConfiguration: AWS = {
     },
     rest: {
       handler: 'dist/src/features/rest/lambda.handler',
+      timeout: 60,
+      memorySize: 512,
       events: [
         {
           http: {

@@ -30,7 +30,6 @@ export class Config {
     };
 
     this.graphql = {
-      isSchemaAuto: envVar.get('GQL_IS_AUTO_SCHEMA').default(0).asBool(),
       schemaFilePath: join(process.cwd(), 'generated/schema.gql'),
       isPlaygroundEnabled: ![PROD_ENV, PREPROD_ENV].includes(this.env),
       isDebugEnabled: ![PROD_ENV, PREPROD_ENV].includes(this.env),
