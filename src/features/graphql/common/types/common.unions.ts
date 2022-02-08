@@ -1,12 +1,12 @@
 import { TestFailedError, TestResult } from '@features/graphql/common/types';
 import { createUnionType } from '@nestjs/graphql';
-import { GraphQLTNError } from '@utils';
+import { TypenameGraphQLError } from '@utils';
 
 export const TestPayload = createUnionType({
   name: 'TestPayload',
   types: () => [TestResult, TestFailedError],
-  resolveType: (payload: any) => {
-    if (!(payload instanceof GraphQLTNError)) return TestResult.name;
+  resolveType: (payload: TypenameGraphQLError | object) => {
+    if (!(payload instanceof TypenameGraphQLError)) return TestResult.name;
     return payload.code;
   },
 });

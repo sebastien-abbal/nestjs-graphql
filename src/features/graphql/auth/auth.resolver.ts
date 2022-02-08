@@ -7,7 +7,7 @@ import {
   WrongCredentialsError,
 } from '@features/graphql/auth/types';
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { generateError, generateResult, GraphQLTNError } from '@utils';
+import { TypenameGraphQLError } from '@utils';
 
 @Resolver(() => AuthUserResult)
 export class GraphQLAuthResolver {
@@ -16,23 +16,23 @@ export class GraphQLAuthResolver {
   @Mutation(() => SignInUserPayload)
   async signInUser(
     @Args('authUserData') authUserData: AuthUserInput,
-  ): Promise<typeof SignInUserPayload | GraphQLTNError> {
+  ): Promise<typeof SignInUserPayload | TypenameGraphQLError> {
     const signInUserPayload = await this.authService.signInUser({
       data: authUserData,
     });
 
     if (!signInUserPayload.user || !signInUserPayload.accessToken)
-      return generateError(WrongCredentialsError.name);
+      return new TypenameGraphQLError(WrongCredentialsError.name);
 
-    return generateResult(signInUserPayload);
+    return signInUserPayload;
   }
 
   @Mutation(() => SignInAnonymousPayload)
   async signInAnonymous(): Promise<
-    typeof SignInAnonymousPayload | GraphQLTNError
+    typeof SignInAnonymousPayload | TypenameGraphQLError
   > {
     const signInAnonymousPayload = await this.authService.signInAnonymous();
 
-    return generateResult(signInAnonymousPayload);
+    return signInAnonymousPayload;
   }
 }

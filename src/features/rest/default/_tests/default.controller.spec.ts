@@ -1,5 +1,4 @@
 import { ConfigModule } from '@features/config/config.module';
-import { DatabaseService } from '@features/database/database.service';
 import { ConfigController } from '@features/rest/default/config/config.controller';
 import { HealthController } from '@features/rest/default/health/health.controller';
 import { HealthService } from '@features/rest/default/health/health.service';
@@ -7,6 +6,7 @@ import {
   HomeController,
   WELCOME_MESSAGE,
 } from '@features/rest/default/home/home.controller';
+import { mockedHealthService } from '@features/rest/default/_mocks/health.service.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Default module (controllers)', () => {
@@ -20,17 +20,16 @@ describe('Default module (controllers)', () => {
     app = await Test.createTestingModule({
       imports: [ConfigModule],
       controllers: [HomeController, HealthController, ConfigController],
-      providers: [HealthService, DatabaseService],
-    }).compile();
+      providers: [],
+    })
+      .useMocker((token) => {
+        if (token === HealthService) return mockedHealthService;
+      })
+      .compile();
 
     homeController = app.get<HomeController>(HomeController);
     healthController = app.get<HealthController>(HealthController);
     configController = app.get<ConfigController>(ConfigController);
-
-    // mock healthController
-    healthController.getHealthCheck = jest
-      .fn()
-      .mockReturnValue({ status: 'ok', details: {} });
   });
 
   describe('Home controller', () => {

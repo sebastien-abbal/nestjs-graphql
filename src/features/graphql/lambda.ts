@@ -3,7 +3,7 @@ import { GraphQLModule } from '@features/graphql/graphql.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import serverlessExpress from '@vendia/serverless-express';
-import { Callback, Context, Handler } from 'aws-lambda';
+import { APIGatewayProxyEvent, Callback, Context, Handler } from 'aws-lambda';
 
 let server: Handler;
 
@@ -23,9 +23,9 @@ async function bootstrap() {
 }
 
 export const handler: Handler = async (
-  event: any,
+  event: APIGatewayProxyEvent,
   context: Context,
-  callback: Callback,
+  callback: Callback<APIGatewayProxyEvent>,
 ) => {
   server = server ? server : await bootstrap();
   return server(event, context, callback);
