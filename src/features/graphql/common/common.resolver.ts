@@ -8,7 +8,7 @@ export class CommonResolver {
   constructor(private readonly commonService: CommonService) {}
 
   @Query(() => TestPayload, { name: 'test' })
-  getHealth(): typeof TestPayload {
+  getTest(): typeof TestPayload {
     const status = this.commonService.getTestResponse();
     if (status !== 'ok') return new TypenameGraphQLError(TestFailedError.name);
     return { status };

@@ -1,6 +1,7 @@
 import { constants } from '@config';
 import faker from '@faker-js/faker';
 import { ConfigModule } from '@features/config/config.module';
+import { UserRole } from '@features/graphql/users/types';
 import { UsersResolver } from '@features/graphql/users/users.resolver';
 import { UsersService } from '@features/graphql/users/users.service';
 import {
@@ -9,7 +10,6 @@ import {
 } from '@features/graphql/users/_mocks/users.service.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 import { random } from '@utils';
-import { UserRole } from '../types';
 
 describe('Users resolver', () => {
   let app: TestingModule;

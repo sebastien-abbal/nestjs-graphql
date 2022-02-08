@@ -1,7 +1,7 @@
 import { DatabaseService } from '@features/database/database.service';
 import { Test, TestingModule } from '@nestjs/testing';
 
-describe('DatabaseService', () => {
+describe('Database service', () => {
   let databaseService: DatabaseService;
 
   beforeEach(async () => {
@@ -12,7 +12,9 @@ describe('DatabaseService', () => {
     databaseService = module.get<DatabaseService>(DatabaseService);
   });
 
-  it('should be defined', () => {
-    expect(databaseService).toBeDefined();
+  describe('Service definition', () => {
+    it('should be defined', () => {
+      expect(databaseService).toBeDefined();
+    });
   });
 });
