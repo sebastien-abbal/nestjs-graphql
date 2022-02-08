@@ -7,7 +7,7 @@ import {
   UpdateUserInput,
 } from '@features/graphql/users/types';
 import { Inject, Injectable } from '@nestjs/common';
-import { clamp } from '@utils';
+import { capitalize, clamp } from '@utils';
 import { hash } from 'bcryptjs';
 import { Repository } from 'typeorm';
 
@@ -77,6 +77,9 @@ export class UsersService {
   public async createUser({ data }: { data: CreateUserInput }): Promise<User> {
     const user = await this.usersRepository.save({
       ...data,
+      firstName: capitalize(data.firstName.toLowerCase()),
+      lastName: data.lastName.toUpperCase(),
+      email: data.email.toLowerCase(),
       password: await hash(data.password, 10),
     });
     return user;
@@ -89,7 +92,17 @@ export class UsersService {
     userID: string;
     data: UpdateUserInput;
   }): Promise<User> {
-    await this.usersRepository.update(userID, data);
+    const { password, ...updateData } = data;
+
+    if (password) updateData['password'] = await hash(data.password, 10);
+    if (updateData?.firstName)
+      updateData.firstName = capitalize(updateData.firstName.toLowerCase());
+    if (updateData?.lastName)
+      updateData.lastName = updateData.lastName.toUpperCase();
+    if (updateData?.email) updateData.email = updateData.email.toLowerCase();
+
+    await this.usersRepository.update(userID, updateData);
+
     const user = this.getUser({ filters: { userID } });
     return user;
   }

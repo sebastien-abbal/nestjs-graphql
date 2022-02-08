@@ -6,4 +6,5 @@ export * from './input/get-users.input';
 export * from './input/update-user.input';
 export * from './models/users.errors';
 export * from './models/users.results';
+export * from './users.args';
 export * from './users.unions';

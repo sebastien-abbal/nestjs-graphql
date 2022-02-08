@@ -16,7 +16,7 @@ export class GraphQLAuthResolver {
   @Mutation(() => SignInUserPayload)
   async signInUser(
     @Args('authUserData') authUserData: AuthUserInput,
-  ): Promise<typeof SignInUserPayload | TypenameGraphQLError> {
+  ): Promise<typeof SignInUserPayload> {
     const signInUserPayload = await this.authService.signInUser({
       data: authUserData,
     });
@@ -28,9 +28,7 @@ export class GraphQLAuthResolver {
   }
 
   @Mutation(() => SignInAnonymousPayload)
-  async signInAnonymous(): Promise<
-    typeof SignInAnonymousPayload | TypenameGraphQLError
-  > {
+  async signInAnonymous(): Promise<typeof SignInAnonymousPayload> {
     const signInAnonymousPayload = await this.authService.signInAnonymous();
 
     return signInAnonymousPayload;

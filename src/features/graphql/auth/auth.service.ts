@@ -60,15 +60,23 @@ export class GraphQLAuthService {
   }): Promise<AuthUserResult> {
     const { email, password } = data;
 
-    const user = await this.usersService.getUser({ filters: { email } });
+    const targetedUser = await this.usersService.getUser({
+      filters: { email },
+    });
 
-    if (user) {
-      const isPasswordValid = await compare(password, user.password);
+    if (targetedUser) {
+      const isPasswordValid = await compare(password, targetedUser.password);
       if (isPasswordValid)
         return {
-          user,
-          accessToken: this.createToken({ user, type: 'ACCESS_TOKEN' }),
-          refreshToken: this.createToken({ user, type: 'REFRESH_TOKEN' }),
+          user: targetedUser,
+          accessToken: this.createToken({
+            user: targetedUser,
+            type: 'ACCESS_TOKEN',
+          }),
+          refreshToken: this.createToken({
+            user: targetedUser,
+            type: 'REFRESH_TOKEN',
+          }),
         };
     }
 

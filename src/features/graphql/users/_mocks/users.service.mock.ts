@@ -2,7 +2,6 @@ import { User } from '@features/graphql/users/entities';
 import {
   CreateUserInput,
   GetUserFiltersInput,
-  GetUsersFiltersInput,
   UpdateUserInput,
   UserRole,
 } from '@features/graphql/users/types';
@@ -24,25 +23,30 @@ export const MOCKED_USER: User = {
 };
 
 export const mockedUsersService = {
-  getUser: async ({ filters }: { filters: GetUserFiltersInput }) =>
-    jest.fn().mockResolvedValue(MOCKED_USER),
-  getUsers: async ({
-    filters,
-    skip,
-    take,
-  }: {
-    filters: GetUsersFiltersInput;
-    skip?: number;
-    take?: number;
-  }) => jest.fn().mockResolvedValue(Array(take).fill(MOCKED_USER)),
-  createUser: async ({ data }: { data: CreateUserInput }) =>
-    jest.fn().mockResolvedValue({ ...MOCKED_USER, ...data }),
-  updateUser: async ({
-    userID,
-    data,
-  }: {
-    userID: string;
-    data: UpdateUserInput;
-  }) => jest.fn().mockResolvedValue({ ...MOCKED_USER, ...data }),
-  deleteUser: async ({ userID }: { userID: string }) => jest.fn(),
+  getUser: jest
+    .fn()
+    .mockImplementation(async ({ filters }: { filters: GetUserFiltersInput }) =>
+      Promise.resolve(
+        filters?.email === MOCKED_USER.email ||
+          filters?.userID === MOCKED_USER.id
+          ? MOCKED_USER
+          : null,
+      ),
+    ),
+  getUsers: jest
+    .fn()
+    .mockImplementation(async ({ take }: { take?: number }) =>
+      Promise.resolve(Array(take).fill(MOCKED_USER)),
+    ),
+  createUser: jest
+    .fn()
+    .mockImplementation(async ({ data }: { data: CreateUserInput }) =>
+      Promise.resolve({ ...MOCKED_USER, ...data }),
+    ),
+  updateUser: jest
+    .fn()
+    .mockImplementation(async ({ data }: { data: UpdateUserInput }) =>
+      Promise.resolve({ ...MOCKED_USER, ...data }),
+    ),
+  deleteUser: jest.fn(),
 };

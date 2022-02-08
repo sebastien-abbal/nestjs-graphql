@@ -12,9 +12,9 @@ export class UserNotFoundError implements Error {
 @ObjectType({
   implements: () => [Error],
 })
-export class UserEmailAlreadyTakenError implements Error {
+export class UserAlreadyExistsError implements Error {
   @Field(() => String, {
-    defaultValue: UserEmailAlreadyTakenError.name,
+    defaultValue: UserAlreadyExistsError.name,
   })
   code: string;
 }

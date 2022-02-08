@@ -3,7 +3,7 @@ import {
   NotAuthorizedError,
 } from '@features/graphql/common/types';
 import {
-  UserEmailAlreadyTakenError,
+  UserAlreadyExistsError,
   UserNotFoundError,
   UserResult,
   UsersResult,
@@ -31,7 +31,7 @@ export const UsersPayload = createUnionType({
 
 export const CreateUserPayload = createUnionType({
   name: 'CreateUserPayload',
-  types: () => [UserResult, UserEmailAlreadyTakenError],
+  types: () => [UserResult, UserAlreadyExistsError],
   resolveType: (payload: TypenameGraphQLError | object) => {
     if (!(payload instanceof TypenameGraphQLError)) return UserResult.name;
     return payload.code;
@@ -40,7 +40,7 @@ export const CreateUserPayload = createUnionType({
 
 export const UpdateUserPayload = createUnionType({
   name: 'UpdateUserPayload',
-  types: () => [UserResult, NotAuthorizedError],
+  types: () => [UserResult, NotAuthorizedError, UserNotFoundError],
   resolveType: (payload: TypenameGraphQLError | object) => {
     if (!(payload instanceof TypenameGraphQLError)) return UserResult.name;
     return payload.code;
@@ -49,7 +49,7 @@ export const UpdateUserPayload = createUnionType({
 
 export const DeleteUserPayload = createUnionType({
   name: 'DeleteUserPayload',
-  types: () => [DeletionResult, NotAuthorizedError],
+  types: () => [DeletionResult, NotAuthorizedError, UserNotFoundError],
   resolveType: (payload: TypenameGraphQLError | object) => {
     if (!(payload instanceof TypenameGraphQLError)) return DeletionResult.name;
     return payload.code;

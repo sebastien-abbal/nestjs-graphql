@@ -1,3 +1,3 @@
 export const mockedHealthService = {
-  getTypeOrmConnectionStatus: jest.fn().mockReturnValue('ok'),
+  getTypeOrmConnectionStatus: jest.fn().mockImplementation(() => 'ok'),
 };
