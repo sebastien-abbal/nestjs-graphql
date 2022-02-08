@@ -2,72 +2,87 @@
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Welcome to NestJS template
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+This is a **[NestJS](https://nestjs.com/)** template made by **[Sébastien Abbal](https://github.com/sebastien-abbal)** based on node.js language with Typescript.
 
-## Description
+# 👾 Prerequistes
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- [An AWS Account](https://aws.amazon.com/) (For AWS credentials)
+- [Aws-cli](https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/install-cliv2.html) (AWS environment)
+- [NodeJS](https://nodejs.org/) (12.x or more)
+- [Postgres](https://www.postgresql.org/docs/) (For Postgres local DB on your computer)
+- [Typescript](https://www.typescriptlang.org/) (Due to typescript project)
 
-## Installation
+Note this project uses [Yarn](https://yarnpkg.com).
 
-```bash
-$ npm install
+# 🚀 Get started
+
+#### Installation
+
+In first, you have to clone this repository on your machine.
+
+```
+$ git clone https://github.com/sebastien-abbal/nestjs-graphql.git
 ```
 
-## Running the app
+#### Setup your .env
+
+Create a file named `.env` with this format:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+NODE_ENV="dev"
+APP_PORT="3000"
+APP_HOST="localhost"
+AWS_REGION="eu-west-3"
+PG_HOST="localhost"
+PG_PORT="5432"
+PG_DATABASE="postgres-database"
+PG_USER="root"
+PG_PASSWORD="password"
+JWT_SECRET="XXXXXXXXXXXXXXXXXXXXXX"
+JWT_ACCESS_TOKEN_EXPIRATION_TIME="86400"
+JWT_REFRESH_TOKEN_EXPIRATION_TIME="2592000"
+ENCRYPTION_KEY="XXXXXXXXXXXXXXXXXXXXXX"
 ```
 
-## Test
+#### Build project
+
+Now you have to run this command lines to build the project.
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ yarn
+$ yarn build
 ```
 
-## Support
+Well done ! :)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+#### Run the project
 
-## Stay in touch
+> If you want to run the project in `dev mode`, run this command line:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```bash
+$ yarn start:dev
+```
 
-## License
+> If you want to run the project in `serverless offline`, run this command line:
 
-Nest is [MIT licensed](LICENSE).
+```bash
+$ yarn sls:offline
+```
+
+#### Deploy the project
+
+To deploy the project in `AWS` with serverless, you have to run this command line:
+
+```bash
+$ yarn sls:deploy
+```
+
+# 🚦 Tests
+
+To test all the app with jest, you need to run this command line:
+
+```
+$ yarn test
+```
