@@ -6,12 +6,13 @@ import {
   UserRole,
 } from '@features/graphql/users/types';
 
+export const MOCKED_USER_PASSWORD = 'pikachu75';
 export const MOCKED_USER: User = {
   id: 'dc4aafb2-3c6c-467f-a5ae-aafc57abac93',
   firstName: 'John',
   lastName: 'DOE',
   email: 'john@doe.fr',
-  password: 'pikachu75',
+  password: '$2a$10$pL6XdVpjuAiyYBRwHfL3/.HNovg56rlFLeCyRn5naA9pi5YmDlJMq', // pikachu75
   phoneIndex: '+33',
   phoneNumber: '123456789',
   isEmailVerified: true,

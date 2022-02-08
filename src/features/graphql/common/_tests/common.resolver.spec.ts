@@ -1,7 +1,6 @@
 import { ConfigModule } from '@features/config/config.module';
 import { CommonResolver } from '@features/graphql/common/common.resolver';
 import { CommonService } from '@features/graphql/common/common.service';
-import { mockedCommonService } from '@features/graphql/common/_mocks/common.service.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Common resolver', () => {
@@ -12,13 +11,8 @@ describe('Common resolver', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       imports: [ConfigModule],
-      controllers: [CommonResolver],
-      providers: [],
-    })
-      .useMocker((token) => {
-        if (token === CommonService) return mockedCommonService;
-      })
-      .compile();
+      providers: [CommonResolver, CommonService],
+    }).compile();
 
     commonResolver = app.get<CommonResolver>(CommonResolver);
   });

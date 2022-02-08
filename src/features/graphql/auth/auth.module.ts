@@ -15,7 +15,6 @@ import { JwtModule } from '@nestjs/jwt';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('jwtSecret'),
       }),
-      imports: [],
       inject: [ConfigService],
     }),
   ],
@@ -26,6 +25,5 @@ import { JwtModule } from '@nestjs/jwt';
     GraphQLAuthService,
     GraphQLJwtStrategy,
   ],
-  exports: [],
 })
 export class GraphQLAuthModule {}

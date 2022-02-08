@@ -19,8 +19,7 @@ describe('Users resolver', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       imports: [ConfigModule],
-      controllers: [UsersResolver],
-      providers: [],
+      providers: [UsersResolver],
     })
       .useMocker((token) => {
         if (token === UsersService) return mockedUsersService;

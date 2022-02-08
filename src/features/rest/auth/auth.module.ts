@@ -13,11 +13,9 @@ import { JwtModule } from '@nestjs/jwt';
       useFactory: (configService: ConfigService) => ({
         secret: configService.get<string>('jwtSecret'),
       }),
-      imports: [],
       inject: [ConfigService],
     }),
   ],
   providers: [...usersProviders, UsersService, RestJwtStrategy],
-  exports: [],
 })
 export class RestAuthModule {}

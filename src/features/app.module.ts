@@ -8,7 +8,6 @@ import { logger } from '@utils';
 
 @Module({
   imports: [ConfigModule, GraphQLModule, RestModule],
-  controllers: [],
   providers: [AppService],
 })
 export class AppModule {

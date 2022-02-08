@@ -5,9 +5,7 @@ import { HomeController } from '@features/rest/default/home/home.controller';
 import { Module } from '@nestjs/common';
 
 @Module({
-  imports: [],
   controllers: [HomeController, ConfigController, HealthController],
   providers: [HealthService],
-  exports: [],
 })
 export class DefaultModule {}

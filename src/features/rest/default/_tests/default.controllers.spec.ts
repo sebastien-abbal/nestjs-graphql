@@ -20,7 +20,6 @@ describe('Default module (controllers)', () => {
     app = await Test.createTestingModule({
       imports: [ConfigModule],
       controllers: [HomeController, HealthController, ConfigController],
-      providers: [],
     })
       .useMocker((token) => {
         if (token === HealthService) return mockedHealthService;
