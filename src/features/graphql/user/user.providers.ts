@@ -4,7 +4,7 @@ import { Connection } from 'typeorm';
 
 export const userProviders = [
   {
-    provide: 'USERS_REPOSITORY',
+    provide: 'USER_REPOSITORY',
     useFactory: (connection: Connection) => connection.getRepository(User),
     inject: [constants.databases.postgres.providerName],
   },

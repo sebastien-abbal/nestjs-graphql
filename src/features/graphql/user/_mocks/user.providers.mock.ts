@@ -1,6 +1,6 @@
 export const mockedUserProviders = [
   {
-    provide: 'USERS_REPOSITORY',
+    provide: 'USER_REPOSITORY',
     useFactory: jest.fn(),
   },
 ];
