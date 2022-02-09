@@ -61,7 +61,7 @@ export class GraphQLAuthService {
     const { email, password } = data;
 
     const targetedUser = await this.userService.getUser({
-      filters: { email },
+      where: { email },
     });
 
     if (targetedUser) {

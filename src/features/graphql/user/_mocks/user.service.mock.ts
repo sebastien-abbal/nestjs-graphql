@@ -29,10 +29,9 @@ export const MOCKED_USER: User = {
 export const mockedUserService = {
   getUser: jest
     .fn()
-    .mockImplementation(async ({ filters }: { filters: UserWhereFilters }) =>
+    .mockImplementation(async ({ where }: { where: UserWhereFilters }) =>
       Promise.resolve(
-        filters?.email === MOCKED_USER.email ||
-          filters?.userID === MOCKED_USER.id
+        where?.email === MOCKED_USER.email || where?.userID === MOCKED_USER.id
           ? MOCKED_USER
           : null,
       ),

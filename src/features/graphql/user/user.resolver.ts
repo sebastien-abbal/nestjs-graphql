@@ -1,11 +1,9 @@
+import { ResourcesFilters } from '@features/database/types';
 import {
   GraphQLAuth,
   GraphQLCurrentUser,
 } from '@features/graphql/auth/auth.decorators';
-import {
-  NotAuthorizedError,
-  ResourcesFilters,
-} from '@features/graphql/common/types';
+import { NotAuthorizedError } from '@features/graphql/common/types';
 import { User } from '@features/graphql/user/entities';
 import { UserService } from '@features/graphql/user/services';
 import {
@@ -18,6 +16,7 @@ import {
   UserPayload,
   UserRole,
   UserRoleNotRegistered,
+  UsersOrderFilters,
   UsersPayload,
   UserSuccess,
   UsersWhereFilters,
@@ -35,10 +34,10 @@ export class UserResolver {
   @Query(() => UserPayload)
   @GraphQLAuth(UserRole.USER)
   async user(
-    @Args('filters') filters: UserWhereFilters,
+    @Args('where') where: UserWhereFilters,
   ): Promise<typeof UserPayload> {
     const targetedUser = await this.userService.getUser({
-      filters,
+      where,
     });
     if (!Boolean(targetedUser))
       return new TypenameGraphQLError(UserNotFoundError.name);
@@ -50,11 +49,14 @@ export class UserResolver {
   @GraphQLAuth(UserRole.USER)
   async users(
     @Args() resourcesFilters?: ResourcesFilters,
-    @Args('filters', { nullable: true })
-    filters?: UsersWhereFilters,
+    @Args('where', { nullable: true })
+    where?: UsersWhereFilters,
+    @Args('order', { nullable: true })
+    order?: UsersOrderFilters,
   ): Promise<typeof UsersPayload> {
     const targetedUser = await this.userService.getUsers({
-      filters,
+      where,
+      order,
       take: resourcesFilters?.take,
       skip: resourcesFilters?.skip,
     });
@@ -69,7 +71,7 @@ export class UserResolver {
   ): Promise<typeof UserCreatePayload> {
     const isUserAlreadyExists = Boolean(
       await this.userService.getUser({
-        filters: { email: data.email },
+        where: { email: data.email },
       }),
     );
 
@@ -97,7 +99,7 @@ export class UserResolver {
       return new TypenameGraphQLError(NotAuthorizedError.name);
 
     const targetedUser = await this.userService.getUser({
-      filters: { userID },
+      where: { userID },
     });
 
     if (!Boolean(targetedUser))
@@ -124,7 +126,7 @@ export class UserResolver {
       return new TypenameGraphQLError(NotAuthorizedError.name);
 
     const targetedUser = await this.userService.getUser({
-      filters: { userID },
+      where: { userID },
     });
     if (!targetedUser) return new TypenameGraphQLError(UserNotFoundError.name);
 

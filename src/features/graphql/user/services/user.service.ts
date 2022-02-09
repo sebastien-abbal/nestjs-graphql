@@ -2,6 +2,7 @@ import { constants } from '@config';
 import { User } from '@features/graphql/user/entities';
 import {
   UserCreateInputs,
+  UsersOrderFilters,
   UsersWhereFilters,
   UserUpdateInputs,
   UserWhereFilters,
@@ -10,7 +11,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { capitalize, clamp } from '@utils';
 import { hash } from 'bcryptjs';
 import { Repository } from 'typeorm';
-
 @Injectable()
 export class UserService {
   constructor(
@@ -18,56 +18,87 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  public async getUser({
-    filters,
-  }: {
-    filters: UserWhereFilters;
-  }): Promise<User> {
-    const { userID, email } = filters;
+  public async getUser({ where }: { where: UserWhereFilters }): Promise<User> {
+    const { userID, ...rest } = where;
 
     const user = await this.userRepository.findOne({
-      where: [
-        { id: userID, deletedAt: null },
-        { email, deletedAt: null },
-      ],
+      where: userID
+        ? {
+            id: userID,
+            ...rest,
+            deletedAt: null,
+          }
+        : { ...rest, deletedAt: null },
     });
     return user;
   }
 
   public async getUsers({
-    filters,
+    where,
+    order,
     skip,
     take,
   }: {
-    filters: UsersWhereFilters;
+    where?: UsersWhereFilters;
+    order?: UsersOrderFilters;
     skip?: number;
     take?: number;
   }): Promise<User[]> {
-    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    const tableName = User.name.toLowerCase();
+    const queryBuilder = this.userRepository.createQueryBuilder(tableName);
 
-    if (filters) {
-      const { userIDs, firstName, lastName } = filters;
+    if (where) {
+      const { userIDs, emails, firstName, lastName, ...whereRest } = where;
 
       if (userIDs?.length)
         queryBuilder.andWhere('user.id IN (:...userIDs)', { userIDs });
 
+      if (emails?.length)
+        queryBuilder.andWhere('user.email IN (:...emails)', { emails });
+
       if (firstName)
-        queryBuilder.andWhere('user.firstname LIKE %firstName%', { firstName });
+        queryBuilder.andWhere(
+          `unaccent(user.firstName) LIKE ('%' || unaccent(:firstName) || '%')`,
+          {
+            firstName: capitalize(firstName.toLowerCase()),
+          },
+        );
 
       if (lastName)
-        queryBuilder.andWhere('user.lastName LIKE %lastName%', { lastName });
+        queryBuilder.andWhere(
+          `unaccent(user.lastName) LIKE ('%' || unaccent(:lastName) || '%')`,
+          {
+            lastName: lastName.toUpperCase(),
+          },
+        );
+
+      if (whereRest && Object.keys(whereRest).length) {
+        for (const key of Object.keys(whereRest)) {
+          const params = {};
+          params[key] = whereRest[key];
+          queryBuilder.andWhere(`user.${key} = :${key}`, params);
+        }
+      }
+    }
+    queryBuilder.andWhere('user.deletedAt IS NULL');
+
+    if (order) {
+      for (const [key, value] of Object.entries(order)) {
+        queryBuilder.addOrderBy(`user.${key}`, value);
+      }
     }
 
-    queryBuilder.take(
-      clamp(
-        constants.graphql.query.minResults,
-        constants.graphql.query.maxResults,
-        take,
-      ),
-    );
-    queryBuilder.skip(skip ? skip : constants.graphql.query.defaultSkip);
+    const users = await queryBuilder
+      .take(
+        clamp(
+          constants.graphql.query.minResults,
+          constants.graphql.query.maxResults,
+          take,
+        ),
+      )
+      .skip(skip ? skip : constants.graphql.query.defaultSkip)
+      .getMany();
 
-    const users = await queryBuilder.getMany();
     return users;
   }
 
@@ -100,7 +131,7 @@ export class UserService {
 
     await this.userRepository.update(userID, updateData);
 
-    const user = this.getUser({ filters: { userID } });
+    const user = this.getUser({ where: { userID } });
     return user;
   }
 

@@ -15,6 +15,11 @@ export class UsersWhereFilters {
   @IsOptional()
   userIDs?: string[];
 
+  @Field(() => [String], { nullable: true })
+  @IsArray()
+  @IsOptional()
+  emails?: string[];
+
   @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()

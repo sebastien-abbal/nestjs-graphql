@@ -17,19 +17,19 @@ export class FileEntityTemplate {
   @Field(() => Int, { nullable: true })
   size?: number;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   @Field(() => Date, { nullable: true })
   fileToDeleteAt?: Date;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'timestamp', default: () => 'NOW()' })
   @Field(() => Date)
   createdAt: Date;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   @Field(() => Date, { nullable: true })
   updatedAt?: Date;
 
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   @Field(() => Date, { nullable: true })
   deletedAt?: Date;
 }

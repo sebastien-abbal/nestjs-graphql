@@ -62,7 +62,7 @@ export class User extends BaseEntityTemplate {
   @Field(() => Boolean)
   isEmailVerified: boolean;
 
-  @Column({ type: 'date', default: () => 'NOW()' })
+  @Column({ type: 'timestamp', default: () => 'NOW()' })
   @Field(() => Date)
   lastLoginAt: Date;
 
