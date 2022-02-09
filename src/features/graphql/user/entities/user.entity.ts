@@ -1,10 +1,11 @@
+import { BaseEntityTemplate } from '@features/database/templates';
 import { UserLocale, UserRole } from '@features/graphql/user/types';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity({ name: 'users' })
-export class User {
+export class User extends BaseEntityTemplate {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id!: string;
@@ -56,16 +57,4 @@ export class User {
   @Column({ type: 'date', default: () => 'NOW()' })
   @Field(() => Date)
   lastLoginAt: Date;
-
-  @Column({ type: 'date', default: () => 'NOW()' })
-  @Field(() => Date)
-  createdAt: Date;
-
-  @Column({ type: 'date', nullable: true })
-  @Field(() => Date, { nullable: true })
-  updatedAt?: Date;
-
-  @Column({ type: 'date', nullable: true })
-  @Field(() => Date, { nullable: true })
-  deletedAt?: Date;
 }
