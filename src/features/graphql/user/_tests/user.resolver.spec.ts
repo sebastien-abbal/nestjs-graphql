@@ -1,9 +1,9 @@
 import { constants } from '@config';
 import faker from '@faker-js/faker';
 import { ConfigModule } from '@features/config/config.module';
+import { UserService } from '@features/graphql/user/services';
 import { UserRole } from '@features/graphql/user/types';
 import { UserResolver } from '@features/graphql/user/user.resolver';
-import { UserService } from '@features/graphql/user/user.service';
 import {
   mockedUserService,
   MOCKED_USER,

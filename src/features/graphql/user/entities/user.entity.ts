@@ -1,7 +1,15 @@
 import { BaseEntityTemplate } from '@features/database/templates';
+import { UserAvatar } from '@features/graphql/user/entities';
+import { UserAvatarService } from '@features/graphql/user/services';
 import { UserLocale, UserRole } from '@features/graphql/user/types';
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Field,
+  ObjectType,
+  Parent,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @ObjectType()
 @Entity({ name: 'users' })
@@ -57,4 +65,17 @@ export class User extends BaseEntityTemplate {
   @Column({ type: 'date', default: () => 'NOW()' })
   @Field(() => Date)
   lastLoginAt: Date;
+
+  @OneToMany(() => UserAvatar, (avatar) => avatar.user)
+  avatars: UserAvatar[];
+}
+
+@Resolver(() => User)
+export class UserEntityResolver {
+  constructor(private userAvatarService: UserAvatarService) {}
+
+  @ResolveField('avatar', () => UserAvatar, { nullable: true })
+  async avatar(@Parent() parentUser: User) {
+    return this.userAvatarService.getUserAvatar({ userID: parentUser.id });
+  }
 }

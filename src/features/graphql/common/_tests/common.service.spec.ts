@@ -1,4 +1,4 @@
-import { CommonService } from '@features/graphql/common/common.service';
+import { CommonService } from '@features/graphql/common/services';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Common service', () => {

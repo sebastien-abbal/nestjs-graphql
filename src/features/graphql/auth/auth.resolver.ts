@@ -1,4 +1,4 @@
-import { GraphQLAuthService } from '@features/graphql/auth/auth.service';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
 import {
   AuthUserInput,
   AuthUserResult,

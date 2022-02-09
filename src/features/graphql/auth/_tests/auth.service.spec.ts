@@ -1,6 +1,6 @@
 import { ConfigModule } from '@features/config/config.module';
-import { GraphQLAuthService } from '@features/graphql/auth/auth.service';
-import { UserService } from '@features/graphql/user/user.service';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
+import { UserService } from '@features/graphql/user/services';
 import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';

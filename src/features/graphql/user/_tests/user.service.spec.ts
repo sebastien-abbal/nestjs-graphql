@@ -1,4 +1,4 @@
-import { UserService } from '@features/graphql/user/user.service';
+import { UserService } from '@features/graphql/user/services';
 import { mockedUserProviders } from '@features/graphql/user/_mocks/user.providers.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 

@@ -1,6 +1,6 @@
 import { ConfigModule } from '@features/config/config.module';
 import { CommonResolver } from '@features/graphql/common/common.resolver';
-import { CommonService } from '@features/graphql/common/common.service';
+import { CommonService } from '@features/graphql/common/services';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Common resolver', () => {

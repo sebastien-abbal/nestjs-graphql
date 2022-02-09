@@ -7,6 +7,7 @@ import {
   ResourcesFilters,
 } from '@features/graphql/common/types';
 import { User } from '@features/graphql/user/entities';
+import { UserService } from '@features/graphql/user/services';
 import {
   CreateUserInput,
   CreateUserPayload,
@@ -24,7 +25,6 @@ import {
   UserRoleNotRegistered,
   UsersPayload,
 } from '@features/graphql/user/types';
-import { UserService } from '@features/graphql/user/user.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TypenameGraphQLError } from '@utils';
 

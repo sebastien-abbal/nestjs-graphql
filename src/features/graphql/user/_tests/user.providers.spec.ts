@@ -7,8 +7,8 @@ describe('User providers', () => {
       expect(userProviders).toBeDefined();
     });
 
-    it('should return at least 1 item in array', () => {
-      expect(userProviders.length).toBeGreaterThanOrEqual(1);
+    it('should return 2 repository items in an array', () => {
+      expect(userProviders.length).toBe(2);
     });
   });
 

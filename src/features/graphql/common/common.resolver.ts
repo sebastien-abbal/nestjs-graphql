@@ -1,4 +1,4 @@
-import { CommonService } from '@features/graphql/common/common.service';
+import { CommonService } from '@features/graphql/common/services';
 import { TestFailedError, TestPayload } from '@features/graphql/common/types';
 import { Query, Resolver } from '@nestjs/graphql';
 import { TypenameGraphQLError } from '@utils';

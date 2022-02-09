@@ -1,6 +1,6 @@
 import { DatabaseModule } from '@features/database/database.module';
+import { UserService } from '@features/graphql/user/services';
 import { userProviders } from '@features/graphql/user/user.providers';
-import { UserService } from '@features/graphql/user/user.service';
 import { RestJwtStrategy } from '@features/rest/auth/strategies';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';

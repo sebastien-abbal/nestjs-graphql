@@ -23,6 +23,7 @@ export const MOCKED_USER: User = {
   createdAt: new Date('01-01-2022'),
   lastLoginAt: new Date(),
   updatedAt: new Date(),
+  avatars: [],
 };
 
 export const mockedUserService = {

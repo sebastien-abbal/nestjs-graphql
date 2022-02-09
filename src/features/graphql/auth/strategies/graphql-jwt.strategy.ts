@@ -1,5 +1,5 @@
+import { UserService } from '@features/graphql/user/services';
 import { UserRoleNotRegistered } from '@features/graphql/user/types';
-import { UserService } from '@features/graphql/user/user.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';

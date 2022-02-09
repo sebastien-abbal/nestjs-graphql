@@ -1,7 +1,7 @@
 import { ConfigModule } from '@features/config/config.module';
 import { GraphQLAuthResolver } from '@features/graphql/auth/auth.resolver';
-import { GraphQLAuthService } from '@features/graphql/auth/auth.service';
-import { UserService } from '@features/graphql/user/user.service';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
+import { UserService } from '@features/graphql/user/services';
 import {
   mockedUserService,
   MOCKED_USER,
