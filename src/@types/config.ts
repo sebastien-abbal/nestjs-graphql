@@ -9,6 +9,7 @@ export interface IConfigEnv {
 export interface IConfigApp {
   host: string;
   port: number;
+  rootPath: string;
   isLoggerEnabled: boolean;
 }
 

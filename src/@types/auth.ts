@@ -1,4 +1,4 @@
-import { UserRole, UserRoleNotRegistered } from '@features/graphql/users/types';
+import { UserRole, UserRoleNotRegistered } from '@features/graphql/user/types';
 
 export type AuthTokenType = 'ACCESS_TOKEN' | 'REFRESH_TOKEN';
 

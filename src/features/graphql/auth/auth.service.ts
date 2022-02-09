@@ -3,9 +3,9 @@ import {
   AuthUserInput,
   AuthUserResult,
 } from '@features/graphql/auth/types';
-import { User } from '@features/graphql/users/entities';
-import { UserRoleNotRegistered } from '@features/graphql/users/types';
-import { UsersService } from '@features/graphql/users/users.service';
+import { User } from '@features/graphql/user/entities';
+import { UserRoleNotRegistered } from '@features/graphql/user/types';
+import { UserService } from '@features/graphql/user/user.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -16,7 +16,7 @@ import { compare } from 'bcryptjs';
 export class GraphQLAuthService {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     private readonly configService: ConfigService,
   ) {}
 
@@ -60,7 +60,7 @@ export class GraphQLAuthService {
   }): Promise<AuthUserResult> {
     const { email, password } = data;
 
-    const targetedUser = await this.usersService.getUser({
+    const targetedUser = await this.userService.getUser({
       filters: { email },
     });
 

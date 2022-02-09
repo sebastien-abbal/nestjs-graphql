@@ -2,8 +2,8 @@ import { DatabaseModule } from '@features/database/database.module';
 import { GraphQLAuthResolver } from '@features/graphql/auth/auth.resolver';
 import { GraphQLAuthService } from '@features/graphql/auth/auth.service';
 import { GraphQLJwtStrategy } from '@features/graphql/auth/strategies';
-import { usersProviders } from '@features/graphql/users/users.providers';
-import { UsersService } from '@features/graphql/users/users.service';
+import { userProviders } from '@features/graphql/user/user.providers';
+import { UserService } from '@features/graphql/user/user.service';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -19,9 +19,9 @@ import { JwtModule } from '@nestjs/jwt';
     }),
   ],
   providers: [
-    ...usersProviders,
+    ...userProviders,
     GraphQLAuthResolver,
-    UsersService,
+    UserService,
     GraphQLAuthService,
     GraphQLJwtStrategy,
   ],

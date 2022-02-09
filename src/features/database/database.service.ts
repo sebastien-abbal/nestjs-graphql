@@ -6,7 +6,7 @@ import { getConnection } from 'typeorm';
 export class DatabaseService {
   async clearConnections() {
     for (const provider of databaseProviders) {
-      await getConnection(provider.name).close();
+      await getConnection(provider.provide).close();
     }
   }
 }

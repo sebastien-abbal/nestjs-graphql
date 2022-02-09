@@ -1,3 +1,4 @@
+import { constants } from '@config';
 import { databaseProviders } from '@features/database/database.providers';
 import { HealthService } from '@features/rest/default/health/health.service';
 import { Controller, Get } from '@nestjs/common';
@@ -11,7 +12,7 @@ export class HealthController {
     const details = {};
     for (const provider of databaseProviders) {
       details[provider.name] = this.healthService.getTypeOrmConnectionStatus({
-        name: provider.name,
+        name: constants.databases.postgres.providerName,
       });
     }
 

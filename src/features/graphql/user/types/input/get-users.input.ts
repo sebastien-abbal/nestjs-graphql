@@ -1,4 +1,4 @@
-import { UserRole } from '@features/graphql/users/types';
+import { UserRole } from '@features/graphql/user/types';
 import { Field, InputType } from '@nestjs/graphql';
 import { IsArray, IsOptional, IsString } from 'class-validator';
 

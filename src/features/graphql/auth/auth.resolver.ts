@@ -13,7 +13,7 @@ import { TypenameGraphQLError } from '@utils';
 export class GraphQLAuthResolver {
   constructor(private readonly authService: GraphQLAuthService) {}
 
-  @Mutation(() => SignInUserPayload)
+  @Mutation(() => SignInUserPayload, { name: 'authSignInUser' })
   async signInUser(
     @Args('authUserData') authUserData: AuthUserInput,
   ): Promise<typeof SignInUserPayload> {
@@ -27,7 +27,7 @@ export class GraphQLAuthResolver {
     return signInUserPayload;
   }
 
-  @Mutation(() => SignInAnonymousPayload)
+  @Mutation(() => SignInAnonymousPayload, { name: 'authSignInAnonymous' })
   async signInAnonymous(): Promise<typeof SignInAnonymousPayload> {
     const signInAnonymousPayload = await this.authService.signInAnonymous();
 

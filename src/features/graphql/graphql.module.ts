@@ -3,7 +3,7 @@ import { AppService } from '@features/app.service';
 import { ConfigModule } from '@features/config/config.module';
 import { GraphQLAuthModule } from '@features/graphql/auth/auth.module';
 import { CommonModule } from '@features/graphql/common/common.module';
-import { UsersModule } from '@features/graphql/users/users.module';
+import { UserModule } from '@features/graphql/user/user.module';
 import { GraphQLComplexityPlugin } from '@features/graphql/_plugins';
 import { Module } from '@nestjs/common';
 import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
@@ -24,7 +24,7 @@ import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
           }
         : false,
     }),
-    UsersModule,
+    UserModule,
     CommonModule,
   ],
   providers: [AppService, GraphQLComplexityPlugin],

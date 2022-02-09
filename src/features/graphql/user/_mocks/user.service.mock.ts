@@ -1,16 +1,18 @@
-import { User } from '@features/graphql/users/entities';
+import { User } from '@features/graphql/user/entities';
 import {
   CreateUserInput,
   GetUserFiltersInput,
   UpdateUserInput,
+  UserLocale,
   UserRole,
-} from '@features/graphql/users/types';
+} from '@features/graphql/user/types';
 
 export const MOCKED_USER_PASSWORD = 'pikachu75';
 export const MOCKED_USER: User = {
   id: 'dc4aafb2-3c6c-467f-a5ae-aafc57abac93',
   firstName: 'John',
   lastName: 'DOE',
+  locale: UserLocale.EN,
   email: 'john@doe.fr',
   password: '$2a$10$pL6XdVpjuAiyYBRwHfL3/.HNovg56rlFLeCyRn5naA9pi5YmDlJMq', // pikachu75
   phoneIndex: '+33',
@@ -23,7 +25,7 @@ export const MOCKED_USER: User = {
   updatedAt: new Date(),
 };
 
-export const mockedUsersService = {
+export const mockedUserService = {
   getUser: jest
     .fn()
     .mockImplementation(async ({ filters }: { filters: GetUserFiltersInput }) =>

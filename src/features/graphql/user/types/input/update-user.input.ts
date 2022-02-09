@@ -1,5 +1,6 @@
+import { UserLocale } from '@features/graphql/user/types';
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 
 @InputType()
 export class UpdateUserInput {
@@ -32,4 +33,9 @@ export class UpdateUserInput {
   @IsString()
   @IsOptional()
   phoneNumber?: string;
+
+  @Field(() => UserLocale, { nullable: true })
+  @IsEnum(UserLocale)
+  @IsOptional()
+  locale?: UserLocale;
 }

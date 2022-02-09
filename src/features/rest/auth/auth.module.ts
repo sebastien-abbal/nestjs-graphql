@@ -1,6 +1,6 @@
 import { DatabaseModule } from '@features/database/database.module';
-import { usersProviders } from '@features/graphql/users/users.providers';
-import { UsersService } from '@features/graphql/users/users.service';
+import { userProviders } from '@features/graphql/user/user.providers';
+import { UserService } from '@features/graphql/user/user.service';
 import { RestJwtStrategy } from '@features/rest/auth/strategies';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -16,6 +16,6 @@ import { JwtModule } from '@nestjs/jwt';
       inject: [ConfigService],
     }),
   ],
-  providers: [...usersProviders, UsersService, RestJwtStrategy],
+  providers: [...userProviders, UserService, RestJwtStrategy],
 })
 export class RestAuthModule {}

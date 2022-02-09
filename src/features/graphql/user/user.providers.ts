@@ -1,8 +1,8 @@
 import { constants } from '@config';
-import { User } from '@features/graphql/users/entities';
+import { User } from '@features/graphql/user/entities';
 import { Connection } from 'typeorm';
 
-export const usersProviders = [
+export const userProviders = [
   {
     provide: 'USERS_REPOSITORY',
     useFactory: (connection: Connection) => connection.getRepository(User),

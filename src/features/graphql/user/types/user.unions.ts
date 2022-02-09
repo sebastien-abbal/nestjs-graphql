@@ -7,7 +7,7 @@ import {
   UserNotFoundError,
   UserResult,
   UsersResult,
-} from '@features/graphql/users/types';
+} from '@features/graphql/user/types';
 import { createUnionType } from '@nestjs/graphql';
 import { TypenameGraphQLError } from '@utils';
 

@@ -1,5 +1,5 @@
-import { UserRoleNotRegistered } from '@features/graphql/users/types';
-import { UsersService } from '@features/graphql/users/users.service';
+import { UserRoleNotRegistered } from '@features/graphql/user/types';
+import { UserService } from '@features/graphql/user/user.service';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
@@ -9,7 +9,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 @Injectable()
 export class GraphQLJwtStrategy extends PassportStrategy(Strategy) {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly userService: UserService,
     private readonly configService: ConfigService,
   ) {
     super({
@@ -24,7 +24,7 @@ export class GraphQLJwtStrategy extends PassportStrategy(Strategy) {
     if (roles && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return {};
     if (!userID) return null;
 
-    const user = await this.usersService.getUser({ filters: { userID } });
+    const user = await this.userService.getUser({ filters: { userID } });
 
     return user;
   }

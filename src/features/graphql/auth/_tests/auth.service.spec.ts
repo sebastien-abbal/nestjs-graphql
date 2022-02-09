@@ -1,7 +1,7 @@
 import { ConfigModule } from '@features/config/config.module';
 import { GraphQLAuthService } from '@features/graphql/auth/auth.service';
-import { UsersService } from '@features/graphql/users/users.service';
-import { mockedUsersService } from '@features/graphql/users/_mocks/users.service.mock';
+import { UserService } from '@features/graphql/user/user.service';
+import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -23,7 +23,7 @@ describe('GraphQL Auth service', () => {
       providers: [GraphQLAuthService],
     })
       .useMocker((token) => {
-        if (token === UsersService) return mockedUsersService;
+        if (token === UserService) return mockedUserService;
       })
       .compile();
 

@@ -6,7 +6,7 @@ import {
   NotAuthorizedError,
   ResourcesFilters,
 } from '@features/graphql/common/types';
-import { User } from '@features/graphql/users/entities';
+import { User } from '@features/graphql/user/entities';
 import {
   CreateUserInput,
   CreateUserPayload,
@@ -23,21 +23,21 @@ import {
   UserRole,
   UserRoleNotRegistered,
   UsersPayload,
-} from '@features/graphql/users/types';
-import { UsersService } from '@features/graphql/users/users.service';
+} from '@features/graphql/user/types';
+import { UserService } from '@features/graphql/user/user.service';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TypenameGraphQLError } from '@utils';
 
 @Resolver(() => UserResult)
-export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+export class UserResolver {
+  constructor(private readonly userService: UserService) {}
 
   @Query(() => UserPayload, { name: 'user' })
   @GraphQLAuth(UserRole.USER)
   async getUser(
     @Args('getUserFiltersData') getUserFiltersData: GetUserFiltersInput,
   ): Promise<typeof UserPayload> {
-    const targetedUser = await this.usersService.getUser({
+    const targetedUser = await this.userService.getUser({
       filters: getUserFiltersData,
     });
     if (!Boolean(targetedUser))
@@ -53,22 +53,22 @@ export class UsersResolver {
     @Args('getUsersFiltersData', { nullable: true })
     getUsersFiltersData?: GetUsersFiltersInput,
   ): Promise<typeof UsersPayload> {
-    const targetedUsers = await this.usersService.getUsers({
+    const targetedUser = await this.userService.getUsers({
       filters: getUsersFiltersData,
       take: resourcesFilters?.take,
       skip: resourcesFilters?.skip,
     });
 
-    return { users: targetedUsers };
+    return { users: targetedUser };
   }
 
-  @Mutation(() => CreateUserPayload)
+  @Mutation(() => CreateUserPayload, { name: 'userCreate' })
   @GraphQLAuth(UserRoleNotRegistered.ANONYMOUS)
   async createUser(
     @Args('createUserData') createUserData: CreateUserInput,
   ): Promise<typeof CreateUserPayload> {
     const isUserAlreadyExists = Boolean(
-      await this.usersService.getUser({
+      await this.userService.getUser({
         filters: { email: createUserData.email },
       }),
     );
@@ -76,13 +76,13 @@ export class UsersResolver {
     if (isUserAlreadyExists)
       return new TypenameGraphQLError(UserAlreadyExistsError.name);
 
-    const createdUser = await this.usersService.createUser({
+    const createdUser = await this.userService.createUser({
       data: createUserData,
     });
     return { user: createdUser };
   }
 
-  @Mutation(() => UpdateUserPayload)
+  @Mutation(() => UpdateUserPayload, { name: 'userUpdate' })
   @GraphQLAuth(UserRole.USER)
   async updateUser(
     @Args() { userID }: UserIDRequiredFilter,
@@ -96,21 +96,21 @@ export class UsersResolver {
     )
       return new TypenameGraphQLError(NotAuthorizedError.name);
 
-    const targetedUser = await this.usersService.getUser({
+    const targetedUser = await this.userService.getUser({
       filters: { userID },
     });
 
     if (!Boolean(targetedUser))
       return new TypenameGraphQLError(UserNotFoundError.name);
 
-    const updatedUser = await this.usersService.updateUser({
+    const updatedUser = await this.userService.updateUser({
       userID,
       data: updateUserData,
     });
     return { user: updatedUser };
   }
 
-  @Mutation(() => DeleteUserPayload)
+  @Mutation(() => DeleteUserPayload, { name: 'userDelete' })
   @GraphQLAuth(UserRole.USER)
   async deleteUser(
     @Args() { userID }: UserIDRequiredFilter,
@@ -123,12 +123,12 @@ export class UsersResolver {
     )
       return new TypenameGraphQLError(NotAuthorizedError.name);
 
-    const targetedUser = await this.usersService.getUser({
+    const targetedUser = await this.userService.getUser({
       filters: { userID },
     });
     if (!targetedUser) return new TypenameGraphQLError(UserNotFoundError.name);
 
-    await this.usersService.deleteUser({ userID });
+    await this.userService.deleteUser({ userID });
 
     return { isDeleted: true };
   }

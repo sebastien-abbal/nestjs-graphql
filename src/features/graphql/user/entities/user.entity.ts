@@ -1,4 +1,4 @@
-import { UserRole } from '@features/graphql/users/types';
+import { UserLocale, UserRole } from '@features/graphql/user/types';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -7,7 +7,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class User {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
-  id!: string & { __brand: 'userID' };
+  id!: string;
 
   @Column('text')
   @Field(() => String)
@@ -24,8 +24,17 @@ export class User {
   @Column('text')
   password: string;
 
-  @Column({ type: 'enum', enum: UserRole, array: true, default: ['USER'] })
-  @Field(() => [UserRole], { complexity: 2 })
+  @Column({ type: 'enum', enum: UserLocale, default: 'EN' })
+  @Field(() => UserLocale)
+  locale: UserLocale;
+
+  @Column({
+    type: 'enum',
+    enum: UserRole,
+    array: true,
+    default: ['USER'],
+  })
+  @Field(() => [UserRole])
   roles: UserRole[];
 
   @Column('text', { nullable: true })

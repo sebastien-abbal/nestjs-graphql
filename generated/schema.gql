@@ -34,7 +34,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-union DeleteUserPayload = DeletionResult | NotAuthorizedError | UserNotFoundError
+union DeleteUserPayload =
+    DeletionResult
+  | NotAuthorizedError
+  | UserNotFoundError
 
 type DeletionResult {
   isDeleted: Boolean!
@@ -50,7 +53,7 @@ input GetUserFiltersInput {
   userID: String
 }
 
-input GetUsersFiltersInput {
+input GetUserFiltersInput {
   firstName: String
   lastName: String
   userIDs: [String!]
@@ -62,7 +65,10 @@ type Mutation {
   deleteUser(userID: String!): DeleteUserPayload!
   signInAnonymous: SignInAnonymousPayload!
   signInUser(authUserData: AuthUserInput!): SignInUserPayload!
-  updateUser(updateUserData: UpdateUserInput!, userID: String!): UpdateUserPayload!
+  updateUser(
+    updateUserData: UpdateUserInput!
+    userID: String!
+  ): UpdateUserPayload!
 }
 
 type NotAuthorizedError implements Error {
@@ -73,7 +79,11 @@ type NotAuthorizedError implements Error {
 type Query {
   test: TestPayload!
   user(getUserFiltersData: GetUserFiltersInput!): UserPayload!
-  users(getUsersFiltersData: GetUsersFiltersInput, skip: Int = 0, take: Int = 20): UsersPayload!
+  users(
+    getUserFiltersData: GetUserFiltersInput
+    skip: Int = 0
+    take: Int = 20
+  ): UserPayload!
 }
 
 union SignInAnonymousPayload = AuthAnonymousResult
@@ -140,9 +150,9 @@ enum UserRole {
   USER
 }
 
-union UsersPayload = UsersResult
+union UserPayload = UserResult
 
-type UsersResult {
+type UserResult {
   users: [User!]!
 }
 

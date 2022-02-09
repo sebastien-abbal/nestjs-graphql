@@ -10,7 +10,6 @@ import * as envVar from 'env-var';
 import { join } from 'path';
 import { ConnectionOptions } from 'typeorm';
 import { constants, DEV_ENV, PREPROD_ENV, PROD_ENV } from './constants';
-
 export class Config {
   private static instance: Config;
 
@@ -26,11 +25,12 @@ export class Config {
     this.app = {
       host: envVar.get('APP_HOST').default(constants.app.localhost).asString(),
       port: envVar.get('APP_PORT').default(constants.app.port).asInt(),
+      rootPath: process.cwd(),
       isLoggerEnabled: [PROD_ENV, PREPROD_ENV].includes(this.env),
     };
 
     this.graphql = {
-      schemaFilePath: join(process.cwd(), 'generated/schema.gql'),
+      schemaFilePath: join(this.app.rootPath, 'generated/schema.gql'),
       isPlaygroundEnabled: ![PROD_ENV, PREPROD_ENV].includes(this.env),
       isDebugEnabled: ![PROD_ENV, PREPROD_ENV].includes(this.env),
     };
@@ -56,14 +56,14 @@ export class Config {
       username: envVar.get('PG_USER').required().asString(),
       password: envVar.get('PG_PASSWORD').required().asString(),
       database: envVar.get('PG_DATABASE').required().asString(),
-      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       cache: [PROD_ENV, PREPROD_ENV].includes(this.env),
       synchronize: false,
       dropSchema: false,
       logging: false,
-      migrations: [__dirname + '../../generated/migrations/*{.ts,.js}'],
+      entities: [this.app.rootPath + '/dist/src/**/*.entity.js'],
+      migrations: [this.app.rootPath + '/dist/generated/migrations/*.js'],
       cli: {
-        migrationsDir: join(process.cwd(), 'generated/migrations'),
+        migrationsDir: join(this.app.rootPath, 'generated/migrations'),
       },
     };
   }

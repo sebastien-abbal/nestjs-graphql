@@ -7,12 +7,12 @@
   "license": "UNLICENSED",
   "scripts": {
     "check:env": "ts-node ./bin/env/check-env.ts",
-    "typeorm": "ts-node -r tsconfig-paths/register -T ./node_modules/typeorm/cli.js --config ./bin/database/pg.config.ts",
-    "typeorm:migration:generate": "yarn typeorm migration:generate -d generated/migrations -n ",
-    "typeorm:migration:run": "yarn typeorm migration:run",
     "build:nest": "nest build",
-    "build": "run-s build:*",
+    "build": "rm -rf ./dist && run-s build:*",
     "test": "jest",
+    "typeorm": "ts-node -r tsconfig-paths/register -T ./node_modules/typeorm/cli.js --config ./bin/database/pg.config.ts",
+    "migrate:generate": "yarn build && yarn typeorm migration:generate -d generated/migrations -n ",
+    "migrate:run": "yarn build && yarn typeorm migration:run",
     "start:dev": "yarn check:env && nest start --watch",
     "sls:offline": "yarn check:env && yarn build && sh ./bin/serverless/sls-offline.sh",
     "sls:online": "yarn check:env && yarn build && sh ./bin/serverless/sls-deploy.sh"
