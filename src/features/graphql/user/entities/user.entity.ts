@@ -24,7 +24,7 @@ export class User {
   @Column('text')
   password: string;
 
-  @Column({ type: 'enum', enum: UserLocale, default: 'EN' })
+  @Column({ type: 'enum', enum: UserLocale, default: UserLocale.EN })
   @Field(() => UserLocale)
   locale: UserLocale;
 
@@ -32,7 +32,7 @@ export class User {
     type: 'enum',
     enum: UserRole,
     array: true,
-    default: ['USER'],
+    default: [UserRole.USER],
   })
   @Field(() => [UserRole])
   roles: UserRole[];
