@@ -1,13 +1,19 @@
 import { UserLocale } from '@features/graphql/user/types';
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsEnum,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 @InputType()
-export class UpdateUserInput {
-  @Field(() => String, { nullable: true })
+export class UsersWhereFilters {
+  @Field(() => [String], { nullable: true })
+  @IsArray()
   @IsOptional()
-  @IsEmail()
-  email?: string;
+  userIDs?: string[];
 
   @Field(() => String, { nullable: true })
   @IsOptional()
@@ -19,23 +25,28 @@ export class UpdateUserInput {
   @IsString()
   lastName?: string;
 
-  @Field(() => String, { nullable: true, complexity: 2 })
+  @Field(() => UserLocale, { nullable: true })
   @IsOptional()
-  @IsString()
-  password?: string;
+  @IsEnum(UserLocale)
+  locale?: UserLocale;
 
   @Field(() => String, { nullable: true })
-  @IsString()
   @IsOptional()
+  @IsString()
   phoneIndex?: string;
 
   @Field(() => String, { nullable: true })
-  @IsString()
   @IsOptional()
+  @IsString()
   phoneNumber?: string;
 
-  @Field(() => UserLocale, { nullable: true })
-  @IsEnum(UserLocale)
+  @Field(() => Boolean, { nullable: true })
   @IsOptional()
-  locale?: UserLocale;
+  @IsBoolean()
+  isPhoneVerified?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  isEmailVerified?: boolean;
 }

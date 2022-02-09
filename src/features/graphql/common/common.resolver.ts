@@ -7,8 +7,8 @@ import { TypenameGraphQLError } from '@utils';
 export class CommonResolver {
   constructor(private readonly commonService: CommonService) {}
 
-  @Query(() => TestPayload, { name: 'test' })
-  getTest(): typeof TestPayload {
+  @Query(() => TestPayload)
+  test(): typeof TestPayload {
     const status = this.commonService.getTestResponse();
     if (status !== 'ok') return new TypenameGraphQLError(TestFailedError.name);
     return { status };

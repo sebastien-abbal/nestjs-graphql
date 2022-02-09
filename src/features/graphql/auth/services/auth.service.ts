@@ -1,7 +1,7 @@
 import {
-  AuthAnonymousResult,
-  AuthUserInput,
-  AuthUserResult,
+  AuthAnonymousSuccess,
+  AuthUserInputs,
+  AuthUserSuccess,
 } from '@features/graphql/auth/types';
 import { User } from '@features/graphql/user/entities';
 import { UserService } from '@features/graphql/user/services';
@@ -53,11 +53,11 @@ export class GraphQLAuthService {
     }
   }
 
-  public async signInUser({
+  public async authUser({
     data,
   }: {
-    data: AuthUserInput;
-  }): Promise<AuthUserResult> {
+    data: AuthUserInputs;
+  }): Promise<AuthUserSuccess> {
     const { email, password } = data;
 
     const targetedUser = await this.userService.getUser({
@@ -87,7 +87,7 @@ export class GraphQLAuthService {
     };
   }
 
-  public async signInAnonymous(): Promise<AuthAnonymousResult> {
+  public async authAnonymous(): Promise<AuthAnonymousSuccess> {
     return {
       accessToken: this.createToken({ type: 'ACCESS_TOKEN' }),
       refreshToken: this.createToken({ type: 'REFRESH_TOKEN' }),

@@ -2,23 +2,23 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type AuthAnonymousResult {
+type AuthAnonymousSuccess {
   accessToken: String!
   refreshToken: String!
 }
 
-input AuthUserInput {
+input AuthUserInputs {
   email: String!
   password: String!
 }
 
-type AuthUserResult {
+type AuthUserSuccess {
   accessToken: String!
   refreshToken: String!
   user: User!
 }
 
-input CreateUserInput {
+input UserCreateInputs {
   email: String!
   firstName: String!
   lastName: String!
@@ -27,19 +27,19 @@ input CreateUserInput {
   phoneNumber: String
 }
 
-union CreateUserPayload = UserAlreadyExistsError | UserResult
+union UserCreatePayload = UserAlreadyExistsError | UserSuccess
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
 
-union DeleteUserPayload =
-    DeletionResult
+union UserDeletePayload =
+    DeletionSuccess
   | NotAuthorizedError
   | UserNotFoundError
 
-type DeletionResult {
+type DeletionSuccess {
   isDeleted: Boolean!
 }
 
@@ -48,12 +48,12 @@ interface Error {
   message: String
 }
 
-input GetUserFiltersInput {
+input UserWhereFilters {
   email: String
   userID: String
 }
 
-input GetUserFiltersInput {
+input UserWhereFilters {
   firstName: String
   lastName: String
   userIDs: [String!]
@@ -61,14 +61,14 @@ input GetUserFiltersInput {
 }
 
 type Mutation {
-  createUser(createUserData: CreateUserInput!): CreateUserPayload!
-  deleteUser(userID: String!): DeleteUserPayload!
-  signInAnonymous: SignInAnonymousPayload!
-  signInUser(authUserData: AuthUserInput!): SignInUserPayload!
-  updateUser(
-    updateUserData: UpdateUserInput!
+  userCreate(userCreateInputs: UserCreateInputs!): UserCreatePayload!
+  userDelete(userID: String!): UserDeletePayload!
+  authAnonymous: AuthAnonymousPayload!
+  authUser(authUserData: AuthUserInputs!): AuthUserPayload!
+  userUpdate(
+    userUpdateInputs: UserUpdateInputs!
     userID: String!
-  ): UpdateUserPayload!
+  ): UserUpdatePayload!
 }
 
 type NotAuthorizedError implements Error {
@@ -78,30 +78,30 @@ type NotAuthorizedError implements Error {
 
 type Query {
   test: TestPayload!
-  user(getUserFiltersData: GetUserFiltersInput!): UserPayload!
+  user(userWhereFilters: UserWhereFilters!): UserPayload!
   users(
-    getUserFiltersData: GetUserFiltersInput
+    userWhereFilters: UserWhereFilters
     skip: Int = 0
     take: Int = 20
   ): UserPayload!
 }
 
-union SignInAnonymousPayload = AuthAnonymousResult
+union AuthAnonymousPayload = AuthAnonymousSuccess
 
-union SignInUserPayload = AuthUserResult | WrongCredentialsError
+union AuthUserPayload = AuthUserSuccess | WrongCredentialsError
 
 type TestFailedError implements Error {
   code: String!
   message: String
 }
 
-union TestPayload = TestFailedError | TestResult
+union TestPayload = TestFailedError | TestSuccess
 
-type TestResult {
+type TestSuccess {
   status: String!
 }
 
-input UpdateUserInput {
+input UserUpdateInputs {
   email: String
   firstName: String
   lastName: String
@@ -110,7 +110,7 @@ input UpdateUserInput {
   phoneNumber: String
 }
 
-union UpdateUserPayload = NotAuthorizedError | UserNotFoundError | UserResult
+union UserUpdatePayload = NotAuthorizedError | UserNotFoundError | UserSuccess
 
 type User {
   createdAt: DateTime!
@@ -138,9 +138,9 @@ type UserNotFoundError implements Error {
   message: String
 }
 
-union UserPayload = UserNotFoundError | UserResult
+union UserPayload = UserNotFoundError | UserSuccess
 
-type UserResult {
+type UserSuccess {
   user: User!
 }
 
@@ -150,9 +150,9 @@ enum UserRole {
   USER
 }
 
-union UserPayload = UserResult
+union UserPayload = UserSuccess
 
-type UserResult {
+type UserSuccess {
   users: [User!]!
 }
 

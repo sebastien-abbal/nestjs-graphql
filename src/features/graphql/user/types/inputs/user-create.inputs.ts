@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 
 @InputType()
-export class CreateUserInput {
+export class UserCreateInputs {
   @Field(() => String)
   @IsNotEmpty()
   @IsEmail()

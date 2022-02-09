@@ -26,11 +26,11 @@ describe('Common resolver', () => {
   describe('Queries', () => {
     describe('Query getTest', () => {
       it('should be defined', async () => {
-        expect(commonResolver.getTest).toBeDefined();
+        expect(commonResolver.test).toBeDefined();
       });
 
       it('should return ok', async () => {
-        expect(commonResolver.getTest()).toEqual(
+        expect(commonResolver.test()).toEqual(
           expect.objectContaining({
             status: 'ok',
           }),

@@ -1,26 +1,26 @@
 import {
-  AuthAnonymousResult,
-  AuthUserResult,
+  AuthAnonymousSuccess,
+  AuthUserSuccess,
   WrongCredentialsError,
 } from '@features/graphql/auth/types';
 import { createUnionType } from '@nestjs/graphql';
 import { TypenameGraphQLError } from '@utils';
 
-export const SignInUserPayload = createUnionType({
-  name: 'SignInUserPayload',
-  types: () => [AuthUserResult, WrongCredentialsError],
+export const AuthUserPayload = createUnionType({
+  name: 'AuthUserPayload',
+  types: () => [AuthUserSuccess, WrongCredentialsError],
   resolveType: (payload: TypenameGraphQLError | object) => {
-    if (!(payload instanceof TypenameGraphQLError)) return AuthUserResult.name;
+    if (!(payload instanceof TypenameGraphQLError)) return AuthUserSuccess.name;
     return payload.code;
   },
 });
 
-export const SignInAnonymousPayload = createUnionType({
-  name: 'SignInAnonymousPayload',
-  types: () => [AuthAnonymousResult],
+export const AuthAnonymousPayload = createUnionType({
+  name: 'AuthAnonymousPayload',
+  types: () => [AuthAnonymousSuccess],
   resolveType: (payload: TypenameGraphQLError | object) => {
     if (!(payload instanceof TypenameGraphQLError))
-      return AuthAnonymousResult.name;
+      return AuthAnonymousSuccess.name;
     return payload.code;
   },
 });

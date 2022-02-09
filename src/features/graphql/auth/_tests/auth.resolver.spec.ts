@@ -44,14 +44,14 @@ describe('GraphQL Auth resolver', () => {
   });
 
   describe('Mutations', () => {
-    describe('Mutation signInUser', () => {
+    describe('Mutation authUser', () => {
       it('should be defined', async () => {
-        expect(authResolver.signInUser).toBeDefined();
+        expect(authResolver.authUser).toBeDefined();
       });
 
       it('should returns an user auth payload', async () => {
         expect(
-          await authResolver.signInUser({
+          await authResolver.authUser({
             email: MOCKED_USER.email,
             password: MOCKED_USER_PASSWORD,
           }),
@@ -66,7 +66,7 @@ describe('GraphQL Auth resolver', () => {
 
       it('should return an error with code [WrongCredentialsError]', async () => {
         expect(
-          await authResolver.signInUser({
+          await authResolver.authUser({
             email: MOCKED_USER.email,
             password: 'xxx-wrong-xxx',
           }),
@@ -79,13 +79,13 @@ describe('GraphQL Auth resolver', () => {
       });
     });
 
-    describe('Mutation signInAnonymous', () => {
+    describe('Mutation authAnonymous', () => {
       it('should be defined', async () => {
-        expect(authResolver.signInAnonymous).toBeDefined();
+        expect(authResolver.authAnonymous).toBeDefined();
       });
 
       it('should returns an anonymous auth payload', async () => {
-        expect(await authResolver.signInAnonymous()).toEqual(
+        expect(await authResolver.authAnonymous()).toEqual(
           expect.objectContaining({
             accessToken: expect.any(String),
             refreshToken: expect.any(String),

@@ -38,11 +38,11 @@ describe('User resolver', () => {
   describe('Queries', () => {
     describe('Query getUser', () => {
       it('should be defined', async () => {
-        expect(userResolver.getUser).toBeDefined();
+        expect(userResolver.user).toBeDefined();
       });
 
       it('should return an user', async () => {
-        expect(await userResolver.getUser({ userID: MOCKED_USER.id })).toEqual(
+        expect(await userResolver.user({ userID: MOCKED_USER.id })).toEqual(
           expect.objectContaining({
             user: expect.objectContaining({ id: MOCKED_USER.id }),
           }),
@@ -52,11 +52,11 @@ describe('User resolver', () => {
 
     describe('Query getUsers', () => {
       it('should be defined', async () => {
-        expect(userResolver.getUser).toBeDefined();
+        expect(userResolver.user).toBeDefined();
       });
 
       it(`should return an array of ${constants.graphql.query.defaultTakeResults} users`, async () => {
-        const usersPayload = await userResolver.getUsers({
+        const usersPayload = await userResolver.users({
           take: constants.graphql.query.defaultTakeResults,
         });
 
@@ -75,9 +75,9 @@ describe('User resolver', () => {
   });
 
   describe('Mutations', () => {
-    describe('Mutation createUser', () => {
+    describe('Mutation userCreate', () => {
       it('should be defined', async () => {
-        expect(userResolver.createUser).toBeDefined();
+        expect(userResolver.userCreate).toBeDefined();
       });
 
       it('should return a new user', async () => {
@@ -90,7 +90,7 @@ describe('User resolver', () => {
         )}`;
 
         expect(
-          await userResolver.createUser({
+          await userResolver.userCreate({
             email,
             firstName,
             lastName,
@@ -115,7 +115,7 @@ describe('User resolver', () => {
         )}`;
 
         expect(
-          await userResolver.createUser({
+          await userResolver.userCreate({
             email,
             firstName,
             lastName,
@@ -130,9 +130,9 @@ describe('User resolver', () => {
       });
     });
 
-    describe('Mutation updateUser', () => {
+    describe('Mutation userUpdate', () => {
       it('should be defined', async () => {
-        expect(userResolver.updateUser).toBeDefined();
+        expect(userResolver.userUpdate).toBeDefined();
       });
 
       it('should return an updated user', async () => {
@@ -145,7 +145,7 @@ describe('User resolver', () => {
         )}`;
 
         expect(
-          await userResolver.updateUser(
+          await userResolver.userUpdate(
             { userID: MOCKED_USER.id },
             {
               email,
@@ -173,7 +173,7 @@ describe('User resolver', () => {
         )}`;
 
         expect(
-          await userResolver.updateUser(
+          await userResolver.userUpdate(
             { userID: faker.datatype.uuid() },
             { password },
             {
@@ -196,7 +196,7 @@ describe('User resolver', () => {
         )}`;
 
         expect(
-          await userResolver.updateUser(
+          await userResolver.userUpdate(
             { userID: faker.datatype.uuid() },
             { password },
             MOCKED_USER,
@@ -210,14 +210,14 @@ describe('User resolver', () => {
       });
     });
 
-    describe('Mutation deleteUser', () => {
+    describe('Mutation userDelete', () => {
       it('should be defined', async () => {
-        expect(userResolver.deleteUser).toBeDefined();
+        expect(userResolver.userDelete).toBeDefined();
       });
 
       it('should return a deleted user', async () => {
         expect(
-          await userResolver.deleteUser(
+          await userResolver.userDelete(
             {
               userID: MOCKED_USER.id,
             },
@@ -232,7 +232,7 @@ describe('User resolver', () => {
 
       it('should return an error with code [UserNotFoundError]', async () => {
         expect(
-          await userResolver.deleteUser(
+          await userResolver.userDelete(
             { userID: faker.datatype.uuid() },
             {
               ...MOCKED_USER,
@@ -249,7 +249,7 @@ describe('User resolver', () => {
 
       it('should return an error with code [NotAuthorizedError]', async () => {
         expect(
-          await userResolver.deleteUser(
+          await userResolver.userDelete(
             { userID: faker.datatype.uuid() },
             MOCKED_USER,
           ),

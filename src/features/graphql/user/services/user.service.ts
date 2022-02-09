@@ -1,10 +1,10 @@
 import { constants } from '@config';
 import { User } from '@features/graphql/user/entities';
 import {
-  CreateUserInput,
-  GetUserFiltersInput,
-  GetUsersFiltersInput,
-  UpdateUserInput,
+  UserCreateInputs,
+  UsersWhereFilters,
+  UserUpdateInputs,
+  UserWhereFilters,
 } from '@features/graphql/user/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { capitalize, clamp } from '@utils';
@@ -21,7 +21,7 @@ export class UserService {
   public async getUser({
     filters,
   }: {
-    filters: GetUserFiltersInput;
+    filters: UserWhereFilters;
   }): Promise<User> {
     const { userID, email } = filters;
 
@@ -39,20 +39,17 @@ export class UserService {
     skip,
     take,
   }: {
-    filters: GetUsersFiltersInput;
+    filters: UsersWhereFilters;
     skip?: number;
     take?: number;
   }): Promise<User[]> {
     const queryBuilder = this.userRepository.createQueryBuilder('user');
 
     if (filters) {
-      const { userIDs, userRoles, firstName, lastName } = filters;
+      const { userIDs, firstName, lastName } = filters;
 
       if (userIDs?.length)
         queryBuilder.andWhere('user.id IN (:...userIDs)', { userIDs });
-
-      if (userRoles?.length)
-        queryBuilder.andWhere('user.role IN (:...userRoles)', { userRoles });
 
       if (firstName)
         queryBuilder.andWhere('user.firstname LIKE %firstName%', { firstName });
@@ -74,7 +71,7 @@ export class UserService {
     return users;
   }
 
-  public async createUser({ data }: { data: CreateUserInput }): Promise<User> {
+  public async userCreate({ data }: { data: UserCreateInputs }): Promise<User> {
     const user = await this.userRepository.save({
       ...data,
       firstName: capitalize(data.firstName.toLowerCase()),
@@ -85,12 +82,12 @@ export class UserService {
     return user;
   }
 
-  public async updateUser({
+  public async userUpdate({
     userID,
     data,
   }: {
     userID: string;
-    data: UpdateUserInput;
+    data: UserUpdateInputs;
   }): Promise<User> {
     const { password, ...updateData } = data;
 
@@ -107,7 +104,7 @@ export class UserService {
     return user;
   }
 
-  public async deleteUser({ userID }: { userID: string }): Promise<void> {
+  public async userDelete({ userID }: { userID: string }): Promise<void> {
     await this.userRepository.update(userID, {
       deletedAt: new Date(),
     });

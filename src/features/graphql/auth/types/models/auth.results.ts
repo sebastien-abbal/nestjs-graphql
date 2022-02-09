@@ -2,7 +2,7 @@ import { User } from '@features/graphql/user/entities';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class AuthUserResult {
+export class AuthUserSuccess {
   @Field(() => User, { complexity: 3 })
   user: User;
 
@@ -14,7 +14,7 @@ export class AuthUserResult {
 }
 
 @ObjectType()
-export class AuthAnonymousResult {
+export class AuthAnonymousSuccess {
   @Field(() => String, { complexity: 3 })
   accessToken: string;
 
