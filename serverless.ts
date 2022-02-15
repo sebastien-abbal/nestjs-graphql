@@ -33,7 +33,7 @@ const serverlessConfiguration: AWS = {
   provider: {
     name: 'aws',
     stage: envVar.get('NODE_ENV').required().asString(),
-    runtime: 'nodejs12.x',
+    runtime: 'nodejs14.x',
     region: envVar.get('AWS_REGION').required().asString() as AwsRegion,
     lambdaHashingVersion: '20201221',
     apiGateway: {
