@@ -8,7 +8,8 @@ export class HealthController {
   @Get('/_health')
   async getHealthCheck() {
     const details = {};
-    details['postgres'] = await this.healthService.getTypeOrmConnectionStatus();
+    details['postgres'] =
+      await this.healthService.getDatabaseConnectionStatus();
 
     return {
       status: !Object.values(details).some((bool) => bool !== 'ok')

@@ -4,7 +4,7 @@ import { Prisma, PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class HealthService {
-  getTypeOrmConnectionStatus = async (): Promise<string> => {
+  getDatabaseConnectionStatus = async (): Promise<string> => {
     try {
       const prismaClient = new PrismaClient();
       await prismaClient.$queryRaw(
