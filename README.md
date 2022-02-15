@@ -10,7 +10,8 @@ This is a **[NestJS](https://nestjs.com/)** template made by **[Sébastien Abbal
 
 - [An AWS Account](https://aws.amazon.com/) (For AWS credentials)
 - [Aws-cli](https://docs.aws.amazon.com/fr_fr/cli/latest/userguide/install-cliv2.html) (AWS environment)
-- [NodeJS](https://nodejs.org/) (12.x or more)
+- [Serverless](https://www.serverless.com/) (For AWS deployment)
+- [NodeJS](https://nodejs.org/) (14.x or more)
 - [Postgres](https://www.postgresql.org/docs/) (For Postgres local DB on your computer)
 - [Typescript](https://www.typescriptlang.org/) (Due to typescript project)
 
@@ -85,35 +86,17 @@ $ yarn test
 
 # ♻️ Migrations
 
-There is an ORM named **[TypeORM](https://typeorm.io/#/)** used in this app to run migrations and manage the databases easily.
+There is an ORM named **[Prisma](https://www.prisma.io/)** used in this app to run migrations and manage the databases easily.
 To setup your database, you have to add the existing migrations, to do that, run this command line:
 
 ```
-$ yarn typeorm:migration:run
+$ yarn migrate:deploy
 ```
 
 When you make an update on your entities, don't forget to generate the migration files by using this command line:
 
 ```
-$ yarn typeorm:migration:generate
+$ yarn migrate:dev
 ```
 
-> ⚠️ If you have connection problems when you are using this kind of command, you can unquote the comment part of the file below. When it's done, re-comment this part. It's only to create a connection.
-
-```typescript
-// ./bin/database/pg.config.ts
-
-import { ConnectionOptions } from 'typeorm';
-import { config } from '../../src/config';
-
-const pgConfig = async (): Promise<ConnectionOptions> => {
-  // const connectionManager = getConnectionManager();
-  // if (!connectionManager.has(constants.databases.postgres.providerName)) {
-  // await createConnection(config.pgDatabase);
-  // }
-
-  return config.pgDatabase;
-};
-
-export default pgConfig();
-```
+> ⚠️ Run `yarn migrate:dev` only in development mode and never in production mode.
