@@ -3,39 +3,37 @@ import {
   GraphQLAuth,
   GraphQLCurrentUser,
 } from '@features/graphql/auth/auth.decorators';
+import { UserRoleNotRegistered } from '@features/graphql/auth/types';
 import { NotAuthorizedError } from '@features/graphql/common/types';
-import { User } from '@features/graphql/user/entities';
 import { UserService } from '@features/graphql/user/services';
 import {
   UserAlreadyExistsError,
-  UserCreateInputs,
   UserCreatePayload,
   UserDeletePayload,
-  UserIDRequiredFilter,
   UserNotFoundError,
   UserPayload,
-  UserRole,
-  UserRoleNotRegistered,
-  UsersOrderFilters,
   UsersPayload,
   UserSuccess,
-  UsersWhereFilters,
-  UserUpdateInputs,
   UserUpdatePayload,
-  UserWhereFilters,
 } from '@features/graphql/user/types';
+import {
+  User,
+  UserCreateInput,
+  UserOrderByWithRelationInput,
+  UserRole,
+  UserUpdateInput,
+  UserWhereInput,
+  UserWhereUniqueInput,
+} from '@graphql';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { TypenameGraphQLError } from '@utils';
-
 @Resolver(() => UserSuccess)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => UserPayload)
   @GraphQLAuth(UserRole.USER)
-  async user(
-    @Args('where') where: UserWhereFilters,
-  ): Promise<typeof UserPayload> {
+  async user(where: UserWhereUniqueInput): Promise<typeof UserPayload> {
     const targetedUser = await this.userService.getUser({
       where,
     });
@@ -48,26 +46,26 @@ export class UserResolver {
   @Query(() => UsersPayload)
   @GraphQLAuth(UserRole.USER)
   async users(
-    @Args() resourcesFilters?: ResourcesFilters,
-    @Args('where', { nullable: true })
-    where?: UsersWhereFilters,
-    @Args('order', { nullable: true })
-    order?: UsersOrderFilters,
+    @Args() filters?: ResourcesFilters,
+    @Args('cursor') cursor?: UserWhereUniqueInput,
+    @Args('where') where?: UserWhereInput,
+    @Args('orderBy') orderBy?: UserOrderByWithRelationInput,
   ): Promise<typeof UsersPayload> {
-    const targetedUser = await this.userService.getUsers({
+    const targetedUsers = await this.userService.getUsers({
+      cursor,
       where,
-      order,
-      take: resourcesFilters?.take,
-      skip: resourcesFilters?.skip,
+      orderBy,
+      take: filters?.take,
+      skip: filters?.skip,
     });
 
-    return { users: targetedUser };
+    return { users: targetedUsers };
   }
 
   @Mutation(() => UserCreatePayload)
   @GraphQLAuth(UserRoleNotRegistered.ANONYMOUS)
   async userCreate(
-    @Args('data') data: UserCreateInputs,
+    @Args('data') data: UserCreateInput,
   ): Promise<typeof UserCreatePayload> {
     const isUserAlreadyExists = Boolean(
       await this.userService.getUser({
@@ -87,50 +85,49 @@ export class UserResolver {
   @Mutation(() => UserUpdatePayload)
   @GraphQLAuth(UserRole.USER)
   async userUpdate(
-    @Args() { userID }: UserIDRequiredFilter,
-    @Args('data') data: UserUpdateInputs,
+    @Args('where') where: UserWhereUniqueInput,
+    @Args('data') data: UserUpdateInput,
     @GraphQLCurrentUser() currentUser: User,
   ): Promise<typeof UserUpdatePayload> {
-    if (
-      !currentUser.roles.includes(UserRole.ADMIN) &&
-      !currentUser.roles.includes(UserRole.MODERATOR) &&
-      currentUser.id !== userID
-    )
-      return new TypenameGraphQLError(NotAuthorizedError.name);
-
-    const targetedUser = await this.userService.getUser({
-      where: { userID },
-    });
+    const targetedUser = await this.userService.getUser({ where });
 
     if (!Boolean(targetedUser))
       return new TypenameGraphQLError(UserNotFoundError.name);
 
+    if (
+      !currentUser.roles.includes(UserRole.ADMIN) &&
+      !currentUser.roles.includes(UserRole.MODERATOR) &&
+      currentUser.id !== targetedUser.id
+    )
+      return new TypenameGraphQLError(NotAuthorizedError.name);
+
     const updatedUser = await this.userService.userUpdate({
-      userID,
+      where,
       data,
     });
+
     return { user: updatedUser };
   }
 
   @Mutation(() => UserDeletePayload)
   @GraphQLAuth(UserRole.USER)
   async userDelete(
-    @Args() { userID }: UserIDRequiredFilter,
+    @Args('where') where: UserWhereUniqueInput,
     @GraphQLCurrentUser() currentUser: User,
   ): Promise<typeof UserDeletePayload> {
+    const targetedUser = await this.userService.getUser({ where });
+
+    if (!Boolean(targetedUser))
+      return new TypenameGraphQLError(UserNotFoundError.name);
+
     if (
       !currentUser.roles.includes(UserRole.ADMIN) &&
       !currentUser.roles.includes(UserRole.MODERATOR) &&
-      currentUser.id !== userID
+      currentUser.id !== targetedUser.id
     )
       return new TypenameGraphQLError(NotAuthorizedError.name);
 
-    const targetedUser = await this.userService.getUser({
-      where: { userID },
-    });
-    if (!targetedUser) return new TypenameGraphQLError(UserNotFoundError.name);
-
-    await this.userService.userDelete({ userID });
+    await this.userService.userDelete({ where });
 
     return { isDeleted: true };
   }

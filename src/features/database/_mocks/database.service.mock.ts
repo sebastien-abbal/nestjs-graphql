@@ -1,1 +1,1 @@
-export const mockedDatabaseService = jest.fn();
+export const mockedPrismaService = jest.fn();

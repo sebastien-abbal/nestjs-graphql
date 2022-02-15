@@ -43,11 +43,8 @@ const serverlessConfiguration: AWS = {
       NODE_ENV: envVar.get('NODE_ENV').required().asString(),
       APP_PORT: envVar.get('APP_PORT').required().asString(),
       APP_HOST: envVar.get('APP_HOST').required().asString(),
-      PG_HOST: envVar.get('PG_HOST').required().asString(),
-      PG_PORT: envVar.get('PG_PORT').required().asString(),
-      PG_DATABASE: envVar.get('PG_DATABASE').required().asString(),
-      PG_USER: envVar.get('PG_USER').required().asString(),
-      PG_PASSWORD: envVar.get('PG_PASSWORD').required().asString(),
+      AWS_REGION: envVar.get('AWS_REGION').required().asString(),
+      DATABASE_URL: envVar.get('DATABASE_URL').required().asString(),
       JWT_SECRET: envVar.get('JWT_SECRET').required().asString(),
       JWT_ACCESS_TOKEN_EXPIRATION_TIME: envVar
         .get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')

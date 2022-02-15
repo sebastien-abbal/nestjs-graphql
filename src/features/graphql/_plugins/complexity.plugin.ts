@@ -1,6 +1,7 @@
 import { constants } from '@config';
+import { Plugin } from '@nestjs/apollo';
 import { PayloadTooLargeException } from '@nestjs/common';
-import { GraphQLSchemaHost, Plugin } from '@nestjs/graphql';
+import { GraphQLSchemaHost } from '@nestjs/graphql';
 import {
   ApolloServerPlugin,
   GraphQLRequestListener,

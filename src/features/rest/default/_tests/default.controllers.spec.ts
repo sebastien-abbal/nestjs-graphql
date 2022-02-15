@@ -1,4 +1,6 @@
-import { ConfigModule } from '@features/config/config.module';
+import { config } from '@config';
+import { UserService } from '@features/graphql/user/services';
+import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { ConfigController } from '@features/rest/default/config/config.controller';
 import { HealthController } from '@features/rest/default/health/health.controller';
 import { HealthService } from '@features/rest/default/health/health.service';
@@ -7,6 +9,7 @@ import {
   WELCOME_MESSAGE,
 } from '@features/rest/default/home/home.controller';
 import { mockedHealthService } from '@features/rest/default/_mocks/health.service.mock';
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Default module (controllers)', () => {
@@ -18,11 +21,12 @@ describe('Default module (controllers)', () => {
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      imports: [ConfigModule],
+      imports: [JwtModule.register({ secret: config.auth.jwtSecret })],
       controllers: [HomeController, HealthController, ConfigController],
     })
       .useMocker((token) => {
         if (token === HealthService) return mockedHealthService;
+        if (token === UserService) return mockedUserService;
       })
       .compile();
 
@@ -46,8 +50,8 @@ describe('Default module (controllers)', () => {
       expect(healthController).toBeDefined();
     });
 
-    it('should return a status "ok"', () => {
-      expect(healthController.getHealthCheck()).toEqual(
+    it('should return a status "ok"', async () => {
+      expect(await healthController.getHealthCheck()).toEqual(
         expect.objectContaining({
           status: 'ok',
         }),

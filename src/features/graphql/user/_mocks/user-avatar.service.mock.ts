@@ -1,27 +1,30 @@
-import { MediaProvider, MediaStatus } from '@features/database/types';
-import { UserAvatar } from '../entities';
-import { MOCKED_USER } from './user.service.mock';
+import { MediaProvider, MediaStatus, UserAvatarPicture } from '@graphql';
+import { MOCKED_USERS } from './user.service.mock';
 
-export const MOCKED_USER_AVATARS: UserAvatar[] = [
+export const MOCKED_USER_AVATARS: UserAvatarPicture[] = [
   {
     id: '2a279a5a-fcd7-4c60-a0cc-9af503a3d82f',
-    source: MediaProvider.AWS,
+    provider: MediaProvider.AWS,
     status: MediaStatus.ONLINE,
-    user: MOCKED_USER,
+    userID: MOCKED_USERS[0].id,
     size: 1759350,
     width: 500,
     height: 500,
     createdAt: new Date(),
+    updatedAt: null,
+    deletedAt: null,
+    fileToDeleteAt: null,
   },
   {
     id: '151eba6b-0671-4b55-9b36-542b5dbc3678',
-    source: MediaProvider.AWS,
+    provider: MediaProvider.AWS,
     status: MediaStatus.OFFLINE,
-    user: MOCKED_USER,
+    userID: MOCKED_USERS[0].id,
     size: 1569396,
     width: 500,
     height: 500,
     createdAt: new Date('01-01-2022'),
+    updatedAt: null,
     deletedAt: new Date('01-01-2022'),
     fileToDeleteAt: new Date('01-01-2022'),
   },

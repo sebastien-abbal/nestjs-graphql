@@ -25,18 +25,15 @@ jobs:
       - name: Build app
         run: yarn build
 
-      # Test (unit + e2e)
+      # Test
       - name: Test app
-        run: yarn test:docker
+        run: yarn test
         env:
           NODE_ENV: test
           APP_PORT: 3000
           APP_HOST: localhost
-          PG_HOST: localhost
-          PG_PORT: 5432
-          PG_DATABASE: db-test
-          PG_USER: root
-          PG_PASSWORD: password
+          AWS_REGION: eu-west-3
+          DATABASE_URL: postgresql://johndoe:password@localhost:5432/mydb?schema=public
           JWT_SECRET: xxx-xxx-xxx-xxx
           JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
           JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000

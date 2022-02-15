@@ -1,13 +1,14 @@
 import { constants } from '@config';
 import faker from '@faker-js/faker';
-import { ConfigModule } from '@features/config/config.module';
+import { PrismaService } from '@features/database/services';
+import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
 import { UserService } from '@features/graphql/user/services';
-import { UserRole } from '@features/graphql/user/types';
 import { UserResolver } from '@features/graphql/user/user.resolver';
 import {
   mockedUserService,
-  MOCKED_USER,
+  MOCKED_USERS,
 } from '@features/graphql/user/_mocks/user.service.mock';
+import { UserGender, UserLocale, UserRole } from '@graphql';
 import { Test, TestingModule } from '@nestjs/testing';
 import { random } from '@utils';
 
@@ -18,11 +19,11 @@ describe('User resolver', () => {
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      imports: [ConfigModule],
       providers: [UserResolver],
     })
       .useMocker((token) => {
         if (token === UserService) return mockedUserService;
+        if (token === PrismaService) return mockedPrismaService;
       })
       .compile();
 
@@ -42,9 +43,9 @@ describe('User resolver', () => {
       });
 
       it('should return an user', async () => {
-        expect(await userResolver.user({ userID: MOCKED_USER.id })).toEqual(
+        expect(await userResolver.user({ id: MOCKED_USERS[0].id })).toEqual(
           expect.objectContaining({
-            user: expect.objectContaining({ id: MOCKED_USER.id }),
+            user: expect.objectContaining({ id: MOCKED_USERS[0].id }),
           }),
         );
       });
@@ -63,7 +64,7 @@ describe('User resolver', () => {
         expect(usersPayload).toEqual(
           expect.objectContaining({
             users: expect.arrayContaining([
-              expect.objectContaining({ id: MOCKED_USER.id }),
+              expect.objectContaining({ id: MOCKED_USERS[0].id }),
             ]),
           }),
         );
@@ -95,6 +96,8 @@ describe('User resolver', () => {
             firstName,
             lastName,
             password,
+            locale: UserLocale.FR,
+            gender: UserGender.OTHER,
           }),
         ).toEqual(
           expect.objectContaining({
@@ -108,7 +111,7 @@ describe('User resolver', () => {
       });
 
       it('should return an error with code [UserAlreadyExistsError]', async () => {
-        const { email, firstName, lastName } = MOCKED_USER;
+        const { email, firstName, lastName } = MOCKED_USERS[0];
         const password = `${faker.animal.type()}${random(
           1900,
           new Date().getFullYear(),
@@ -120,6 +123,8 @@ describe('User resolver', () => {
             firstName,
             lastName,
             password,
+            locale: UserLocale.FR,
+            gender: UserGender.OTHER,
           }),
         ).toEqual(
           expect.objectContaining({
@@ -146,14 +151,14 @@ describe('User resolver', () => {
 
         expect(
           await userResolver.userUpdate(
-            { userID: MOCKED_USER.id },
+            { id: MOCKED_USERS[0].id },
             {
               email,
               firstName,
               lastName,
               password,
             },
-            MOCKED_USER,
+            MOCKED_USERS[0],
           ),
         ).toEqual(
           expect.objectContaining({
@@ -174,10 +179,10 @@ describe('User resolver', () => {
 
         expect(
           await userResolver.userUpdate(
-            { userID: faker.datatype.uuid() },
+            { id: faker.datatype.uuid() },
             { password },
             {
-              ...MOCKED_USER,
+              ...MOCKED_USERS[0],
               roles: [UserRole.ADMIN],
             },
           ),
@@ -197,9 +202,9 @@ describe('User resolver', () => {
 
         expect(
           await userResolver.userUpdate(
-            { userID: faker.datatype.uuid() },
+            { id: MOCKED_USERS[1].id },
             { password },
-            MOCKED_USER,
+            MOCKED_USERS[0],
           ),
         ).toEqual(
           expect.objectContaining({
@@ -219,9 +224,9 @@ describe('User resolver', () => {
         expect(
           await userResolver.userDelete(
             {
-              userID: MOCKED_USER.id,
+              id: MOCKED_USERS[0].id,
             },
-            MOCKED_USER,
+            MOCKED_USERS[0],
           ),
         ).toEqual(
           expect.objectContaining({
@@ -233,9 +238,9 @@ describe('User resolver', () => {
       it('should return an error with code [UserNotFoundError]', async () => {
         expect(
           await userResolver.userDelete(
-            { userID: faker.datatype.uuid() },
+            { id: faker.datatype.uuid() },
             {
-              ...MOCKED_USER,
+              ...MOCKED_USERS[0],
               roles: [UserRole.ADMIN],
             },
           ),
@@ -250,8 +255,8 @@ describe('User resolver', () => {
       it('should return an error with code [NotAuthorizedError]', async () => {
         expect(
           await userResolver.userDelete(
-            { userID: faker.datatype.uuid() },
-            MOCKED_USER,
+            { id: MOCKED_USERS[1].id },
+            MOCKED_USERS[0],
           ),
         ).toEqual(
           expect.objectContaining({

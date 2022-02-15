@@ -6,14 +6,14 @@ module.exports = {
   },
   moduleNameMapper: {
     '^@features/(.*)': '<rootDir>/src/features/$1',
-    '^@tests/(.*)': '<rootDir>/__tests/$1',
-    '^@utils': '<rootDir>/src/utils',
+    '^@graphql': '<rootDir>/src/@graphql/generated',
     '^@types': '<rootDir>/src/@types',
+    '^@utils': '<rootDir>/src/utils',
     '^@config': '<rootDir>/src/config',
-    '^@generated': '<rootDir>/generated',
   },
   testPathIgnorePatterns: [
     '<rootDir>/dist/',
+    '<rootDir>/prisma/',
     '<rootDir>/bin/',
     '<rootDir>/node_modules/',
   ],

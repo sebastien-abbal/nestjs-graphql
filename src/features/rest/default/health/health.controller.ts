@@ -1,5 +1,3 @@
-import { constants } from '@config';
-import { databaseProviders } from '@features/database/database.providers';
 import { HealthService } from '@features/rest/default/health/health.service';
 import { Controller, Get } from '@nestjs/common';
 
@@ -8,13 +6,9 @@ export class HealthController {
   constructor(private healthService: HealthService) {}
 
   @Get('/_health')
-  getHealthCheck() {
+  async getHealthCheck() {
     const details = {};
-    for (const provider of databaseProviders) {
-      details[provider.name] = this.healthService.getTypeOrmConnectionStatus({
-        name: constants.databases.postgres.providerName,
-      });
-    }
+    details['postgres'] = await this.healthService.getTypeOrmConnectionStatus();
 
     return {
       status: !Object.values(details).some((bool) => bool !== 'ok')

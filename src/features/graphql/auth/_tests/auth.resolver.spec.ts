@@ -1,32 +1,22 @@
-import { ConfigModule } from '@features/config/config.module';
+import { config } from '@config';
 import { GraphQLAuthResolver } from '@features/graphql/auth/auth.resolver';
 import { GraphQLAuthService } from '@features/graphql/auth/services';
 import { UserService } from '@features/graphql/user/services';
 import {
   mockedUserService,
-  MOCKED_USER,
+  MOCKED_USERS,
   MOCKED_USER_PASSWORD,
 } from '@features/graphql/user/_mocks/user.service.mock';
-import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('GraphQL Auth resolver', () => {
   let app: TestingModule;
-
   let authResolver: GraphQLAuthResolver;
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      imports: [
-        ConfigModule,
-        JwtModule.registerAsync({
-          useFactory: (configService: ConfigService) => ({
-            secret: configService.get<string>('jwtSecret'),
-          }),
-          inject: [ConfigService],
-        }),
-      ],
+      imports: [JwtModule.register({ secret: config.auth.jwtSecret })],
       providers: [GraphQLAuthResolver, GraphQLAuthService],
     })
       .useMocker((token) => {
@@ -52,12 +42,12 @@ describe('GraphQL Auth resolver', () => {
       it('should returns an user auth payload', async () => {
         expect(
           await authResolver.authUser({
-            email: MOCKED_USER.email,
+            email: MOCKED_USERS[0].email,
             password: MOCKED_USER_PASSWORD,
           }),
         ).toEqual(
           expect.objectContaining({
-            user: expect.objectContaining({ id: MOCKED_USER.id }),
+            user: expect.objectContaining({ id: MOCKED_USERS[0].id }),
             accessToken: expect.any(String),
             refreshToken: expect.any(String),
           }),
@@ -67,7 +57,7 @@ describe('GraphQL Auth resolver', () => {
       it('should return an error with code [WrongCredentialsError]', async () => {
         expect(
           await authResolver.authUser({
-            email: MOCKED_USER.email,
+            email: MOCKED_USERS[0].email,
             password: 'xxx-wrong-xxx',
           }),
         ).toEqual(

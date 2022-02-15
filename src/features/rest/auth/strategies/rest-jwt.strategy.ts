@@ -1,21 +1,18 @@
+import { config } from '@config';
+import { UserRoleNotRegistered } from '@features/graphql/auth/types';
 import { UserService } from '@features/graphql/user/services';
-import { UserRoleNotRegistered } from '@features/graphql/user/types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { IAuthTokenPayload } from '@types';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class RestJwtStrategy extends PassportStrategy(Strategy) {
-  constructor(
-    private readonly userService: UserService,
-    private readonly configService: ConfigService,
-  ) {
+  constructor(private readonly userService: UserService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: true,
-      secretOrKey: configService.get<string>('jwtSecret'),
+      secretOrKey: config.auth.jwtSecret,
     });
   }
 
@@ -24,7 +21,7 @@ export class RestJwtStrategy extends PassportStrategy(Strategy) {
     if (roles && roles.includes(UserRoleNotRegistered.ANONYMOUS)) return {};
     if (!userID) throw new UnauthorizedException();
 
-    const user = await this.userService.getUser({ where: { userID } });
+    const user = await this.userService.getUser({ where: { id: userID } });
     if (!user) throw new UnauthorizedException();
 
     return user;

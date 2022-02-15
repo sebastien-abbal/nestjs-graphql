@@ -21,11 +21,10 @@
     "resolveJsonModule": true,
     "paths": {
       "@features/*": ["./src/features/*"],
-      "@utils": ["./src/utils"],
       "@types": ["./src/@types"],
-      "@config": ["./src/config"],
-      "@tests/*": ["__tests/*"],
-      "@generated/*": ["./generated/*"]
+      "@graphql": ["./src/@graphql/generated"],
+      "@utils": ["./src/utils"],
+      "@config": ["./src/config"]
     }
   }
 }

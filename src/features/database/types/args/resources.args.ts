@@ -6,7 +6,6 @@ import { IsInt, IsOptional } from 'class-validator';
 export class ResourcesFilters {
   @Field(() => Int, {
     defaultValue: constants.graphql.query.defaultTakeResults,
-    nullable: true,
   })
   @IsInt()
   @IsOptional()
@@ -14,7 +13,6 @@ export class ResourcesFilters {
 
   @Field(() => Int, {
     defaultValue: constants.graphql.query.defaultSkip,
-    nullable: true,
   })
   @IsInt()
   @IsOptional()

@@ -1,28 +1,24 @@
-import { MediaStatus } from '@features/database/types';
-import { UserAvatar } from '@features/graphql/user/entities';
-import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { PrismaService } from '@features/database/services';
+import { MediaStatus, UserAvatarPicture, UserWhereUniqueInput } from '@graphql';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UserAvatarService {
-  constructor(
-    @Inject('USER_AVATAR_REPOSITORY')
-    private userAvatarRepository: Repository<UserAvatar>,
-  ) {}
+  constructor(private prisma: PrismaService) {}
 
   public async getUserAvatar({
-    userID,
+    where,
   }: {
-    userID: string;
-  }): Promise<UserAvatar> {
-    return this.userAvatarRepository.findOne({
+    where: UserWhereUniqueInput;
+  }): Promise<UserAvatarPicture> {
+    return this.prisma.userAvatarPicture.findFirst({
       where: {
-        user: { id: userID },
+        user: where,
         status: MediaStatus.ONLINE,
         deletedAt: null,
         fileToDeleteAt: null,
       },
-      order: { createdAt: 'ASC' },
+      orderBy: { createdAt: 'desc' },
     });
   }
 }

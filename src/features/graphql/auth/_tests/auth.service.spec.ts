@@ -1,8 +1,9 @@
-import { ConfigModule } from '@features/config/config.module';
+import { config } from '@config';
+import { PrismaService } from '@features/database/services';
+import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
 import { GraphQLAuthService } from '@features/graphql/auth/services';
 import { UserService } from '@features/graphql/user/services';
 import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
-import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
@@ -11,19 +12,12 @@ describe('GraphQL Auth service', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        ConfigModule,
-        JwtModule.registerAsync({
-          useFactory: (configService: ConfigService) => ({
-            secret: configService.get<string>('jwtSecret'),
-          }),
-          inject: [ConfigService],
-        }),
-      ],
+      imports: [JwtModule.register({ secret: config.auth.jwtSecret })],
       providers: [GraphQLAuthService],
     })
       .useMocker((token) => {
         if (token === UserService) return mockedUserService;
+        if (token === PrismaService) return mockedPrismaService;
       })
       .compile();
 

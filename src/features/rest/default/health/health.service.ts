@@ -1,23 +1,18 @@
-import { DEV_ENV } from '@config';
+import { config, DEV_ENV } from '@config';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { getConnection } from 'typeorm';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class HealthService {
-  constructor(private configService: ConfigService) {}
-
-  getTypeOrmConnectionStatus = ({ name }: { name: string }): string => {
+  getTypeOrmConnectionStatus = async (): Promise<string> => {
     try {
-      if (Boolean(getConnection(name))) {
-        return 'ok';
-      } else {
-        return 'error';
-      }
+      const prismaClient = new PrismaClient();
+      await prismaClient.$queryRaw(
+        Prisma.sql`SELECT * FROM PUBLIC."User" LIMIT 1`,
+      );
+      return 'ok';
     } catch (err) {
-      return this.configService.get<string>('env') === DEV_ENV
-        ? err.message
-        : 'error';
+      return config.env === DEV_ENV ? err.message : 'error';
     }
   };
 }

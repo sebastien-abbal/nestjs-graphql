@@ -1,5 +1,6 @@
+import { PrismaService } from '@features/database/services';
+import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
 import { UserService } from '@features/graphql/user/services';
-import { mockedUserProviders } from '@features/graphql/user/_mocks/user.providers.mock';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('User service', () => {
@@ -7,8 +8,12 @@ describe('User service', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [...mockedUserProviders, UserService],
-    }).compile();
+      providers: [UserService],
+    })
+      .useMocker((token) => {
+        if (token === PrismaService) return mockedPrismaService;
+      })
+      .compile();
 
     userService = module.get<UserService>(UserService);
   });

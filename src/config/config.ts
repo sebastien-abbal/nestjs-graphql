@@ -8,7 +8,6 @@ import {
 import { config as dotEnvConfig } from 'dotenv';
 import * as envVar from 'env-var';
 import { join } from 'path';
-import { ConnectionOptions } from 'typeorm';
 import { constants, DEV_ENV, PREPROD_ENV, PROD_ENV } from './constants';
 export class Config {
   private static instance: Config;
@@ -17,7 +16,6 @@ export class Config {
   public app: IConfigApp;
   public graphql: IConfigGraphQL;
   public auth: IConfigJwt;
-  public pgDatabase: ConnectionOptions;
 
   private constructor() {
     this.env = envVar.get('NODE_ENV').default(DEV_ENV).asString() as EnvType;
@@ -46,25 +44,6 @@ export class Config {
         .default(60 * 60 * 24 * 30)
         .asInt(),
       encryptionKey: envVar.get('ENCRYPTION_KEY').required().asString(),
-    };
-
-    this.pgDatabase = {
-      name: constants.databases.postgres.providerName,
-      type: 'postgres',
-      host: envVar.get('PG_HOST').required().asString(),
-      port: envVar.get('PG_PORT').required().asInt(),
-      username: envVar.get('PG_USER').required().asString(),
-      password: envVar.get('PG_PASSWORD').required().asString(),
-      database: envVar.get('PG_DATABASE').required().asString(),
-      cache: [PROD_ENV, PREPROD_ENV].includes(this.env),
-      synchronize: false,
-      dropSchema: false,
-      logging: false,
-      entities: [this.app.rootPath + '/dist/src/**/*.entity.js'],
-      migrations: [this.app.rootPath + '/dist/generated/migrations/*.js'],
-      cli: {
-        migrationsDir: join(this.app.rootPath, 'generated/migrations'),
-      },
     };
   }
 

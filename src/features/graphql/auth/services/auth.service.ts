@@ -1,15 +1,14 @@
+import { config } from '@config';
 import {
   AuthAnonymousSuccess,
-  AuthUserInputs,
+  AuthUserInput,
   AuthUserSuccess,
 } from '@features/graphql/auth/types';
-import { User } from '@features/graphql/user/entities';
 import { UserService } from '@features/graphql/user/services';
-import { UserRoleNotRegistered } from '@features/graphql/user/types';
+import { User } from '@graphql';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { AuthTokenType, IAuthTokenPayload } from '@types';
+import { AuthTokenType, AuthUserRole, IAuthTokenPayload } from '@types';
 import { compare } from 'bcryptjs';
 
 @Injectable()
@@ -17,7 +16,6 @@ export class GraphQLAuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
-    private readonly configService: ConfigService,
   ) {}
 
   public createToken({
@@ -29,18 +27,14 @@ export class GraphQLAuthService {
   }): string {
     const payload: IAuthTokenPayload = {
       userID: user ? user.id : null,
-      roles: user ? user.roles : [UserRoleNotRegistered.ANONYMOUS],
+      roles: user ? (user.roles as AuthUserRole[]) : null,
       type,
     };
     return this.jwtService.sign(payload, {
       expiresIn:
         type === 'ACCESS_TOKEN'
-          ? this.configService.get<number>(
-              'jwtAccessTokenExpirationTimeInSeconds',
-            )
-          : this.configService.get<number>(
-              'jwtRefreshTokenExpirationTimeInSeconds',
-            ),
+          ? config.auth.jwtAccessTokenExpirationTimeInSeconds
+          : config.auth.jwtRefreshTokenExpirationTimeInSeconds,
     });
   }
 
@@ -56,7 +50,7 @@ export class GraphQLAuthService {
   public async authUser({
     data,
   }: {
-    data: AuthUserInputs;
+    data: AuthUserInput;
   }): Promise<AuthUserSuccess> {
     const { email, password } = data;
 

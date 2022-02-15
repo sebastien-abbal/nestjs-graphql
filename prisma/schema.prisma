@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestgraphql {
+  provider               = "node node_modules/prisma-nestjs-graphql"
+  output                 = "../src/@graphql/generated"
+  tsConfigFilePath       = "../tsconfig.json"
+  reExport               = All
+  noAtomicOperations     = true
+  fields_Validator_from  = "class-validator"
+  fields_Validator_input = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserGender {
+  MALE
+  FEMALE
+  OTHER
+  UNDEFINED
+}
+
+enum UserLocale {
+  EN
+  FR
+}
+
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum MediaProvider {
+  AWS
+}
+
+enum MediaStatus {
+  UPLOADING
+  CONVERTING
+  ONLINE
+  OFFLINE
+  ERROR
+}
+
+model User {
+  /// @HideField({ match: ['UserCreateInput', 'UserUpdateInput'] })
+  id              String              @id @default(uuid())
+  firstName       String
+  lastName        String
+  /// @HideField({ output: true })
+  password        String
+  gender          UserGender
+  locale          UserLocale
+  /// @HideField({ input: true })
+  roles           UserRole[]
+  /// @Validator.IsEmail()
+  /// @Validator.IsOptional()
+  email           String              @unique()
+  /// @HideField({ input: true })
+  isEmailVerified Boolean             @default(false)
+  /// @Validator.IsOptional()
+  phoneNumber     String?
+  /// @Validator.IsOptional()
+  phoneIndex      String?
+  /// @HideField({ input: true })
+  isPhoneVerified Boolean             @default(false)
+  /// @Validator.IsUrl()
+  /// @Validator.IsOptional()
+  urlLinkedin     String?
+  /// @HideField({ input: true })
+  isTermsAccepted Boolean             @default(true)
+  /// @HideField({ input: true, output: true })
+  termsAcceptedAt DateTime            @default(now())
+  /// @HideField({ input: true })
+  isBanned        Boolean             @default(false)
+  /// @HideField({ input: true, output: true })
+  bannedAt        DateTime?
+  /// @HideField({ input: true })
+  lastLoginAt     DateTime            @default(now())
+  /// @HideField({ input: true })
+  createdAt       DateTime            @default(now())
+  /// @HideField({ input: true })
+  updatedAt       DateTime?           @updatedAt
+  /// @HideField({ input: true })
+  deletedAt       DateTime?
+  /// @HideField({ output: true, input: true })
+  avatarPictures  UserAvatarPicture[] @relation("UserAvatarPictures")
+}
+
+model UserAvatarPicture {
+  id             String        @id @default(uuid())
+  provider       MediaProvider @default(AWS)
+  status         MediaStatus   @default(UPLOADING)
+  size           Int?
+  width          Int?
+  height         Int?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime?     @updatedAt
+  deletedAt      DateTime?
+  fileToDeleteAt DateTime?
+  user           User          @relation("UserAvatarPictures", fields: [userID], references: [id])
+  userID         String
+}

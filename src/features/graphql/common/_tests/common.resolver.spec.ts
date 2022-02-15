@@ -1,6 +1,10 @@
-import { ConfigModule } from '@features/config/config.module';
+import { config } from '@config';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
 import { CommonResolver } from '@features/graphql/common/common.resolver';
 import { CommonService } from '@features/graphql/common/services';
+import { UserService } from '@features/graphql/user/services';
+import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
+import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 
 describe('Common resolver', () => {
@@ -10,9 +14,13 @@ describe('Common resolver', () => {
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      imports: [ConfigModule],
-      providers: [CommonResolver, CommonService],
-    }).compile();
+      imports: [JwtModule.register({ secret: config.auth.jwtSecret })],
+      providers: [CommonResolver, CommonService, GraphQLAuthService],
+    })
+      .useMocker((token) => {
+        if (token === UserService) return mockedUserService;
+      })
+      .compile();
 
     commonResolver = app.get<CommonResolver>(CommonResolver);
   });

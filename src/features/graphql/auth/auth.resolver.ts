@@ -1,7 +1,7 @@
 import { GraphQLAuthService } from '@features/graphql/auth/services';
 import {
   AuthAnonymousPayload,
-  AuthUserInputs,
+  AuthUserInput,
   AuthUserPayload,
   AuthUserSuccess,
   WrongCredentialsError,
@@ -15,7 +15,7 @@ export class GraphQLAuthResolver {
 
   @Mutation(() => AuthUserPayload)
   async authUser(
-    @Args('data') data: AuthUserInputs,
+    @Args('data') data: AuthUserInput,
   ): Promise<typeof AuthUserPayload> {
     const authUserPayload = await this.authService.authUser({
       data,

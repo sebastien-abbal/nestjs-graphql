@@ -1,5 +1,5 @@
-import { User } from '@features/graphql/user/entities';
-import { UserRole, UserRoleNotRegistered } from '@features/graphql/user/types';
+import { UserRoleNotRegistered } from '@features/graphql/auth/types';
+import { User, UserRole } from '@graphql';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthUserRole } from '@types';
