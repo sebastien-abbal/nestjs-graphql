@@ -31,6 +31,8 @@ export class GraphQLAuthService {
       type,
     };
     return this.jwtService.sign(payload, {
+      algorithm: 'RS256',
+      privateKey: config.auth.jwtPrivateKey,
       expiresIn:
         type === 'ACCESS_TOKEN'
           ? config.auth.jwtAccessTokenExpirationTimeInSeconds

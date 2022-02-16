@@ -4,6 +4,20 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
+  testRegex: '.(spec|e2e-spec).ts$',
+  collectCoverage: true,
+  collectCoverageFrom: ['./src/features/**/{!(.module),}.ts', './src/utils/**'],
+  coverageThreshold: {
+    './src/features/': {
+      lines: 50,
+    },
+    './src/utils/': {
+      lines: 100,
+      smts: 100,
+      branch: 100,
+      funcs: 100,
+    },
+  },
   moduleNameMapper: {
     '^@features/(.*)': '<rootDir>/src/features/$1',
     '^@graphql': '<rootDir>/src/@graphql/generated',

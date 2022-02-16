@@ -34,7 +34,8 @@ export class Config {
     };
 
     this.auth = {
-      jwtSecret: envVar.get('JWT_SECRET').required().asString(),
+      jwtPublicKey: envVar.get('JWT_PUBLIC_KEY').required().asString(),
+      jwtPrivateKey: envVar.get('JWT_PRIVATE_KEY').required().asString(),
       jwtAccessTokenExpirationTimeInSeconds: envVar
         .get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')
         .default(60 * 60 * 24)

@@ -11,7 +11,8 @@ import { JwtModule } from '@nestjs/jwt';
   imports: [
     DatabaseModule,
     JwtModule.register({
-      secret: config.auth.jwtSecret,
+      publicKey: config.auth.jwtPublicKey,
+      privateKey: config.auth.jwtPrivateKey,
     }),
   ],
   providers: [

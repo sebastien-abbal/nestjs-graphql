@@ -1,5 +1,5 @@
+import { MOCKED_USERS } from '@features/graphql/user/_mocks/user.service.mock';
 import { MediaProvider, MediaStatus, UserAvatarPicture } from '@graphql';
-import { MOCKED_USERS } from './user.service.mock';
 
 export const MOCKED_USER_AVATARS: UserAvatarPicture[] = [
   {

@@ -45,7 +45,8 @@ const serverlessConfiguration: AWS = {
       APP_HOST: envVar.get('APP_HOST').required().asString(),
       AWS_REGION: envVar.get('AWS_REGION').required().asString(),
       DATABASE_URL: envVar.get('DATABASE_URL').required().asString(),
-      JWT_SECRET: envVar.get('JWT_SECRET').required().asString(),
+      JWT_PUBLIC_KEY: envVar.get('JWT_PUBLIC_KEY').required().asString(),
+      JWT_PRIVATE_KEY: envVar.get('JWT_PRIVATE_KEY').required().asString(),
       JWT_ACCESS_TOKEN_EXPIRATION_TIME: envVar
         .get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')
         .required()

@@ -8,7 +8,10 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     DatabaseModule,
-    JwtModule.register({ secret: config.auth.jwtSecret }),
+    JwtModule.register({
+      publicKey: config.auth.jwtPublicKey,
+      privateKey: config.auth.jwtPrivateKey,
+    }),
   ],
   providers: [UserService, RestJwtStrategy],
 })

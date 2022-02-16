@@ -21,7 +21,12 @@ describe('Default module (controllers)', () => {
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
-      imports: [JwtModule.register({ secret: config.auth.jwtSecret })],
+      imports: [
+        JwtModule.register({
+          publicKey: config.auth.jwtPublicKey,
+          privateKey: config.auth.jwtPrivateKey,
+        }),
+      ],
       controllers: [HomeController, HealthController, ConfigController],
     })
       .useMocker((token) => {

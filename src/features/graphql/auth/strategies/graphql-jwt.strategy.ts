@@ -12,7 +12,7 @@ export class GraphQLJwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: true,
-      secretOrKey: config.auth.jwtSecret,
+      secretOrKey: config.auth.jwtPublicKey,
     });
   }
 

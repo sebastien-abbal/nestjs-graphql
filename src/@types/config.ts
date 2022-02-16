@@ -14,7 +14,8 @@ export interface IConfigApp {
 }
 
 export interface IConfigJwt {
-  jwtSecret: string;
+  jwtPublicKey: string;
+  jwtPrivateKey: string;
   jwtAccessTokenExpirationTimeInSeconds: number;
   jwtRefreshTokenExpirationTimeInSeconds: number;
   encryptionKey: string;

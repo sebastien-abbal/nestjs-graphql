@@ -12,7 +12,12 @@ describe('GraphQL Auth service', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [JwtModule.register({ secret: config.auth.jwtSecret })],
+      imports: [
+        JwtModule.register({
+          publicKey: config.auth.jwtPublicKey,
+          privateKey: config.auth.jwtPrivateKey,
+        }),
+      ],
       providers: [GraphQLAuthService],
     })
       .useMocker((token) => {
