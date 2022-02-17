@@ -43,6 +43,8 @@ jobs:
 
       - name: Build database
         run: yarn migrate:deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       # Test
       - name: Test app
@@ -52,7 +54,7 @@ jobs:
           APP_PORT: 3000
           APP_HOST: localhost
           AWS_REGION: eu-west-3
-          DATABASE_URL: postgresql://admin:password@localhost:5432/postgres?schema=public
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
           JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
