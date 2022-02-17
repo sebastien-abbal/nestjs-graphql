@@ -1,5 +1,5 @@
 import { config } from '@config';
-import { MOCKED_USERS } from '@features/graphql/user/_mocks/user.service.mock';
+import { USERS } from '@features/database/data/seed';
 import { AuthTokenType, AuthUserRole, IAuthTokenPayload } from '@types';
 import { sign } from 'jsonwebtoken';
 
@@ -12,7 +12,7 @@ export const generateAuthTokenForTest = ({
   type: AuthTokenType;
   roles?: AuthUserRole[];
 }) => {
-  const user = MOCKED_USERS.find((user) => user.id === userID);
+  const user = USERS.find((user) => user.id === userID);
   const payload: IAuthTokenPayload = {
     userID: user ? user.id : userID,
     roles: roles ? roles : (user.roles as AuthUserRole[]),

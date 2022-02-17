@@ -1,13 +1,11 @@
 import { constants } from '@config';
 import faker from '@faker-js/faker';
+import { USERS } from '@features/database/data/seed/users.data';
 import { PrismaService } from '@features/database/services';
 import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
 import { UserService } from '@features/graphql/user/services';
 import { UserResolver } from '@features/graphql/user/user.resolver';
-import {
-  mockedUserService,
-  MOCKED_USERS,
-} from '@features/graphql/user/_mocks/user.service.mock';
+import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { UserGender, UserLocale, UserRole } from '@graphql';
 import { Test, TestingModule } from '@nestjs/testing';
 import { random } from '@utils';
@@ -43,9 +41,9 @@ describe('User resolver', () => {
       });
 
       it('should return an user', async () => {
-        expect(await userResolver.user({ id: MOCKED_USERS[0].id })).toEqual(
+        expect(await userResolver.user({ id: USERS[0].id })).toEqual(
           expect.objectContaining({
-            user: expect.objectContaining({ id: MOCKED_USERS[0].id }),
+            user: expect.objectContaining({ id: USERS[0].id }),
           }),
         );
       });
@@ -64,7 +62,7 @@ describe('User resolver', () => {
         expect(usersPayload).toEqual(
           expect.objectContaining({
             users: expect.arrayContaining([
-              expect.objectContaining({ id: MOCKED_USERS[0].id }),
+              expect.objectContaining({ id: USERS[0].id }),
             ]),
           }),
         );
@@ -111,7 +109,7 @@ describe('User resolver', () => {
       });
 
       it('should return an error with code [UserAlreadyExistsError]', async () => {
-        const { email, firstName, lastName } = MOCKED_USERS[0];
+        const { email, firstName, lastName } = USERS[0];
         const password = `${faker.animal.type()}${random(
           1900,
           new Date().getFullYear(),
@@ -151,14 +149,14 @@ describe('User resolver', () => {
 
         expect(
           await userResolver.userUpdate(
-            { id: MOCKED_USERS[0].id },
+            { id: USERS[0].id },
             {
               email,
               firstName,
               lastName,
               password,
             },
-            MOCKED_USERS[0],
+            USERS[0],
           ),
         ).toEqual(
           expect.objectContaining({
@@ -182,7 +180,7 @@ describe('User resolver', () => {
             { id: faker.datatype.uuid() },
             { password },
             {
-              ...MOCKED_USERS[0],
+              ...USERS[0],
               roles: [UserRole.ADMIN],
             },
           ),
@@ -202,9 +200,9 @@ describe('User resolver', () => {
 
         expect(
           await userResolver.userUpdate(
-            { id: MOCKED_USERS[1].id },
+            { id: USERS[1].id },
             { password },
-            MOCKED_USERS[0],
+            USERS[0],
           ),
         ).toEqual(
           expect.objectContaining({
@@ -224,9 +222,9 @@ describe('User resolver', () => {
         expect(
           await userResolver.userDelete(
             {
-              id: MOCKED_USERS[0].id,
+              id: USERS[0].id,
             },
-            MOCKED_USERS[0],
+            USERS[0],
           ),
         ).toEqual(
           expect.objectContaining({
@@ -240,7 +238,7 @@ describe('User resolver', () => {
           await userResolver.userDelete(
             { id: faker.datatype.uuid() },
             {
-              ...MOCKED_USERS[0],
+              ...USERS[0],
               roles: [UserRole.ADMIN],
             },
           ),
@@ -254,10 +252,7 @@ describe('User resolver', () => {
 
       it('should return an error with code [NotAuthorizedError]', async () => {
         expect(
-          await userResolver.userDelete(
-            { id: MOCKED_USERS[1].id },
-            MOCKED_USERS[0],
-          ),
+          await userResolver.userDelete({ id: USERS[1].id }, USERS[0]),
         ).toEqual(
           expect.objectContaining({
             code: 'NotAuthorizedError',

@@ -1,4 +1,4 @@
-import { MOCKED_USERS } from '@features/graphql/user/_mocks/user.service.mock';
+import { USERS } from '@features/database/data/seed';
 import { WELCOME_MESSAGE } from '@features/rest/default/home.controller';
 import { RestModule } from '@features/rest/rest.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
@@ -57,12 +57,12 @@ describe('Rest - DefaultModule (e2e)', () => {
         .set(
           'Authorization',
           `Bearer ${generateAuthTokenForTest({
-            userID: MOCKED_USERS[1].id,
+            userID: USERS[1].id,
             type: 'ACCESS_TOKEN',
           })}`,
         )
         .then((res) => {
-          expect(res.status).toBe(401);
+          expect(res.status).toBe(200);
           expect(res.body).toMatchObject({
             name: expect.any(String),
             company: expect.any(String),

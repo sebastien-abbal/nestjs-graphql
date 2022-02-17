@@ -42,9 +42,11 @@ jobs:
         run: yarn build
 
       - name: Build database
-        run: yarn migrate:deploy
+        run: yarn migrate:deploy && yarn script:seed-generator
         env:
+          NODE_ENV: test
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
 
       # Test
       - name: Test app
