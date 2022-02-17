@@ -9,6 +9,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Actions checkout
         uses: actions/checkout@v2
@@ -26,9 +42,6 @@ jobs:
         run: yarn build
 
       # Test
-      - name: Create docker database
-        run: yarn database:create
-
       - name: Test app
         run: yarn test:e2e
         env:
