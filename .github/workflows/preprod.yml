@@ -41,6 +41,9 @@ jobs:
       - name: Build app
         run: yarn build
 
+      - name: Build database
+        run: yarn migrate:deploy
+
       # Test
       - name: Test app
         run: yarn test:e2e

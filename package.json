@@ -17,8 +17,7 @@
     "sls:online": "yarn check:env && yarn build && sh ./bin/serverless/sls-deploy.sh",
     "migrate:deploy": "yarn prisma migrate deploy --preview-feature",
     "migrate:dev": "yarn prisma migrate dev --preview-feature",
-    "studio": "yarn prisma studio",
-    "database:create": "docker run --rm -P -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=\"password\" --name pg postgres:alpine"
+    "studio": "yarn prisma studio"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.2",
