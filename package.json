@@ -10,13 +10,15 @@
     "build:prisma": "yarn prisma generate && yarn prisma format",
     "build:nest": "nest build",
     "build": "rimraf dist && run-s build:*",
-    "test": "jest",
+    "test": "jest --config ./jest.config.ts",
+    "test:e2e": "jest --config ./jest-e2e.config.ts",
     "start:dev": "yarn check:env && nest start --watch",
     "sls:offline": "yarn check:env && yarn build && sh ./bin/serverless/sls-offline.sh",
     "sls:online": "yarn check:env && yarn build && sh ./bin/serverless/sls-deploy.sh",
     "migrate:deploy": "yarn prisma migrate deploy --preview-feature",
     "migrate:dev": "yarn prisma migrate dev --preview-feature",
-    "studio": "yarn prisma studio"
+    "studio": "yarn prisma studio",
+    "database:create": "docker run --rm -P -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=\"password\" --name pg postgres:alpine"
   },
   "dependencies": {
     "@nestjs/apollo": "^10.0.2",

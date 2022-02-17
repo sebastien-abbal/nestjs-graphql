@@ -1,13 +1,13 @@
 import { config } from '@config';
 import { UserService } from '@features/graphql/user/services';
 import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
-import { ConfigController } from '@features/rest/default/config/config.controller';
-import { HealthController } from '@features/rest/default/health/health.controller';
-import { HealthService } from '@features/rest/default/health/health.service';
+import { ConfigController } from '@features/rest/default/config.controller';
+import { HealthController } from '@features/rest/default/health.controller';
 import {
   HomeController,
   WELCOME_MESSAGE,
-} from '@features/rest/default/home/home.controller';
+} from '@features/rest/default/home.controller';
+import { HealthService } from '@features/rest/default/services/health.service';
 import { mockedHealthService } from '@features/rest/default/_mocks/health.service.mock';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';

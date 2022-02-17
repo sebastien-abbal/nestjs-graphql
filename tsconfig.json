@@ -21,6 +21,7 @@
     "resolveJsonModule": true,
     "paths": {
       "@features/*": ["./src/features/*"],
+      "@tests/*": ["./src/__tests/*"],
       "@types": ["./src/@types"],
       "@graphql": ["./src/@graphql/generated"],
       "@utils": ["./src/utils"],

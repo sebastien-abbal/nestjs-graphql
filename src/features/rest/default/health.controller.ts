@@ -1,4 +1,4 @@
-import { HealthService } from '@features/rest/default/health/health.service';
+import { HealthService } from '@features/rest/default/services/health.service';
 import { Controller, Get } from '@nestjs/common';
 
 @Controller()
