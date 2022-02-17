@@ -45,7 +45,14 @@ jobs:
         run: yarn migrate:deploy && yarn script:seed-generator
         env:
           NODE_ENV: test
+          APP_PORT: 3000
+          APP_HOST: localhost
+          AWS_REGION: eu-west-3
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
+          JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000
           ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
 
       # Test
