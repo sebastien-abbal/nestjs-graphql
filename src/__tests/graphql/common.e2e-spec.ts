@@ -20,7 +20,7 @@ describe('GraphQL - CommonModule (e2e)', () => {
   });
 
   describe('Query - Test', () => {
-    it('should return the welcome message (code: 200)', async () => {
+    it('should return the test query with typename TestSuccess (code: 200)', async () => {
       return request
         .post('/graphql')
         .send({
@@ -33,6 +33,7 @@ describe('GraphQL - CommonModule (e2e)', () => {
         })
         .then((res) => {
           expect(res.status).toBe(200);
+          expect(res.body.data.test.__typename).toBe('TestSuccess');
         });
     });
   });

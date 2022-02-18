@@ -30,6 +30,7 @@
     "@nestjs/platform-express": "^8.3.0",
     "@prisma/client": "^3.9.2",
     "@vendia/serverless-express": "^4.5.3",
+    "apollo-server-core": "^3.6.3",
     "apollo-server-express": "^3.6.3",
     "apollo-server-plugin-base": "^3.5.1",
     "aws-lambda": "^1.0.7",
