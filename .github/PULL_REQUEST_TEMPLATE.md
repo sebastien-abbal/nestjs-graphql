@@ -1,15 +1,34 @@
-# Business benefit
+## Type
 
+What kind of change does this PR introduce?
 
-# What I did
+<!-- Please check the one that applies to this PR using "x". -->
 
+- [ ] Bugfix
+- [ ] Feature
+- [ ] Refactoring (no functional changes, no api changes)
+- [ ] Build related changes
+- [ ] CI related changes
+- [ ] Other... Please describe:
 
-# Checklist
+## Business benefit
 
-- [ ] I've updated the unit tests
+To improve the ...
+
+## What I did
+
+- I add ...
+
+## Checklist
+
+<!-- Please check the one that applies to this PR using "x". -->
+
+- [ ] I've updated the tests
 - [ ] I manually test my feature
-- [ ] I've updated the PostMan collection
 - [ ] I've updated the documentations
 
-# How to verify
+## How to verify
 
+```bash
+$ yarn ...
+```
