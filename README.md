@@ -101,3 +101,7 @@ $ yarn migrate:dev
 ```
 
 > ⚠️ Run `yarn migrate:dev` only in development mode and never in production mode.
+
+## License
+
+This template is [MIT licensed](LICENSE.md).
