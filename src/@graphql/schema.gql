@@ -14,7 +14,7 @@ input AuthUserInput {
   password: String!
 }
 
-union AuthUserPayload = AuthUserSuccess | WrongCredentialsError
+union AuthUserPayload = AuthUserSuccess | UserBannedError | UserDeletedError | WrongCredentialsError
 
 type AuthUserSuccess {
   accessToken: String!
@@ -176,14 +176,18 @@ type TestSuccess {
 
 type User {
   _count: UserCount!
+  avatar: UserAvatarPicture
   createdAt: DateTime!
   deletedAt: DateTime
   email: String!
   firstName: String!
   gender: UserGender!
   id: ID!
+  isBanned: Boolean!
+  isDeleted: Boolean!
   isEmailVerified: Boolean!
   isPhoneVerified: Boolean!
+  isTermsAccepted: Boolean!
   lastLoginAt: DateTime!
   lastName: String!
   locale: UserLocale!
@@ -269,6 +273,11 @@ type UserAvatarPictureSumAggregate {
   width: Int
 }
 
+type UserBannedError implements Error {
+  code: String!
+  message: String
+}
+
 type UserCount {
   avatarPictures: Int!
 }
@@ -308,6 +317,11 @@ input UserCreateInput {
 union UserCreatePayload = UserAlreadyExistsError | UserSuccess
 
 union UserDeletePayload = DeletionSuccess | NotAuthorizedError | UserNotFoundError
+
+type UserDeletedError implements Error {
+  code: String!
+  message: String
+}
 
 enum UserGender {
   FEMALE
@@ -384,7 +398,6 @@ enum UserRole {
 }
 
 type UserSuccess {
-  avatar: UserAvatarPicture
   user: User!
 }
 

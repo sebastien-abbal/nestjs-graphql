@@ -10,3 +10,23 @@ export class WrongCredentialsError implements Error {
   })
   code: string;
 }
+
+@ObjectType({
+  implements: () => [Error],
+})
+export class UserBannedError implements Error {
+  @Field(() => String, {
+    defaultValue: UserBannedError.name,
+  })
+  code: string;
+}
+
+@ObjectType({
+  implements: () => [Error],
+})
+export class UserDeletedError implements Error {
+  @Field(() => String, {
+    defaultValue: UserDeletedError.name,
+  })
+  code: string;
+}

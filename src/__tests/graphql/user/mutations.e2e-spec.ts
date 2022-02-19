@@ -9,7 +9,7 @@ import { GraphQLModule } from '../../../features/graphql/graphql.module';
 import {
   generateAnonymousAuthTokenForTest,
   generateUserAuthTokenForTest,
-} from '../../services/auth/auth-test.service';
+} from '../../_services/auth/auth-test.service';
 
 describe('GraphQL - UserModule (mutations)', () => {
   let app: INestApplication;
@@ -17,6 +17,7 @@ describe('GraphQL - UserModule (mutations)', () => {
   let userID: string;
   const CURRENT_USER = USERS[0];
   const ADMIN_USER = USERS[1];
+  const EMAIL = 'test@test.fr';
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -66,8 +67,12 @@ describe('GraphQL - UserModule (mutations)', () => {
         })
         .then((res) => {
           expect(res.status).toBe(200); // GraphQL return always a 200 for an unauthorized error.
-          expect(res.body.data).toBeNull();
-          expect(res.body.error).not.toBeNull();
+          expect(res.body).toEqual(
+            expect.objectContaining({
+              data: null,
+              errors: expect.any(Array),
+            }),
+          );
         });
     });
 
@@ -84,14 +89,17 @@ describe('GraphQL - UserModule (mutations)', () => {
           query,
           variables: {
             data: {
-              email: 'test@test.fr',
+              email: EMAIL,
             },
           },
         })
         .then((res) => {
           expect(res.status).toBe(400);
-          expect(res.body.data).toBeUndefined();
-          expect(res.body.error).not.toBeNull();
+          expect(res.body).toEqual(
+            expect.objectContaining({
+              errors: expect.any(Array),
+            }),
+          );
         });
     });
 
@@ -139,7 +147,7 @@ describe('GraphQL - UserModule (mutations)', () => {
           query,
           variables: {
             data: {
-              email: 'test@test.fr',
+              email: EMAIL,
               firstName: FIRSTNAME,
               lastName: 'DOE',
               gender: UserGender.MALE,
@@ -199,8 +207,12 @@ describe('GraphQL - UserModule (mutations)', () => {
         })
         .then((res) => {
           expect(res.status).toBe(200); // GraphQL return always a 200 for an unauthorized error.
-          expect(res.body.data).toBeNull();
-          expect(res.body.error).not.toBeNull();
+          expect(res.body).toEqual(
+            expect.objectContaining({
+              data: null,
+              errors: expect.any(Array),
+            }),
+          );
         });
     });
 
@@ -263,11 +275,13 @@ describe('GraphQL - UserModule (mutations)', () => {
         .then((res) => {
           expect(res.status).toBe(200);
           expect(res.body.data?.userUpdate?.__typename).toBe('UserSuccess');
-          expect(res.body.data?.userUpdate?.user?.firstName).toBe(FIRSTNAME);
-          expect(res.body.data?.userUpdate?.user?.gender).toBe(
-            UserGender.FEMALE,
+          expect(res.body.data?.userUpdate?.user).toEqual(
+            expect.objectContaining({
+              firstName: FIRSTNAME,
+              gender: UserGender.FEMALE,
+              locale: UserLocale.EN,
+            }),
           );
-          expect(res.body.data?.userUpdate?.user?.locale).toBe(UserLocale.EN);
         });
     });
 
@@ -353,8 +367,12 @@ describe('GraphQL - UserModule (mutations)', () => {
         })
         .then((res) => {
           expect(res.status).toBe(200); // GraphQL return always a 200 for an unauthorized error.
-          expect(res.body.data).toBeNull();
-          expect(res.body.error).not.toBeNull();
+          expect(res.body).toEqual(
+            expect.objectContaining({
+              data: null,
+              errors: expect.any(Array),
+            }),
+          );
         });
     });
 

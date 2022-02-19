@@ -1,7 +1,7 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { config } from '../../../../config';
-import { USERS, USER_PASSWORD } from '../../../database/data/seed';
+import { USERS } from '../../../database/data/seed';
 import { UserService } from '../../user/services';
 import { mockedUserService } from '../../user/_mocks/user.service.mock';
 import { GraphQLAuthResolver } from '../auth.resolver';
@@ -11,6 +11,8 @@ describe('GraphQL Auth resolver', () => {
   let app: TestingModule;
   let authResolver: GraphQLAuthResolver;
   const CURRENT_USER = USERS[0];
+  const BANNED_USER = USERS[3];
+  const DELETED_USER = USERS[4];
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
@@ -46,13 +48,41 @@ describe('GraphQL Auth resolver', () => {
         expect(
           await authResolver.authUser({
             email: CURRENT_USER.email,
-            password: USER_PASSWORD,
+            password: CURRENT_USER.password,
           }),
         ).toEqual(
           expect.objectContaining({
             user: expect.objectContaining({ id: CURRENT_USER.id }),
             accessToken: expect.any(String),
             refreshToken: expect.any(String),
+          }),
+        );
+      });
+
+      it('should return an error with code [UserBannedError]', async () => {
+        expect(
+          await authResolver.authUser({
+            email: BANNED_USER.email,
+            password: BANNED_USER.password,
+          }),
+        ).toEqual(
+          expect.objectContaining({
+            code: 'UserBannedError',
+            message: expect.any(String),
+          }),
+        );
+      });
+
+      it('should return an error with code [UserDeletedError]', async () => {
+        expect(
+          await authResolver.authUser({
+            email: DELETED_USER.email,
+            password: BANNED_USER.password,
+          }),
+        ).toEqual(
+          expect.objectContaining({
+            code: 'UserDeletedError',
+            message: expect.any(String),
           }),
         );
       });

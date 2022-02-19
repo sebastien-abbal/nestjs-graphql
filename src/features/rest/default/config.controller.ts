@@ -6,7 +6,7 @@ import { RestAuth } from '../auth/auth.decorators';
 @Controller()
 export class ConfigController {
   @Get('_config')
-  @RestAuth(UserRole.ADMIN)
+  @RestAuth(UserRole.MODERATOR, UserRole.ADMIN)
   getConfig() {
     return {
       name: constants.app.name,

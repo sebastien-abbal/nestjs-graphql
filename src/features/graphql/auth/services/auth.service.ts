@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcryptjs';
+import { compare } from 'bcrypt';
 import { User } from '../../../../@graphql/generated';
 import {
   AuthTokenType,
@@ -22,7 +22,7 @@ export class GraphQLAuthService {
     private readonly userService: UserService,
   ) {}
 
-  public createToken({
+  private createToken({
     type,
     user,
   }: {
@@ -55,14 +55,12 @@ export class GraphQLAuthService {
 
   public async authUser({
     data,
+    targetedUser,
   }: {
     data: AuthUserInput;
+    targetedUser: User;
   }): Promise<AuthUserSuccess> {
     const { email, password } = data;
-
-    const targetedUser = await this.userService.getUser({
-      where: { email },
-    });
 
     if (targetedUser) {
       const isPasswordValid = await compare(password, targetedUser.password);

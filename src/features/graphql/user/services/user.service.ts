@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { hash } from 'bcryptjs';
+import { hashSync } from 'bcrypt';
 import {
   User,
   UserCreateInput,
@@ -11,6 +11,7 @@ import {
 } from '../../../../@graphql/generated';
 import { capitalize } from '../../../../utils';
 import { PrismaService } from '../../../database/services';
+
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
@@ -58,7 +59,7 @@ export class UserService {
         firstName: firstName ? capitalize(firstName.toLowerCase()) : undefined,
         lastName: lastName ? lastName.toUpperCase() : undefined,
         email: email ? email.toLowerCase() : undefined,
-        password: password ? await hash(data.password, 10) : undefined,
+        password: password ? hashSync(data.password, 10) : undefined,
       },
     });
     return user;
@@ -80,7 +81,7 @@ export class UserService {
         firstName: firstName ? capitalize(firstName.toLowerCase()) : undefined,
         lastName: lastName ? lastName.toUpperCase() : undefined,
         email: email ? email.toLowerCase() : undefined,
-        password: password ? await hash(data.password, 10) : undefined,
+        password: password ? hashSync(data.password, 10) : undefined,
       },
     });
 

@@ -4,7 +4,7 @@ import superRequest, { SuperTest, Test as TestItem } from 'supertest';
 import { USERS } from '../../../features/database/data/seed';
 import { WELCOME_MESSAGE } from '../../../features/rest/default/home.controller';
 import { RestModule } from '../../../features/rest/rest.module';
-import { generateUserAuthTokenForTest } from '../../services/auth/auth-test.service';
+import { generateUserAuthTokenForTest } from '../../_services/auth/auth-test.service';
 
 describe('Rest - DefaultModule', () => {
   let app: INestApplication;

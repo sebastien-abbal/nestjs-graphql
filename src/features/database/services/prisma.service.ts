@@ -5,6 +5,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { hashSync } from 'bcrypt';
 import { config } from '../../../config';
 import { USERS, USER_AVATARS } from '../../../features/database/data/seed';
 
@@ -21,6 +22,7 @@ export class PrismaService
 
   async enableShutdownHooks(app: INestApplication) {
     this.$on('beforeExit', async () => {
+      await this.$disconnect();
       await app.close();
     });
   }
@@ -33,7 +35,12 @@ export class PrismaService
     if (config.env === 'prod' || config.env === 'preprod')
       throw new Error(`Seed can't be set to the env mode [${config.env}].`);
 
-    await this.user.createMany({ data: USERS });
+    await this.user.createMany({
+      data: USERS.map((user) => ({
+        ...user,
+        password: hashSync(user.password, 10),
+      })),
+    });
     await this.userAvatarPicture.createMany({ data: USER_AVATARS });
   }
 

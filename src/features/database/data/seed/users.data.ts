@@ -5,7 +5,7 @@ import {
   UserRole,
 } from '../../../../@graphql/generated';
 
-export const USER_PASSWORD = 'pikachu75';
+const USER_PASSWORD = 'pikachu75';
 export const USERS: User[] = [
   {
     id: 'dc4aafb2-3c6c-467f-a5ae-aafc57abac93',
@@ -13,7 +13,7 @@ export const USERS: User[] = [
     lastName: 'DOE',
     locale: UserLocale.EN,
     email: 'john@doe.com',
-    password: '$2a$10$pL6XdVpjuAiyYBRwHfL3/.HNovg56rlFLeCyRn5naA9pi5YmDlJMq', // pikachu75
+    password: USER_PASSWORD,
     phoneIndex: '+33',
     phoneNumber: '612345678',
     isEmailVerified: true,
@@ -34,7 +34,7 @@ export const USERS: User[] = [
     lastName: 'DOE',
     locale: UserLocale.FR,
     email: 'annabelle@doe.fr',
-    password: '$2a$10$pL6XdVpjuAiyYBRwHfL3/.HNovg56rlFLeCyRn5naA9pi5YmDlJMq', // pikachu75
+    password: USER_PASSWORD,
     phoneIndex: '+33',
     phoneNumber: '687654321',
     isEmailVerified: true,
@@ -55,7 +55,7 @@ export const USERS: User[] = [
     lastName: 'DUMAS',
     locale: UserLocale.FR,
     email: 'elioth@dumas.fr',
-    password: '$2a$10$pL6XdVpjuAiyYBRwHfL3/.HNovg56rlFLeCyRn5naA9pi5YmDlJMq', // pikachu75
+    password: USER_PASSWORD,
     phoneIndex: '+33',
     phoneNumber: '623456789',
     isEmailVerified: true,
@@ -68,6 +68,48 @@ export const USERS: User[] = [
     urlLinkedin: null,
     bannedAt: null,
     deletedAt: null,
+    termsAcceptedAt: new Date('01-01-2022'),
+  },
+  {
+    id: '4a98a256-3785-4d79-85af-57736c256bf1',
+    firstName: 'Dobby',
+    lastName: 'DOE',
+    locale: UserLocale.FR,
+    email: 'dobby@doe.fr',
+    password: USER_PASSWORD,
+    phoneIndex: '+33',
+    phoneNumber: '600112233',
+    isEmailVerified: true,
+    isPhoneVerified: true,
+    roles: [UserRole.USER],
+    createdAt: new Date('01-01-2022'),
+    lastLoginAt: new Date(),
+    updatedAt: new Date(),
+    gender: UserGender.MALE,
+    urlLinkedin: null,
+    bannedAt: new Date(),
+    deletedAt: null,
+    termsAcceptedAt: new Date('01-01-2022'),
+  },
+  {
+    id: '9107cb70-0a19-4a85-9ae6-c1cd1ed0cac2',
+    firstName: 'Gregorio',
+    lastName: 'DOE',
+    locale: UserLocale.FR,
+    email: 'gregorio@doe.fr',
+    password: USER_PASSWORD,
+    phoneIndex: '+33',
+    phoneNumber: '644776655',
+    isEmailVerified: true,
+    isPhoneVerified: true,
+    roles: [UserRole.USER],
+    createdAt: new Date('01-01-2022'),
+    lastLoginAt: new Date(),
+    updatedAt: new Date(),
+    gender: UserGender.MALE,
+    urlLinkedin: null,
+    bannedAt: null,
+    deletedAt: new Date(),
     termsAcceptedAt: new Date('01-01-2022'),
   },
 ];

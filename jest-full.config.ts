@@ -12,6 +12,8 @@ module.exports = {
     '!src/features/**/lambda.ts',
     '!src/features/**/*.mock.ts',
     '!src/features/app.module.ts',
+    '!src/features/app.service.ts',
+    '!src/features/database/services',
   ],
   coverageThreshold: {
     './src/features/': {

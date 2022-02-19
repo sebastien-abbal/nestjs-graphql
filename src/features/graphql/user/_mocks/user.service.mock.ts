@@ -1,31 +1,36 @@
+import { hashSync } from 'bcrypt';
 import {
   UserCreateInput,
   UserUpdateInput,
   UserWhereUniqueInput,
 } from '../../../../@graphql/generated';
+import { clamp } from '../../../../utils';
 import { USERS } from '../../../database/data/seed';
-
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  MODERATOR = 'MODERATOR',
-  USER = 'USER',
-}
 
 export const mockedUserService = {
   getUser: jest
     .fn()
-    .mockImplementation(async ({ where }: { where: UserWhereUniqueInput }) =>
-      Promise.resolve(
-        USERS.find(
-          (item) => item.id === where.id || item.email === where?.email,
-        ),
-      ),
+    .mockImplementation(async ({ where }: { where: UserWhereUniqueInput }) => {
+      const user = USERS.find(
+        (item) => item.id === where.id || item.email === where?.email,
+      );
+      return Promise.resolve(
+        user
+          ? {
+              ...user,
+              password: hashSync(user.password, 10),
+            }
+          : null,
+      );
+    }),
+  getUsers: jest.fn().mockImplementation(async ({ take }: { take?: number }) =>
+    Promise.resolve(
+      USERS.slice(0, clamp(0, USERS.length, take)).map((user) => ({
+        ...user,
+        password: hashSync(user.password, 10),
+      })),
     ),
-  getUsers: jest
-    .fn()
-    .mockImplementation(async ({ take }: { take?: number }) =>
-      Promise.resolve(Array(take).fill(USERS[0])),
-    ),
+  ),
   userCreate: jest
     .fn()
     .mockImplementation(async ({ data }: { data: UserCreateInput }) =>
