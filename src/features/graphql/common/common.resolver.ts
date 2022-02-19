@@ -1,7 +1,7 @@
-import { CommonService } from '@features/graphql/common/services';
-import { TestFailedError, TestPayload } from '@features/graphql/common/types';
 import { Query, Resolver } from '@nestjs/graphql';
-import { TypenameGraphQLError } from '@utils';
+import { TypenameGraphQLError } from '../../../utils';
+import { CommonService } from './services';
+import { TestFailedError, TestPayload } from './types';
 
 @Resolver(() => Boolean)
 export class CommonResolver {

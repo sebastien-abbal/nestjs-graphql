@@ -2,9 +2,9 @@ import {
   AuthAnonymousSuccess,
   AuthUserSuccess,
   WrongCredentialsError,
-} from '@features/graphql/auth/types';
+} from '../../auth/types';
 import { createUnionType } from '@nestjs/graphql';
-import { TypenameGraphQLError } from '@utils';
+import { TypenameGraphQLError } from '../../../../utils';
 
 export const AuthUserPayload = createUnionType({
   name: 'AuthUserPayload',

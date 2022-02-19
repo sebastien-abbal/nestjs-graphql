@@ -1,5 +1,3 @@
-import { config } from '@config';
-import { USERS, USER_AVATARS } from '@features/database/data/seed';
 import {
   INestApplication,
   Injectable,
@@ -7,6 +5,8 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { config } from '../../../config';
+import { USERS, USER_AVATARS } from '../../../features/database/data/seed';
 
 @Injectable()
 export class PrismaService

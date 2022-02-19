@@ -1,7 +1,7 @@
-import { GraphQLModule } from '@features/graphql/graphql.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import superRequest, { SuperTest, Test as TestItem } from 'supertest';
+import { GraphQLModule } from '../../features/graphql/graphql.module';
 
 describe('GraphQL - CommonModule (e2e)', () => {
   let app: INestApplication;

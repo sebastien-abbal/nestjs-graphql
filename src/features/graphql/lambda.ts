@@ -1,9 +1,9 @@
-import { config } from '@config';
-import { GraphQLModule } from '@features/graphql/graphql.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import serverlessExpress from '@vendia/serverless-express';
 import { APIGatewayProxyEvent, Callback, Context, Handler } from 'aws-lambda';
+import { config } from '../../config';
+import { GraphQLModule } from './graphql.module';
 
 let server: Handler;
 

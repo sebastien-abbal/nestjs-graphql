@@ -18,14 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "@features/*": ["./src/features/*"],
-      "@tests/*": ["./src/__tests/*"],
-      "@types": ["./src/@types"],
-      "@graphql": ["./src/@graphql/generated"],
-      "@utils": ["./src/utils"],
-      "@config": ["./src/config"]
-    }
+    "resolveJsonModule": true
   }
 }

@@ -1,4 +1,9 @@
-import { User, UserGender, UserLocale, UserRole } from '@graphql';
+import {
+  User,
+  UserGender,
+  UserLocale,
+  UserRole,
+} from '../../../../@graphql/generated';
 
 export const USER_PASSWORD = 'pikachu75';
 export const USERS: User[] = [

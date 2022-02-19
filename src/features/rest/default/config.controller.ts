@@ -1,7 +1,7 @@
-import { config, constants } from '@config';
-import { RestAuth } from '@features/rest/auth/auth.decorators';
-import { UserRole } from '@graphql';
 import { Controller, Get } from '@nestjs/common';
+import { UserRole } from '../../../@graphql/generated';
+import { config, constants } from '../../../config';
+import { RestAuth } from '../auth/auth.decorators';
 
 @Controller()
 export class ConfigController {

@@ -1,10 +1,10 @@
-import { config } from '@config';
-import { UserRoleNotRegistered } from '@features/graphql/auth/types';
-import { UserService } from '@features/graphql/user/services';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { IAuthTokenPayload } from '@types';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { IAuthTokenPayload } from '../../../../@types';
+import { config } from '../../../../config';
+import { UserRoleNotRegistered } from '../../../graphql/auth/types';
+import { UserService } from '../../../graphql/user/services';
 
 @Injectable()
 export class RestJwtStrategy extends PassportStrategy(Strategy) {

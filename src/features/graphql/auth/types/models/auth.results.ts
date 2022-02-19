@@ -1,5 +1,5 @@
-import { User } from '@graphql';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { User } from '../../../../../@graphql/generated';
 
 @ObjectType()
 export class AuthUserSuccess {

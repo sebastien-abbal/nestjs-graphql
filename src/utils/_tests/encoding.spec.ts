@@ -1,4 +1,4 @@
-import { base64Decode, base64Encode } from '@utils';
+import { base64Decode, base64Encode } from '../../utils';
 
 describe('Utils (Encoding)', () => {
   const valueDecoded = 'Dobby the best';

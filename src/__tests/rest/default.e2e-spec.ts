@@ -1,10 +1,10 @@
-import { USERS } from '@features/database/data/seed';
-import { WELCOME_MESSAGE } from '@features/rest/default/home.controller';
-import { RestModule } from '@features/rest/rest.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { generateAuthTokenForTest } from '@tests/services/auth/auth-test.service';
 import superRequest, { SuperTest, Test as TestItem } from 'supertest';
+import { USERS } from '../../features/database/data/seed';
+import { WELCOME_MESSAGE } from '../../features/rest/default/home.controller';
+import { RestModule } from '../../features/rest/rest.module';
+import { generateAuthTokenForTest } from '../services/auth/auth-test.service';
 
 describe('Rest - DefaultModule (e2e)', () => {
   let app: INestApplication;

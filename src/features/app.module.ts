@@ -1,9 +1,9 @@
-import { config } from '@config';
-import { AppService } from '@features/app.service';
-import { GraphQLModule } from '@features/graphql/graphql.module';
-import { RestModule } from '@features/rest/rest.module';
 import { Module } from '@nestjs/common';
-import { logger } from '@utils';
+import { config } from '../config';
+import { GraphQLModule } from '../features/graphql/graphql.module';
+import { logger } from '../utils';
+import { AppService } from './app.service';
+import { RestModule } from './rest/rest.module';
 
 @Module({
   imports: [GraphQLModule, RestModule],

@@ -1,4 +1,4 @@
-import { EnvType } from '@types';
+import { EnvType } from '../@types';
 
 export const PROD_ENV: EnvType = 'prod';
 export const PREPROD_ENV: EnvType = 'preprod';

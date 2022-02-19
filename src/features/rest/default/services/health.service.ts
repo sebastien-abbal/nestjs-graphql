@@ -1,6 +1,6 @@
-import { config, DEV_ENV } from '@config';
 import { Injectable } from '@nestjs/common';
 import { Prisma, PrismaClient } from '@prisma/client';
+import { config, DEV_ENV } from '../../../../config';
 
 @Injectable()
 export class HealthService {

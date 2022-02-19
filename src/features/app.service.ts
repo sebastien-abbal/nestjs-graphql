@@ -1,6 +1,6 @@
-import { config, constants } from '@config';
 import { Injectable } from '@nestjs/common';
-import { logger } from '@utils';
+import { config, constants } from '../config';
+import { logger } from '../utils';
 
 @Injectable()
 export class AppService {

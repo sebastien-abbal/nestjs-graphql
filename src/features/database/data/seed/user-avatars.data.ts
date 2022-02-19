@@ -1,4 +1,8 @@
-import { MediaProvider, MediaStatus, UserAvatarPicture } from '@graphql';
+import {
+  MediaProvider,
+  MediaStatus,
+  UserAvatarPicture,
+} from '../../../../@graphql/generated';
 import { USERS } from './users.data';
 
 export const USER_AVATARS: UserAvatarPicture[] = [

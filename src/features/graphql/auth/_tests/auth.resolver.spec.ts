@@ -1,11 +1,11 @@
-import { config } from '@config';
-import { USERS, USER_PASSWORD } from '@features/database/data/seed';
-import { GraphQLAuthResolver } from '@features/graphql/auth/auth.resolver';
-import { GraphQLAuthService } from '@features/graphql/auth/services';
-import { UserService } from '@features/graphql/user/services';
-import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
+import { config } from '../../../../config';
+import { USERS, USER_PASSWORD } from '../../../database/data/seed';
+import { UserService } from '../../user/services';
+import { mockedUserService } from '../../user/_mocks/user.service.mock';
+import { GraphQLAuthResolver } from '../auth.resolver';
+import { GraphQLAuthService } from '../services';
 
 describe('GraphQL Auth resolver', () => {
   let app: TestingModule;

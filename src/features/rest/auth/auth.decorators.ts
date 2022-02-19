@@ -1,4 +1,3 @@
-import { RestAuthGuard, RestRolesGuard } from '@features/rest/auth/guards';
 import {
   applyDecorators,
   createParamDecorator,
@@ -6,7 +5,8 @@ import {
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
-import { AuthUserRole } from '@types';
+import { AuthUserRole } from '../../../@types';
+import { RestAuthGuard, RestRolesGuard } from './guards';
 
 export const RestAuth = (...roles: AuthUserRole[]) => {
   return applyDecorators(

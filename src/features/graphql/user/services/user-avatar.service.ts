@@ -1,6 +1,10 @@
-import { PrismaService } from '@features/database/services';
-import { MediaStatus, UserAvatarPicture, UserWhereUniqueInput } from '@graphql';
 import { Injectable } from '@nestjs/common';
+import {
+  MediaStatus,
+  UserAvatarPicture,
+  UserWhereUniqueInput,
+} from '../../../../@graphql/generated';
+import { PrismaService } from '../../../database/services';
 
 @Injectable()
 export class UserAvatarService {

@@ -1,6 +1,6 @@
-import { constants } from '@config';
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional } from 'class-validator';
+import { constants } from '../../../../config';
 
 @ArgsType()
 export class ResourcesFilters {

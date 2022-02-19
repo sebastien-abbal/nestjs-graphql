@@ -1,7 +1,7 @@
-import { config } from '@config';
-import { USERS } from '@features/database/data/seed';
-import { generateAuthTokenForTest } from '@tests/services/auth/auth-test.service';
 import { verify } from 'jsonwebtoken';
+import { config } from '../../../config';
+import { USERS } from '../../../features/database/data/seed';
+import { generateAuthTokenForTest } from './auth-test.service';
 
 describe('Services for Test (Auth test)', () => {
   const user = USERS[1];

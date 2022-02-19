@@ -1,4 +1,3 @@
-import { constants } from '@config';
 import { Plugin } from '@nestjs/apollo';
 import { PayloadTooLargeException } from '@nestjs/common';
 import { GraphQLSchemaHost } from '@nestjs/graphql';
@@ -11,6 +10,7 @@ import {
   getComplexity,
   simpleEstimator,
 } from 'graphql-query-complexity';
+import { constants } from '../../../config';
 
 @Plugin()
 export class GraphQLComplexityPlugin implements ApolloServerPlugin {

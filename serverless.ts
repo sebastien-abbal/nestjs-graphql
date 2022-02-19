@@ -1,8 +1,8 @@
 import type { AWS } from '@serverless/typescript';
-import { AwsRegion } from '@types';
 import { config as dotEnvConfig } from 'dotenv';
 import * as envVar from 'env-var';
 import packageConfig from './package.json';
+import { AwsRegion } from './src/@types';
 
 dotEnvConfig();
 

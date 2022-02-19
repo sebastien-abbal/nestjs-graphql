@@ -1,15 +1,19 @@
-import { config } from '@config';
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { compare } from 'bcryptjs';
+import { User } from '../../../../@graphql/generated';
+import {
+  AuthTokenType,
+  AuthUserRole,
+  IAuthTokenPayload,
+} from '../../../../@types';
+import { config } from '../../../../config';
 import {
   AuthAnonymousSuccess,
   AuthUserInput,
   AuthUserSuccess,
-} from '@features/graphql/auth/types';
-import { UserService } from '@features/graphql/user/services';
-import { User } from '@graphql';
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { AuthTokenType, AuthUserRole, IAuthTokenPayload } from '@types';
-import { compare } from 'bcryptjs';
+} from '../../../graphql/auth/types';
+import { UserService } from '../../../graphql/user/services';
 
 @Injectable()
 export class GraphQLAuthService {

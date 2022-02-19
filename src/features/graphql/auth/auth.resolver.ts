@@ -1,13 +1,13 @@
-import { GraphQLAuthService } from '@features/graphql/auth/services';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { TypenameGraphQLError } from '../../../utils';
+import { GraphQLAuthService } from '../auth/services';
 import {
   AuthAnonymousPayload,
   AuthUserInput,
   AuthUserPayload,
   AuthUserSuccess,
   WrongCredentialsError,
-} from '@features/graphql/auth/types';
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { TypenameGraphQLError } from '@utils';
+} from '../auth/types';
 
 @Resolver(() => AuthUserSuccess)
 export class GraphQLAuthResolver {

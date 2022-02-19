@@ -1,9 +1,9 @@
-import { USERS } from '@features/database/data/seed';
 import {
   UserCreateInput,
   UserUpdateInput,
   UserWhereUniqueInput,
-} from '@graphql';
+} from '../../../../@graphql/generated';
+import { USERS } from '../../../database/data/seed';
 
 export enum UserRole {
   ADMIN = 'ADMIN',

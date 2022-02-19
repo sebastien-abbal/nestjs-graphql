@@ -1,7 +1,11 @@
-import { config } from '@config';
-import { USERS } from '@features/database/data/seed';
-import { AuthTokenType, AuthUserRole, IAuthTokenPayload } from '@types';
 import { sign } from 'jsonwebtoken';
+import {
+  AuthTokenType,
+  AuthUserRole,
+  IAuthTokenPayload,
+} from '../../../@types';
+import { config } from '../../../config';
+import { USERS } from '../../../features/database/data/seed';
 
 export const generateAuthTokenForTest = ({
   userID,

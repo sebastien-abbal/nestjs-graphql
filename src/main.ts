@@ -1,8 +1,7 @@
-import { config } from '@config';
-import { AppModule } from '@features/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { Logger } from 'nestjs-pino';
+import { config } from './config';
+import { AppModule } from './features/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -13,7 +12,7 @@ async function bootstrap() {
   });
 
   // Logger
-  if (config.app.isLoggerEnabled) app.useLogger(app.get(Logger));
+  // if (config.app.isLoggerEnabled) app.useLogger(app.get(Logger));
 
   // Validation
   app.useGlobalPipes(new ValidationPipe());

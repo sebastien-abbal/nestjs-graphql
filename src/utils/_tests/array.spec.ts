@@ -1,4 +1,4 @@
-import { chunkArray } from '@utils';
+import { chunkArray } from '../../utils';
 
 describe('Utils (Array)', () => {
   describe('chunkArray function', () => {

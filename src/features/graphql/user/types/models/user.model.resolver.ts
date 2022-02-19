@@ -1,8 +1,9 @@
-import { UserAvatarService } from '@features/graphql/user/services';
-import { User, UserAvatarPicture } from '@graphql';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
+import { UserSuccess } from '..';
+import { User, UserAvatarPicture } from '../../../../../@graphql/generated';
+import { UserAvatarService } from '../../../user/services';
 
-@Resolver(() => User)
+@Resolver(() => UserSuccess)
 export class UserModelResolver {
   constructor(private userAvatarService: UserAvatarService) {}
 

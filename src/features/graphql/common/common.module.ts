@@ -1,6 +1,6 @@
-import { CommonResolver } from '@features/graphql/common/common.resolver';
-import { CommonService } from '@features/graphql/common/services';
 import { Module } from '@nestjs/common';
+import { CommonResolver } from './common.resolver';
+import { CommonService } from './services';
 
 @Module({
   providers: [CommonResolver, CommonService],

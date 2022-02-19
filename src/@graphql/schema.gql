@@ -176,7 +176,6 @@ type TestSuccess {
 
 type User {
   _count: UserCount!
-  avatar: UserAvatarPicture
   createdAt: DateTime!
   deletedAt: DateTime
   email: String!
@@ -393,6 +392,7 @@ enum UserRole {
 }
 
 type UserSuccess {
+  avatar: UserAvatarPicture
   user: User!
 }
 
