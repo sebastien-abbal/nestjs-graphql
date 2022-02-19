@@ -50,14 +50,8 @@ export class UserGroupBy {
     @Field(() => String, {nullable:true})
     urlLinkedin?: string;
 
-    @Field(() => Boolean, {nullable:false})
-    isTermsAccepted!: boolean;
-
     @HideField()
     termsAcceptedAt!: Date | string;
-
-    @Field(() => Boolean, {nullable:false})
-    isBanned!: boolean;
 
     @HideField()
     bannedAt?: Date | string;

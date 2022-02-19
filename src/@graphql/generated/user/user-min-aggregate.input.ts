@@ -42,13 +42,7 @@ export class UserMinAggregateInput {
     urlLinkedin?: true;
 
     @HideField()
-    isTermsAccepted?: true;
-
-    @HideField()
     termsAcceptedAt?: true;
-
-    @HideField()
-    isBanned?: true;
 
     @HideField()
     bannedAt?: true;

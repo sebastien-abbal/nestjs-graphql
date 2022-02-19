@@ -10,6 +10,7 @@ import { GraphQLAuthService } from '../services';
 describe('GraphQL Auth resolver', () => {
   let app: TestingModule;
   let authResolver: GraphQLAuthResolver;
+  const CURRENT_USER = USERS[0];
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
@@ -44,12 +45,12 @@ describe('GraphQL Auth resolver', () => {
       it('should returns an user auth payload', async () => {
         expect(
           await authResolver.authUser({
-            email: USERS[0].email,
+            email: CURRENT_USER.email,
             password: USER_PASSWORD,
           }),
         ).toEqual(
           expect.objectContaining({
-            user: expect.objectContaining({ id: USERS[0].id }),
+            user: expect.objectContaining({ id: CURRENT_USER.id }),
             accessToken: expect.any(String),
             refreshToken: expect.any(String),
           }),
@@ -59,7 +60,7 @@ describe('GraphQL Auth resolver', () => {
       it('should return an error with code [WrongCredentialsError]', async () => {
         expect(
           await authResolver.authUser({
-            email: USERS[0].email,
+            email: CURRENT_USER.email,
             password: 'xxx-wrong-xxx',
           }),
         ).toEqual(

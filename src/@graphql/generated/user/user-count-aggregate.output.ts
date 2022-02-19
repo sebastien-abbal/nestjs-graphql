@@ -45,14 +45,8 @@ export class UserCountAggregate {
     @Field(() => Int, {nullable:false})
     urlLinkedin!: number;
 
-    @Field(() => Int, {nullable:false})
-    isTermsAccepted!: number;
-
     @HideField()
     termsAcceptedAt!: number;
-
-    @Field(() => Int, {nullable:false})
-    isBanned!: number;
 
     @HideField()
     bannedAt!: number;

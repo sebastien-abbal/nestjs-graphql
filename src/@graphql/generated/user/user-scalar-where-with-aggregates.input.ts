@@ -62,13 +62,7 @@ export class UserScalarWhereWithAggregatesInput {
     urlLinkedin?: StringNullableWithAggregatesFilter;
 
     @HideField()
-    isTermsAccepted?: BoolWithAggregatesFilter;
-
-    @HideField()
     termsAcceptedAt?: DateTimeWithAggregatesFilter;
-
-    @HideField()
-    isBanned?: BoolWithAggregatesFilter;
 
     @HideField()
     bannedAt?: DateTimeNullableWithAggregatesFilter;

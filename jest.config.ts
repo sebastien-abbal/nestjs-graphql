@@ -4,13 +4,12 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
-  testRegex: '.spec.ts$',
+  testRegex: '.*\\.spec\\.ts$',
   testPathIgnorePatterns: [
     '<rootDir>/dist/',
     '<rootDir>/prisma/',
     '<rootDir>/bin/',
     '<rootDir>/node_modules/',
     '<rootDir>/.github/',
-    '<rootDir>/src/__tests/',
   ],
 };

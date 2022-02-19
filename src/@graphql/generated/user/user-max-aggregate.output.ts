@@ -43,14 +43,8 @@ export class UserMaxAggregate {
     @Field(() => String, {nullable:true})
     urlLinkedin?: string;
 
-    @Field(() => Boolean, {nullable:true})
-    isTermsAccepted?: boolean;
-
     @HideField()
     termsAcceptedAt?: Date | string;
-
-    @Field(() => Boolean, {nullable:true})
-    isBanned?: boolean;
 
     @HideField()
     bannedAt?: Date | string;

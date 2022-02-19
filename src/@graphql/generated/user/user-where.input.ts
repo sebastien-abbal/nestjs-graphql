@@ -63,13 +63,7 @@ export class UserWhereInput {
     urlLinkedin?: StringNullableFilter;
 
     @HideField()
-    isTermsAccepted?: BoolFilter;
-
-    @HideField()
     termsAcceptedAt?: DateTimeFilter;
-
-    @HideField()
-    isBanned?: BoolFilter;
 
     @HideField()
     bannedAt?: DateTimeNullableFilter;

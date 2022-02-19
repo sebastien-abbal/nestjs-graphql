@@ -53,13 +53,7 @@ export class UserUncheckedCreateInput {
     urlLinkedin?: string;
 
     @HideField()
-    isTermsAccepted?: boolean;
-
-    @HideField()
     termsAcceptedAt?: Date | string;
-
-    @HideField()
-    isBanned?: boolean;
 
     @HideField()
     bannedAt?: Date | string;

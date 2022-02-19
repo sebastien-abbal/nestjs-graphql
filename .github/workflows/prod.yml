@@ -55,7 +55,7 @@ jobs:
 
       # Test
       - name: Test app
-        run: yarn test:e2e
+        run: yarn test:full
         env:
           NODE_ENV: test
           APP_PORT: 3000

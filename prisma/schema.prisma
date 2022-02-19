@@ -75,12 +75,8 @@ model User {
   /// @Validator.IsUrl()
   /// @Validator.IsOptional()
   urlLinkedin     String?
-  /// @HideField({ input: true })
-  isTermsAccepted Boolean             @default(true)
   /// @HideField({ input: true, output: true })
   termsAcceptedAt DateTime            @default(now())
-  /// @HideField({ input: true })
-  isBanned        Boolean             @default(false)
   /// @HideField({ input: true, output: true })
   bannedAt        DateTime?
   /// @HideField({ input: true })

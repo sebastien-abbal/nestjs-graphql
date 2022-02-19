@@ -45,13 +45,7 @@ export class UserCountAggregateInput {
     urlLinkedin?: true;
 
     @HideField()
-    isTermsAccepted?: true;
-
-    @HideField()
     termsAcceptedAt?: true;
-
-    @HideField()
-    isBanned?: true;
 
     @HideField()
     bannedAt?: true;

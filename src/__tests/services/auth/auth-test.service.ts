@@ -6,8 +6,9 @@ import {
 } from '../../../@types';
 import { config } from '../../../config';
 import { USERS } from '../../../features/database/data/seed';
+import { UserRoleNotRegistered } from '../../../features/graphql/auth/types';
 
-export const generateAuthTokenForTest = ({
+export const generateUserAuthTokenForTest = ({
   userID,
   type,
   roles,
@@ -20,6 +21,26 @@ export const generateAuthTokenForTest = ({
   const payload: IAuthTokenPayload = {
     userID: user ? user.id : userID,
     roles: roles ? roles : (user.roles as AuthUserRole[]),
+    type,
+  };
+
+  return sign(payload, config.auth.jwtPrivateKey, {
+    algorithm: 'RS256',
+    expiresIn:
+      type === 'ACCESS_TOKEN'
+        ? config.auth.jwtAccessTokenExpirationTimeInSeconds
+        : config.auth.jwtRefreshTokenExpirationTimeInSeconds,
+  });
+};
+
+export const generateAnonymousAuthTokenForTest = ({
+  type,
+}: {
+  type: AuthTokenType;
+}) => {
+  const payload: IAuthTokenPayload = {
+    userID: null,
+    roles: [UserRoleNotRegistered.ANONYMOUS],
     type,
   };
 

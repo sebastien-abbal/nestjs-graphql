@@ -1,9 +1,10 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import superRequest, { SuperTest, Test as TestItem } from 'supertest';
-import { GraphQLModule } from '../../features/graphql/graphql.module';
+import { prisma } from '../../../features/database/services/prisma.service';
+import { GraphQLModule } from '../../../features/graphql/graphql.module';
 
-describe('GraphQL - CommonModule (e2e)', () => {
+describe('GraphQL - CommonModule', () => {
   let app: INestApplication;
   let request: SuperTest<TestItem>;
 
@@ -20,21 +21,29 @@ describe('GraphQL - CommonModule (e2e)', () => {
   });
 
   describe('Query - Test', () => {
-    it('should return the test query with typename TestSuccess (code: 200)', async () => {
+    const query = `
+      query {
+        test {
+          __typename
+        }
+      }
+    `;
+
+    it('should return typename TestSuccess', async () => {
       return request
         .post('/graphql')
         .send({
-          query: `
-            query {
-              test {
-                __typename
-              }
-            }`,
+          query,
         })
         .then((res) => {
           expect(res.status).toBe(200);
-          expect(res.body.data.test.__typename).toBe('TestSuccess');
+          expect(res.body.data?.test?.__typename).toBe('TestSuccess');
         });
     });
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+    await app.close();
   });
 });

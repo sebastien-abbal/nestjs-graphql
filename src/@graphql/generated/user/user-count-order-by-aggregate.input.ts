@@ -46,13 +46,7 @@ export class UserCountOrderByAggregateInput {
     urlLinkedin?: keyof typeof SortOrder;
 
     @HideField()
-    isTermsAccepted?: keyof typeof SortOrder;
-
-    @HideField()
     termsAcceptedAt?: keyof typeof SortOrder;
-
-    @HideField()
-    isBanned?: keyof typeof SortOrder;
 
     @HideField()
     bannedAt?: keyof typeof SortOrder;

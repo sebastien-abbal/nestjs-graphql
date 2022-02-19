@@ -25,9 +25,7 @@ export const USERS: User[] = [
     gender: UserGender.MALE,
     urlLinkedin: null,
     bannedAt: null,
-    isBanned: false,
     deletedAt: null,
-    isTermsAccepted: true,
     termsAcceptedAt: new Date('01-01-2022'),
   },
   {
@@ -48,9 +46,7 @@ export const USERS: User[] = [
     gender: UserGender.FEMALE,
     urlLinkedin: null,
     bannedAt: null,
-    isBanned: false,
     deletedAt: null,
-    isTermsAccepted: true,
     termsAcceptedAt: new Date('01-02-2022'),
   },
   {
@@ -71,9 +67,7 @@ export const USERS: User[] = [
     gender: UserGender.MALE,
     urlLinkedin: null,
     bannedAt: null,
-    isBanned: false,
     deletedAt: null,
-    isTermsAccepted: true,
     termsAcceptedAt: new Date('01-01-2022'),
   },
 ];

@@ -16,8 +16,10 @@ import { mockedUserService } from '../_mocks/user.service.mock';
 
 describe('User resolver', () => {
   let app: TestingModule;
-
   let userResolver: UserResolver;
+  const CURRENT_USER = USERS[0];
+  const ADMIN_USER = USERS[1];
+  const OTHER_USER = USERS[2];
 
   beforeAll(async () => {
     app = await Test.createTestingModule({
@@ -45,9 +47,9 @@ describe('User resolver', () => {
       });
 
       it('should return an user', async () => {
-        expect(await userResolver.user({ id: USERS[0].id })).toEqual(
+        expect(await userResolver.user({ id: CURRENT_USER.id })).toEqual(
           expect.objectContaining({
-            user: expect.objectContaining({ id: USERS[0].id }),
+            user: expect.objectContaining({ id: CURRENT_USER.id }),
           }),
         );
       });
@@ -66,7 +68,7 @@ describe('User resolver', () => {
         expect(usersPayload).toEqual(
           expect.objectContaining({
             users: expect.arrayContaining([
-              expect.objectContaining({ id: USERS[0].id }),
+              expect.objectContaining({ id: CURRENT_USER.id }),
             ]),
           }),
         );
@@ -113,7 +115,7 @@ describe('User resolver', () => {
       });
 
       it('should return an error with code [UserAlreadyExistsError]', async () => {
-        const { email, firstName, lastName } = USERS[0];
+        const { email, firstName, lastName } = CURRENT_USER;
         const password = `${faker.animal.type()}${random(
           1900,
           new Date().getFullYear(),
@@ -142,7 +144,7 @@ describe('User resolver', () => {
         expect(userResolver.userUpdate).toBeDefined();
       });
 
-      it('should return an updated user', async () => {
+      it('should return an updated user from current user', async () => {
         const firstName = faker.name.firstName();
         const lastName = faker.name.lastName();
         const email = `${firstName.toLowerCase()}@${lastName.toLowerCase()}.com`;
@@ -153,14 +155,45 @@ describe('User resolver', () => {
 
         expect(
           await userResolver.userUpdate(
-            { id: USERS[0].id },
+            { id: CURRENT_USER.id },
             {
               email,
               firstName,
               lastName,
               password,
             },
-            USERS[0],
+            CURRENT_USER,
+          ),
+        ).toEqual(
+          expect.objectContaining({
+            user: expect.objectContaining({
+              email,
+              firstName,
+              lastName,
+            }),
+          }),
+        );
+      });
+
+      it('should return an updated user from admin user', async () => {
+        const firstName = faker.name.firstName();
+        const lastName = faker.name.lastName();
+        const email = `${firstName.toLowerCase()}@${lastName.toLowerCase()}.com`;
+        const password = `${faker.animal.type()}${random(
+          1900,
+          new Date().getFullYear(),
+        )}`;
+
+        expect(
+          await userResolver.userUpdate(
+            { id: CURRENT_USER.id },
+            {
+              email,
+              firstName,
+              lastName,
+              password,
+            },
+            ADMIN_USER,
           ),
         ).toEqual(
           expect.objectContaining({
@@ -184,7 +217,7 @@ describe('User resolver', () => {
             { id: faker.datatype.uuid() },
             { password },
             {
-              ...USERS[0],
+              ...CURRENT_USER,
               roles: [UserRole.ADMIN],
             },
           ),
@@ -204,9 +237,9 @@ describe('User resolver', () => {
 
         expect(
           await userResolver.userUpdate(
-            { id: USERS[1].id },
+            { id: OTHER_USER.id },
             { password },
-            USERS[0],
+            CURRENT_USER,
           ),
         ).toEqual(
           expect.objectContaining({
@@ -222,13 +255,28 @@ describe('User resolver', () => {
         expect(userResolver.userDelete).toBeDefined();
       });
 
-      it('should return a deleted user', async () => {
+      it('should return a deleted user from current user', async () => {
         expect(
           await userResolver.userDelete(
             {
-              id: USERS[0].id,
+              id: CURRENT_USER.id,
             },
-            USERS[0],
+            CURRENT_USER,
+          ),
+        ).toEqual(
+          expect.objectContaining({
+            isDeleted: true,
+          }),
+        );
+      });
+
+      it('should return a deleted user from admin user', async () => {
+        expect(
+          await userResolver.userDelete(
+            {
+              id: CURRENT_USER.id,
+            },
+            ADMIN_USER,
           ),
         ).toEqual(
           expect.objectContaining({
@@ -242,7 +290,7 @@ describe('User resolver', () => {
           await userResolver.userDelete(
             { id: faker.datatype.uuid() },
             {
-              ...USERS[0],
+              ...CURRENT_USER,
               roles: [UserRole.ADMIN],
             },
           ),
@@ -256,7 +304,7 @@ describe('User resolver', () => {
 
       it('should return an error with code [NotAuthorizedError]', async () => {
         expect(
-          await userResolver.userDelete({ id: USERS[1].id }, USERS[0]),
+          await userResolver.userDelete({ id: OTHER_USER.id }, CURRENT_USER),
         ).toEqual(
           expect.objectContaining({
             code: 'NotAuthorizedError',

@@ -1,44 +1,86 @@
 import { verify } from 'jsonwebtoken';
 import { config } from '../../../config';
 import { USERS } from '../../../features/database/data/seed';
-import { generateAuthTokenForTest } from './auth-test.service';
+import { UserRoleNotRegistered } from '../../../features/graphql/auth/types';
+import {
+  generateAnonymousAuthTokenForTest,
+  generateUserAuthTokenForTest,
+} from './auth-test.service';
 
 describe('Services for Test (Auth test)', () => {
-  const user = USERS[1];
+  const CURRENT_USER = USERS[0];
 
-  it('should return a valid auth token', () => {
-    const authToken = generateAuthTokenForTest({
-      userID: user.id,
-      type: 'ACCESS_TOKEN',
+  describe('generateAnonymousAuthTokenForTest function', () => {
+    it('should return a valid auth token', () => {
+      const authToken = generateAnonymousAuthTokenForTest({
+        type: 'ACCESS_TOKEN',
+      });
+
+      expect(typeof authToken).toBe('string');
+
+      const decodedToken = verify(authToken, config.auth.jwtPublicKey);
+      expect(decodedToken).toMatchObject({
+        userID: null,
+        type: 'ACCESS_TOKEN',
+        roles: [UserRoleNotRegistered.ANONYMOUS],
+        iat: expect.any(Number),
+        exp: expect.any(Number),
+      });
     });
 
-    expect(typeof authToken).toBe('string');
+    it('should return a valid refresh token', () => {
+      const refreshToken = generateAnonymousAuthTokenForTest({
+        type: 'REFRESH_TOKEN',
+      });
 
-    const decodedToken = verify(authToken, config.auth.jwtPublicKey);
-    expect(decodedToken).toMatchObject({
-      userID: user.id,
-      type: 'ACCESS_TOKEN',
-      roles: user.roles,
-      iat: expect.any(Number),
-      exp: expect.any(Number),
+      expect(typeof refreshToken).toBe('string');
+
+      const decodedToken = verify(refreshToken, config.auth.jwtPublicKey);
+      expect(decodedToken).toMatchObject({
+        userID: null,
+        type: 'REFRESH_TOKEN',
+        roles: [UserRoleNotRegistered.ANONYMOUS],
+        iat: expect.any(Number),
+        exp: expect.any(Number),
+      });
     });
   });
 
-  it('should return a valid refresh token', () => {
-    const refreshToken = generateAuthTokenForTest({
-      userID: user.id,
-      type: 'REFRESH_TOKEN',
+  describe('generateUserAuthTokenForTest function', () => {
+    it('should return a valid auth token', () => {
+      const authToken = generateUserAuthTokenForTest({
+        userID: CURRENT_USER.id,
+        type: 'ACCESS_TOKEN',
+      });
+
+      expect(typeof authToken).toBe('string');
+
+      const decodedToken = verify(authToken, config.auth.jwtPublicKey);
+      expect(decodedToken).toMatchObject({
+        userID: CURRENT_USER.id,
+        type: 'ACCESS_TOKEN',
+        roles: CURRENT_USER.roles,
+        iat: expect.any(Number),
+        exp: expect.any(Number),
+      });
     });
 
-    expect(typeof refreshToken).toBe('string');
+    it('should return a valid refresh token', () => {
+      const refreshToken = generateUserAuthTokenForTest({
+        userID: CURRENT_USER.id,
+        type: 'REFRESH_TOKEN',
+      });
 
-    const decodedToken = verify(refreshToken, config.auth.jwtPublicKey);
-    expect(decodedToken).toMatchObject({
-      userID: user.id,
-      type: 'REFRESH_TOKEN',
-      roles: user.roles,
-      iat: expect.any(Number),
-      exp: expect.any(Number),
+      expect(typeof refreshToken).toBe('string');
+
+      const decodedToken = verify(refreshToken, config.auth.jwtPublicKey);
+      expect(decodedToken).toMatchObject({
+        userID: CURRENT_USER.id,
+        type: 'REFRESH_TOKEN',
+        roles: CURRENT_USER.roles,
+        iat: expect.any(Number),
+        exp: expect.any(Number),
+      });
     });
   });
 });

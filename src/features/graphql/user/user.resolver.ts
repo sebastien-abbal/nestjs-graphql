@@ -31,7 +31,9 @@ export class UserResolver {
 
   @Query(() => UserPayload)
   @GraphQLAuth(UserRole.USER)
-  async user(where: UserWhereUniqueInput): Promise<typeof UserPayload> {
+  async user(
+    @Args('where') where: UserWhereUniqueInput,
+  ): Promise<typeof UserPayload> {
     const targetedUser = await this.userService.getUser({
       where,
     });
@@ -45,9 +47,9 @@ export class UserResolver {
   @GraphQLAuth(UserRole.USER)
   async users(
     @Args() filters?: ResourcesFilters,
-    @Args('cursor') cursor?: UserWhereUniqueInput,
-    @Args('where') where?: UserWhereInput,
-    @Args('orderBy') orderBy?: UserOrderByWithRelationInput,
+    @Args('cursor', { nullable: true }) cursor?: UserWhereUniqueInput,
+    @Args('where', { nullable: true }) where?: UserWhereInput,
+    @Args('orderBy', { nullable: true }) orderBy?: UserOrderByWithRelationInput,
   ): Promise<typeof UsersPayload> {
     const targetedUsers = await this.userService.getUsers({
       cursor,

@@ -53,13 +53,7 @@ export class UserCreateInput {
     urlLinkedin?: string;
 
     @HideField()
-    isTermsAccepted?: boolean;
-
-    @HideField()
     termsAcceptedAt?: Date | string;
-
-    @HideField()
-    isBanned?: boolean;
 
     @HideField()
     bannedAt?: Date | string;

@@ -50,14 +50,8 @@ export class User {
     @Field(() => String, {nullable:true})
     urlLinkedin!: string | null;
 
-    @Field(() => Boolean, {nullable:false,defaultValue:true})
-    isTermsAccepted!: boolean;
-
     @HideField()
     termsAcceptedAt!: Date;
-
-    @Field(() => Boolean, {nullable:false,defaultValue:false})
-    isBanned!: boolean;
 
     @HideField()
     bannedAt!: Date | null;

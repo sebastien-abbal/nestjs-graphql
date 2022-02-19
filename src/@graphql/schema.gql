@@ -119,8 +119,8 @@ type NotAuthorizedError implements Error {
 
 type Query {
   test: TestPayload!
-  user: UserPayload!
-  users(cursor: UserWhereUniqueInput!, orderBy: UserOrderByWithRelationInput!, skip: Int = 0, take: Int = 20, where: UserWhereInput!): UsersPayload!
+  user(where: UserWhereUniqueInput!): UserPayload!
+  users(cursor: UserWhereUniqueInput, orderBy: UserOrderByWithRelationInput, skip: Int = 0, take: Int = 20, where: UserWhereInput): UsersPayload!
 }
 
 enum QueryMode {
@@ -182,10 +182,8 @@ type User {
   firstName: String!
   gender: UserGender!
   id: ID!
-  isBanned: Boolean!
   isEmailVerified: Boolean!
   isPhoneVerified: Boolean!
-  isTermsAccepted: Boolean!
   lastLoginAt: DateTime!
   lastName: String!
   locale: UserLocale!
@@ -283,10 +281,8 @@ type UserCountAggregate {
   firstName: Int!
   gender: Int!
   id: Int!
-  isBanned: Int!
   isEmailVerified: Int!
   isPhoneVerified: Int!
-  isTermsAccepted: Int!
   lastLoginAt: Int!
   lastName: Int!
   locale: Int!
@@ -332,10 +328,8 @@ type UserMaxAggregate {
   firstName: String
   gender: UserGender
   id: String
-  isBanned: Boolean
   isEmailVerified: Boolean
   isPhoneVerified: Boolean
-  isTermsAccepted: Boolean
   lastLoginAt: DateTime
   lastName: String
   locale: UserLocale
@@ -352,10 +346,8 @@ type UserMinAggregate {
   firstName: String
   gender: UserGender
   id: String
-  isBanned: Boolean
   isEmailVerified: Boolean
   isPhoneVerified: Boolean
-  isTermsAccepted: Boolean
   lastLoginAt: DateTime
   lastName: String
   locale: UserLocale
