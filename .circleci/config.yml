@@ -1,10 +1,6 @@
 version: 2.1
 name: CI-PROD
 
-on:
-  release:
-    types: [published]
-
 jobs:
   build:
     runs-on: ubuntu-latest
