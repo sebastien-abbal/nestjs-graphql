@@ -16,13 +16,13 @@ jobs:
     steps:
       - checkout
       - run: echo "Build project"
-      - yarn install
-      - yarn build
+      - run: yarn install
+      - run: yarn build
 
 workflows:
   test_build:
     jobs:
       - test
       - build:
-        requires:
-          - test
+          requires:
+            - test
