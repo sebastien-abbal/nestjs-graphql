@@ -1,26 +1,75 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+name: CI-PROD
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+on:
+  release:
+    types: [published]
+
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+  build:
+    runs-on: ubuntu-latest
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+    services:
+      postgres:z
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Actions checkout
+        uses: actions/checkout@v2
+
+      - name: Set up node
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '14'
+
+      # Build
+      - name: Install packages
+        run: yarn
+
+      - name: Build app
+        run: yarn build
+
+      - name: Build database
+        run: yarn migrate:deploy && yarn script:seed-generator
+        env:
+          NODE_ENV: test
+          APP_PORT: 3000
+          APP_HOST: localhost
+          AWS_REGION: eu-west-3
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
+          JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+
+      # Test
+      - name: Test app
+        run: yarn test:full
+        env:
+          NODE_ENV: test
+          APP_PORT: 3000
+          APP_HOST: localhost
+          AWS_REGION: eu-west-3
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+          JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
+          JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000
+          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
+      - build
