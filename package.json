@@ -1,8 +1,8 @@
 {
-  "name": "ms-api",
+  "name": "nestjs-graphql",
   "version": "0.0.1",
-  "description": "A MariaSchools api to provide services to the company and their customers.",
-  "author": "MariaSchools",
+  "description": "A graphql nestjs project",
+  "author": "ABBAL Sébastien",
   "private": true,
   "license": "MIT",
   "scripts": {
