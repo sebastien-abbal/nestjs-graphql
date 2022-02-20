@@ -1,12 +1,8 @@
+import { config } from '@config';
+import { USERS } from '@features/database/data/seed';
+import { UserRoleNotRegistered } from '@features/graphql/auth/types';
+import { AuthTokenType, AuthUserRole, IAuthTokenPayload } from '@types';
 import { sign } from 'jsonwebtoken';
-import {
-  AuthTokenType,
-  AuthUserRole,
-  IAuthTokenPayload,
-} from '../../../@types';
-import { config } from '../../../config';
-import { USERS } from '../../../features/database/data/seed';
-import { UserRoleNotRegistered } from '../../../features/graphql/auth/types';
 
 export const generateUserAuthTokenForTest = ({
   userID,

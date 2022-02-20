@@ -1,6 +1,4 @@
-import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { TypenameGraphQLError } from '../../../utils';
-import { GraphQLAuthService } from '../auth/services';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
 import {
   AuthAnonymousPayload,
   AuthRefreshPayload,
@@ -11,9 +9,11 @@ import {
   UserDeletedError,
   WrongAuthTokenFormatError,
   WrongCredentialsError,
-} from '../auth/types';
-import { UserService } from '../user/services';
-import { AuthRefreshInput } from './types/inputs/auth-refresh.inputs';
+} from '@features/graphql/auth/types';
+import { AuthRefreshInput } from '@features/graphql/auth/types/inputs/auth-refresh.inputs';
+import { UserService } from '@features/graphql/user/services';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { TypenameGraphQLError } from '@utils';
 
 @Resolver(() => AuthUserSuccess)
 export class GraphQLAuthResolver {

@@ -1,4 +1,4 @@
-import { capitalize, nestFileFormatToCamelCase } from '../../utils';
+import { capitalize, nestFileFormatToCamelCase } from '@utils';
 
 describe('Utils (String)', () => {
   describe('capitalize function', () => {

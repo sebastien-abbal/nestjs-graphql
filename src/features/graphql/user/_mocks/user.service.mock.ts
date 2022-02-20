@@ -1,11 +1,7 @@
+import { USERS } from '@features/database/data/seed';
+import { UserCreateInput, UserUpdateInput, UserWhereUniqueInput } from '@types';
+import { clamp } from '@utils';
 import { hashSync } from 'bcrypt';
-import {
-  UserCreateInput,
-  UserUpdateInput,
-  UserWhereUniqueInput,
-} from '../../../../@graphql/generated';
-import { clamp } from '../../../../utils';
-import { USERS } from '../../../database/data/seed';
 
 export const mockedUserService = {
   getUser: jest

@@ -1,4 +1,4 @@
-import { TypenameGraphQLError } from '../../utils';
+import { TypenameGraphQLError } from '@utils';
 
 describe('Utils (GraphQL)', () => {
   describe('generateGraphQLError function', () => {

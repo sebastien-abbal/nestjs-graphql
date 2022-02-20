@@ -1,8 +1,8 @@
+import { ConfigController } from '@features/rest/default/config.controller';
+import { HealthController } from '@features/rest/default/health.controller';
+import { HomeController } from '@features/rest/default/home.controller';
+import { HealthService } from '@features/rest/default/services/health.service';
 import { Module } from '@nestjs/common';
-import { ConfigController } from './config.controller';
-import { HealthController } from './health.controller';
-import { HomeController } from './home.controller';
-import { HealthService } from './services/health.service';
 
 @Module({
   controllers: [HomeController, ConfigController, HealthController],

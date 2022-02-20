@@ -1,19 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ResourcesFilters } from '@features/database/types';
 import {
-  User,
-  UserCreateInput,
-  UserOrderByWithRelationInput,
-  UserRole,
-  UserUpdateInput,
-  UserWhereInput,
-  UserWhereUniqueInput,
-} from '../../../@graphql/generated';
-import { TypenameGraphQLError } from '../../../utils';
-import { ResourcesFilters } from '../../database/types';
-import { GraphQLAuth, GraphQLCurrentUser } from '../auth/auth.decorators';
-import { UserRoleNotRegistered } from '../auth/types';
-import { NotAuthorizedError } from '../common/types';
-import { UserService } from './services';
+  GraphQLAuth,
+  GraphQLCurrentUser,
+} from '@features/graphql/auth/auth.decorators';
+import { UserRoleNotRegistered } from '@features/graphql/auth/types';
+import { NotAuthorizedError } from '@features/graphql/common/types';
+import { UserService } from '@features/graphql/user/services';
 import {
   UserAlreadyExistsError,
   UserCreatePayload,
@@ -23,7 +15,18 @@ import {
   UsersPayload,
   UserSuccess,
   UserUpdatePayload,
-} from './types';
+} from '@features/graphql/user/types';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  User,
+  UserCreateInput,
+  UserOrderByWithRelationInput,
+  UserRole,
+  UserUpdateInput,
+  UserWhereInput,
+  UserWhereUniqueInput,
+} from '@types';
+import { TypenameGraphQLError } from '@utils';
 
 @Resolver(() => UserSuccess)
 export class UserResolver {

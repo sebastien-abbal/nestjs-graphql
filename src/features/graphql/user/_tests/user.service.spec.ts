@@ -1,7 +1,7 @@
+import { PrismaService } from '@features/database/services';
+import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
+import { UserService } from '@features/graphql/user/services';
 import { Test, TestingModule } from '@nestjs/testing';
-import { PrismaService } from '../../../database/services';
-import { mockedPrismaService } from '../../../database/_mocks/database.service.mock';
-import { UserService } from '../services';
 
 describe('User service', () => {
   let userService: UserService;

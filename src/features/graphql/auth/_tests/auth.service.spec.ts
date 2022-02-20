@@ -1,11 +1,11 @@
+import { config } from '@config';
+import { PrismaService } from '@features/database/services';
+import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
+import { UserService } from '@features/graphql/user/services';
+import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { config } from '../../../../config';
-import { PrismaService } from '../../../database/services';
-import { mockedPrismaService } from '../../../database/_mocks/database.service.mock';
-import { UserService } from '../../user/services';
-import { mockedUserService } from '../../user/_mocks/user.service.mock';
-import { GraphQLAuthService } from '../services';
 
 describe('GraphQL Auth service', () => {
   let authService: GraphQLAuthService;

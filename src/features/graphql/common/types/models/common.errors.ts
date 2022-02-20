@@ -1,4 +1,4 @@
-import { Error } from '../common.interfaces';
+import { Error } from '@features/graphql/common/types/common.interfaces';
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType({

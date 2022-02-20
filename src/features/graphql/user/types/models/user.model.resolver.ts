@@ -1,6 +1,6 @@
+import { UserAvatarService } from '@features/graphql/user/services';
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { User, UserAvatarPicture } from '../../../../../@graphql/generated';
-import { UserAvatarService } from '../../../user/services';
+import { User, UserAvatarPicture } from '@types';
 
 @Resolver(() => User)
 export class UserModelResolver {

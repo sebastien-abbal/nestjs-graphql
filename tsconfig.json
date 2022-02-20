@@ -18,6 +18,13 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@features/*": ["./src/features/*"],
+      "@tests/*": ["./__tests/*"],
+      "@utils": ["./src/utils"],
+      "@config": ["./src/config"],
+      "@types": ["./src/@types"]
+    }
   }
 }

@@ -1,4 +1,8 @@
 import {
+  GraphQLAuthGuard,
+  GraphQLRolesGuard,
+} from '@features/graphql/auth/guards';
+import {
   applyDecorators,
   createParamDecorator,
   ExecutionContext,
@@ -6,8 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AuthUserRole } from '../../../@types';
-import { GraphQLAuthGuard, GraphQLRolesGuard } from '../../graphql/auth/guards';
+import { AuthUserRole } from '@types';
 
 export const GraphQLAuth = (...roles: AuthUserRole[]) => {
   return applyDecorators(

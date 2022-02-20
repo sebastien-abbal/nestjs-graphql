@@ -1,11 +1,11 @@
-import { verify } from 'jsonwebtoken';
-import { config } from '../../../config';
-import { USERS } from '../../../features/database/data/seed';
-import { UserRoleNotRegistered } from '../../../features/graphql/auth/types';
+import { config } from '@config';
+import { USERS } from '@features/database/data/seed';
+import { UserRoleNotRegistered } from '@features/graphql/auth/types';
 import {
   generateAnonymousAuthTokenForTest,
   generateUserAuthTokenForTest,
-} from './auth-test.service';
+} from '@tests/_services/auth/auth-test.service';
+import { verify } from 'jsonwebtoken';
 
 describe('Services for Test (Auth test)', () => {
   const CURRENT_USER = USERS[0];

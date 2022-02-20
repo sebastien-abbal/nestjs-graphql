@@ -1,9 +1,9 @@
+import { config } from '@config';
+import { RestModule } from '@features/rest/rest.module';
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import serverlessExpress from '@vendia/serverless-express';
 import { APIGatewayProxyEvent, Callback, Context, Handler } from 'aws-lambda';
-import { config } from '../../config';
-import { RestModule } from './rest.module';
 
 let server: Handler;
 

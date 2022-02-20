@@ -1,0 +1,466 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+union AuthAnonymousPayload = AuthAnonymousSuccess
+
+type AuthAnonymousSuccess {
+  accessToken: String!
+  refreshToken: String!
+}
+
+input AuthRefreshInput {
+  refreshToken: String!
+}
+
+union AuthRefreshPayload = AuthRefreshSuccess | UserBannedError | UserDeletedError | WrongAuthTokenFormatError
+
+type AuthRefreshSuccess {
+  accessToken: String!
+  refreshToken: String!
+  user: User
+}
+
+input AuthUserInput {
+  email: String!
+  password: String!
+}
+
+union AuthUserPayload = AuthUserSuccess | UserBannedError | UserDeletedError | WrongCredentialsError
+
+type AuthUserSuccess {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type DeletionSuccess {
+  isDeleted: Boolean!
+}
+
+input EnumUserGenderFilter {
+  equals: UserGender
+  in: [UserGender!]
+  not: NestedEnumUserGenderFilter
+  notIn: [UserGender!]
+}
+
+input EnumUserLocaleFilter {
+  equals: UserLocale
+  in: [UserLocale!]
+  not: NestedEnumUserLocaleFilter
+  notIn: [UserLocale!]
+}
+
+interface Error {
+  code: String!
+  message: String
+}
+
+enum MediaProvider {
+  AWS
+}
+
+enum MediaStatus {
+  CONVERTING
+  ERROR
+  OFFLINE
+  ONLINE
+  UPLOADING
+}
+
+type Mutation {
+  authAnonymous: AuthAnonymousPayload!
+  authRefresh(data: AuthRefreshInput!): AuthRefreshPayload!
+  authUser(data: AuthUserInput!): AuthUserPayload!
+  userCreate(data: UserCreateInput!): UserCreatePayload!
+  userDelete(where: UserWhereUniqueInput!): UserDeletePayload!
+  userUpdate(data: UserUpdateInput!, where: UserWhereUniqueInput!): UserUpdatePayload!
+}
+
+input NestedEnumUserGenderFilter {
+  equals: UserGender
+  in: [UserGender!]
+  not: NestedEnumUserGenderFilter
+  notIn: [UserGender!]
+}
+
+input NestedEnumUserLocaleFilter {
+  equals: UserLocale
+  in: [UserLocale!]
+  not: NestedEnumUserLocaleFilter
+  notIn: [UserLocale!]
+}
+
+input NestedStringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input NestedStringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+type NotAuthorizedError implements Error {
+  code: String!
+  message: String
+}
+
+type Query {
+  test: TestPayload!
+  user(where: UserWhereUniqueInput!): UserPayload!
+  users(cursor: UserWhereUniqueInput, orderBy: UserOrderByWithRelationInput, skip: Int = 0, take: Int = 20, where: UserWhereInput): UsersPayload!
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+enum SortOrder {
+  asc
+  desc
+}
+
+input StringFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+input StringNullableFilter {
+  contains: String
+  endsWith: String
+  equals: String
+  gt: String
+  gte: String
+  in: [String!]
+  lt: String
+  lte: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+  notIn: [String!]
+  startsWith: String
+}
+
+type TestFailedError implements Error {
+  code: String!
+  message: String
+}
+
+union TestPayload = TestFailedError | TestSuccess
+
+type TestSuccess {
+  status: String!
+}
+
+type User {
+  _count: UserCount!
+  avatar: UserAvatarPicture
+  createdAt: DateTime!
+  deletedAt: DateTime
+  email: String!
+  firstName: String!
+  gender: UserGender!
+  id: ID!
+  isBanned: Boolean!
+  isDeleted: Boolean!
+  isEmailVerified: Boolean!
+  isPhoneVerified: Boolean!
+  isTermsAccepted: Boolean!
+  lastLoginAt: DateTime!
+  lastName: String!
+  locale: UserLocale!
+  phoneIndex: String
+  phoneNumber: String
+  roles: [UserRole!]
+  updatedAt: DateTime
+  urlLinkedin: String
+}
+
+type UserAlreadyExistsError implements Error {
+  code: String!
+  message: String
+}
+
+type UserAvatarPicture {
+  createdAt: DateTime!
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: ID!
+  provider: MediaProvider!
+  size: Int
+  status: MediaStatus!
+  updatedAt: DateTime
+  user: User!
+  userID: String!
+  width: Int
+}
+
+type UserAvatarPictureAvgAggregate {
+  height: Float
+  size: Float
+  width: Float
+}
+
+type UserAvatarPictureCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  fileToDeleteAt: Int!
+  height: Int!
+  id: Int!
+  provider: Int!
+  size: Int!
+  status: Int!
+  updatedAt: Int!
+  userID: Int!
+  width: Int!
+}
+
+type UserAvatarPictureMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: String
+  provider: MediaProvider
+  size: Int
+  status: MediaStatus
+  updatedAt: DateTime
+  userID: String
+  width: Int
+}
+
+type UserAvatarPictureMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: String
+  provider: MediaProvider
+  size: Int
+  status: MediaStatus
+  updatedAt: DateTime
+  userID: String
+  width: Int
+}
+
+type UserAvatarPictureSumAggregate {
+  height: Int
+  size: Int
+  width: Int
+}
+
+type UserBannedError implements Error {
+  code: String!
+  message: String
+}
+
+type UserCount {
+  avatarPictures: Int!
+}
+
+type UserCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  email: Int!
+  firstName: Int!
+  gender: Int!
+  id: Int!
+  isEmailVerified: Int!
+  isPhoneVerified: Int!
+  lastLoginAt: Int!
+  lastName: Int!
+  locale: Int!
+  phoneIndex: Int!
+  phoneNumber: Int!
+  roles: Int!
+  updatedAt: Int!
+  urlLinkedin: Int!
+}
+
+input UserCreateInput {
+  email: String!
+  firstName: String!
+  gender: UserGender!
+  lastName: String!
+  locale: UserLocale!
+  password: String!
+  phoneIndex: String
+  phoneNumber: String
+  urlLinkedin: String
+}
+
+union UserCreatePayload = UserAlreadyExistsError | UserSuccess
+
+union UserDeletePayload = DeletionSuccess | NotAuthorizedError | UserNotFoundError
+
+type UserDeletedError implements Error {
+  code: String!
+  message: String
+}
+
+enum UserGender {
+  FEMALE
+  MALE
+  OTHER
+  UNDEFINED
+}
+
+enum UserLocale {
+  EN
+  FR
+}
+
+type UserMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  email: String
+  firstName: String
+  gender: UserGender
+  id: String
+  isEmailVerified: Boolean
+  isPhoneVerified: Boolean
+  lastLoginAt: DateTime
+  lastName: String
+  locale: UserLocale
+  phoneIndex: String
+  phoneNumber: String
+  updatedAt: DateTime
+  urlLinkedin: String
+}
+
+type UserMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  email: String
+  firstName: String
+  gender: UserGender
+  id: String
+  isEmailVerified: Boolean
+  isPhoneVerified: Boolean
+  lastLoginAt: DateTime
+  lastName: String
+  locale: UserLocale
+  phoneIndex: String
+  phoneNumber: String
+  updatedAt: DateTime
+  urlLinkedin: String
+}
+
+type UserNotFoundError implements Error {
+  code: String!
+  message: String
+}
+
+input UserOrderByWithRelationInput {
+  email: SortOrder
+  firstName: SortOrder
+  gender: SortOrder
+  id: SortOrder
+  lastName: SortOrder
+  locale: SortOrder
+  password: SortOrder
+  phoneIndex: SortOrder
+  phoneNumber: SortOrder
+  urlLinkedin: SortOrder
+}
+
+union UserPayload = UserNotFoundError | UserSuccess
+
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+type UserSuccess {
+  user: User!
+}
+
+input UserUpdateInput {
+  email: String
+  firstName: String
+  gender: UserGender
+  lastName: String
+  locale: UserLocale
+  password: String
+  phoneIndex: String
+  phoneNumber: String
+  urlLinkedin: String
+}
+
+union UserUpdatePayload = NotAuthorizedError | UserNotFoundError | UserSuccess
+
+input UserWhereInput {
+  AND: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  email: StringFilter
+  firstName: StringFilter
+  gender: EnumUserGenderFilter
+  id: StringFilter
+  lastName: StringFilter
+  locale: EnumUserLocaleFilter
+  password: StringFilter
+  phoneIndex: StringNullableFilter
+  phoneNumber: StringNullableFilter
+  urlLinkedin: StringNullableFilter
+}
+
+input UserWhereUniqueInput {
+  email: String
+  id: String
+}
+
+union UsersPayload = UsersSuccess
+
+type UsersSuccess {
+  users: [User!]!
+}
+
+type WrongAuthTokenFormatError implements Error {
+  code: String!
+  message: String
+}
+
+type WrongCredentialsError implements Error {
+  code: String!
+  message: String
+}

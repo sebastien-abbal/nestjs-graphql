@@ -1,13 +1,13 @@
+import { USERS } from '@features/database/data/seed';
+import { prisma } from '@features/database/services';
+import { GraphQLModule } from '@features/graphql/graphql.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import superRequest, { SuperTest, Test as TestItem } from 'supertest';
-import { USERS } from '../../../features/database/data/seed';
-import { prisma } from '../../../features/database/services';
-import { GraphQLModule } from '../../../features/graphql/graphql.module';
 import {
   generateAnonymousAuthTokenForTest,
   generateUserAuthTokenForTest,
-} from '../../_services/auth/auth-test.service';
+} from '@tests/_services/auth/auth-test.service';
+import superRequest, { SuperTest, Test as TestItem } from 'supertest';
 
 describe('GraphQL - AuthModule (mutations)', () => {
   let app: INestApplication;

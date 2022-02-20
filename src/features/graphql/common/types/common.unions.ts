@@ -1,6 +1,6 @@
-import { TestFailedError, TestSuccess } from '../types';
+import { TestFailedError, TestSuccess } from '@features/graphql/common/types';
 import { createUnionType } from '@nestjs/graphql';
-import { TypenameGraphQLError } from '../../../../utils';
+import { TypenameGraphQLError } from '@utils';
 
 export const TestPayload = createUnionType({
   name: 'TestPayload',

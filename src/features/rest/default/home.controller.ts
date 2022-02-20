@@ -1,5 +1,5 @@
+import { constants } from '@config';
 import { Controller, Get } from '@nestjs/common';
-import { constants } from '../../../config';
 
 export const WELCOME_MESSAGE = `Welcome to ${constants.app.name}!`;
 

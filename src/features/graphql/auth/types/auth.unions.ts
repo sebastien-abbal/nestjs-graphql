@@ -1,5 +1,3 @@
-import { createUnionType } from '@nestjs/graphql';
-import { TypenameGraphQLError } from '../../../../utils';
 import {
   AuthAnonymousSuccess,
   AuthRefreshSuccess,
@@ -8,7 +6,9 @@ import {
   UserDeletedError,
   WrongAuthTokenFormatError,
   WrongCredentialsError,
-} from '../../auth/types';
+} from '@features/graphql/auth/types';
+import { createUnionType } from '@nestjs/graphql';
+import { TypenameGraphQLError } from '@utils';
 
 export const AuthUserPayload = createUnionType({
   name: 'AuthUserPayload',

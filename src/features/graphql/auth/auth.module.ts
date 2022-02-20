@@ -1,11 +1,11 @@
+import { config } from '@config';
+import { DatabaseModule } from '@features/database/database.module';
+import { GraphQLAuthResolver } from '@features/graphql/auth/auth.resolver';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
+import { GraphQLJwtStrategy } from '@features/graphql/auth/strategies';
+import { UserService } from '@features/graphql/user/services';
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { config } from '../../../config';
-import { DatabaseModule } from '../../database/database.module';
-import { UserService } from '../user/services';
-import { GraphQLAuthResolver } from './auth.resolver';
-import { GraphQLAuthService } from './services';
-import { GraphQLJwtStrategy } from './strategies';
 
 @Module({
   imports: [

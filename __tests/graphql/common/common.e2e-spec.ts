@@ -1,8 +1,8 @@
+import { prisma } from '@features/database/services/prisma.service';
+import { GraphQLModule } from '@features/graphql/graphql.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import superRequest, { SuperTest, Test as TestItem } from 'supertest';
-import { prisma } from '../../../features/database/services/prisma.service';
-import { GraphQLModule } from '../../../features/graphql/graphql.module';
 
 describe('GraphQL - CommonModule', () => {
   let app: INestApplication;

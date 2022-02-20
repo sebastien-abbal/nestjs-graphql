@@ -1,11 +1,11 @@
+import { config } from '@config';
+import { GraphQLAuthService } from '@features/graphql/auth/services';
+import { CommonResolver } from '@features/graphql/common/common.resolver';
+import { CommonService } from '@features/graphql/common/services';
+import { UserService } from '@features/graphql/user/services';
+import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { config } from '../../../../config';
-import { GraphQLAuthService } from '../../auth/services';
-import { UserService } from '../../user/services';
-import { mockedUserService } from '../../user/_mocks/user.service.mock';
-import { CommonResolver } from '../common.resolver';
-import { CommonService } from '../services';
 
 describe('Common resolver', () => {
   let app: TestingModule;

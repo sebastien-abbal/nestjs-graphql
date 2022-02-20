@@ -1,5 +1,5 @@
+import { PrismaService } from '@features/database/services';
 import { Injectable } from '@nestjs/common';
-import { hashSync } from 'bcrypt';
 import {
   User,
   UserCreateInput,
@@ -8,9 +8,9 @@ import {
   UserUpdateInput,
   UserWhereInput,
   UserWhereUniqueInput,
-} from '../../../../@graphql/generated';
-import { capitalize } from '../../../../utils';
-import { PrismaService } from '../../../database/services';
+} from '@types';
+import { capitalize } from '@utils';
+import { hashSync } from 'bcrypt';
 
 @Injectable()
 export class UserService {

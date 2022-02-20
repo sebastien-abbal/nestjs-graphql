@@ -6,8 +6,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "script:check-env": "ts-node ./bin/env/check-env.ts",
-    "script:seed-generator": "ts-node ./bin/database/seed-generator.ts",
+    "script:check-env": "ts-node -r tsconfig-paths/register -T ./bin/env/check-env.ts",
+    "script:seed-generator": "ts-node -r tsconfig-paths/register -T ./bin/database/seed-generator.ts",
     "build:prisma": "yarn prisma generate && yarn prisma format",
     "build:nest": "nest build",
     "build": "rimraf dist && run-s build:*",
@@ -79,7 +79,8 @@
     "ts-jest": "^27.0.3",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
-    "tsconfig-paths": "^3.10.1",
+    "tsc-alias": "^1.6.1",
+    "tsconfig-paths": "^3.12.0",
     "typescript": "^4.3.5"
   }
 }

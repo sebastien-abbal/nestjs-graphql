@@ -1,12 +1,15 @@
-import { createUnionType } from '@nestjs/graphql';
-import { TypenameGraphQLError } from '../../../../utils';
-import { DeletionSuccess, NotAuthorizedError } from '../../common/types';
+import {
+  DeletionSuccess,
+  NotAuthorizedError,
+} from '@features/graphql/common/types';
 import {
   UserAlreadyExistsError,
   UserNotFoundError,
   UsersSuccess,
   UserSuccess,
-} from '../types';
+} from '@features/graphql/user/types';
+import { createUnionType } from '@nestjs/graphql';
+import { TypenameGraphQLError } from '@utils';
 
 export const UserPayload = createUnionType({
   name: 'UserPayload',

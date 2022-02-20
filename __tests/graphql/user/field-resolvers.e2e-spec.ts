@@ -1,15 +1,18 @@
+import { USERS } from '@features/database/data/seed';
+import { prisma } from '@features/database/services';
+import { GraphQLModule } from '@features/graphql/graphql.module';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { generateUserAuthTokenForTest } from '@tests/_services/auth/auth-test.service';
 import superRequest, { SuperTest, Test as TestItem } from 'supertest';
-import { USERS } from '../../../features/database/data/seed';
-import { prisma } from '../../../features/database/services';
-import { GraphQLModule } from '../../../features/graphql/graphql.module';
-import { generateUserAuthTokenForTest } from '../../_services/auth/auth-test.service';
 
-describe('GraphQL - UserModule (queries)', () => {
+describe('GraphQL - UserModule (field resolvers)', () => {
   let app: INestApplication;
   let request: SuperTest<TestItem>;
+  let userID: string;
   const CURRENT_USER = USERS[0];
+  const BANNED_USER = USERS[3];
+  const DELETED_USER = USERS[4];
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -23,7 +26,7 @@ describe('GraphQL - UserModule (queries)', () => {
     request = superRequest(app.getHttpServer());
   });
 
-  describe('Query - User', () => {
+  describe('Resolver - UserModelResolver', () => {
     const query = `
       query user($where: UserWhereUniqueInput!) {
         user(where: $where) {
@@ -31,6 +34,12 @@ describe('GraphQL - UserModule (queries)', () => {
           ... on UserSuccess {
             user {
               id
+              isTermsAccepted
+              isBanned
+              isDeleted
+              avatar {
+                id
+              }
             }
           }
           ... on Error {
@@ -40,7 +49,7 @@ describe('GraphQL - UserModule (queries)', () => {
       }
     `;
 
-    it('should return a typename [UserNotFoundError]', async () => {
+    it('should return banned user with custom resolved fields', async () => {
       return request
         .post('/graphql')
         .set(
@@ -54,17 +63,51 @@ describe('GraphQL - UserModule (queries)', () => {
           query,
           variables: {
             where: {
-              id: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+              id: BANNED_USER.id,
             },
           },
         })
         .then((res) => {
           expect(res.status).toBe(200);
-          expect(res.body.data?.user?.__typename).toBe('UserNotFoundError');
+          expect(res.body.data?.user?.user).toEqual(
+            expect.objectContaining({
+              isBanned: true,
+              isDeleted: false,
+            }),
+          );
         });
     });
 
-    it('should return a typename [UserSuccess]', async () => {
+    it('should return deleted user with custom resolved fields', async () => {
+      return request
+        .post('/graphql')
+        .set(
+          'Authorization',
+          `Bearer ${generateUserAuthTokenForTest({
+            userID: CURRENT_USER.id,
+            type: 'ACCESS_TOKEN',
+          })}`,
+        )
+        .send({
+          query,
+          variables: {
+            where: {
+              id: DELETED_USER.id,
+            },
+          },
+        })
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.body.data?.user?.user).toEqual(
+            expect.objectContaining({
+              isBanned: false,
+              isDeleted: true,
+            }),
+          );
+        });
+    });
+
+    it('should return an user with custom resolved fields', async () => {
       return request
         .post('/graphql')
         .set(
@@ -84,69 +127,22 @@ describe('GraphQL - UserModule (queries)', () => {
         })
         .then((res) => {
           expect(res.status).toBe(200);
-          expect(res.body.data?.user?.__typename).toBe('UserSuccess');
-          expect(res.body.data?.user?.user?.id).toBe(CURRENT_USER.id);
-        });
-    });
-  });
-
-  describe('Query - Users', () => {
-    const query = `
-      query users(
-        $where: UserWhereInput
-        $cursor: UserWhereUniqueInput
-        $orderBy: UserOrderByWithRelationInput
-        $take: Int
-        $skip: Int
-      ) {
-        users(
-          where: $where
-          cursor: $cursor
-          orderBy: $orderBy
-          take: $take
-          skip: $skip
-        ) {
-          __typename
-          ... on UsersSuccess {
-            users {
-              id
-              lastName
-            }
-          }
-        }
-      }
-    `;
-
-    it('should return a typename [UsersSuccess] and an array of users where lastName is DOE', async () => {
-      return request
-        .post('/graphql')
-        .set(
-          'Authorization',
-          `Bearer ${generateUserAuthTokenForTest({
-            userID: CURRENT_USER.id,
-            type: 'ACCESS_TOKEN',
-          })}`,
-        )
-        .send({
-          query,
-          variables: {
-            where: {
-              lastName: { equals: CURRENT_USER.lastName },
-            },
-          },
-        })
-        .then((res) => {
-          expect(res.status).toBe(200);
-          expect(res.body.data?.users?.__typename).toBe('UsersSuccess');
-          expect(res.body.data?.users?.users?.length).toBeGreaterThanOrEqual(1);
-          expect(res.body.data?.users?.users[0]?.lastName).toBe(
-            CURRENT_USER.lastName,
+          expect(res.body.data?.user?.user).toEqual(
+            expect.objectContaining({
+              isBanned: false,
+              isDeleted: false,
+              isTermsAccepted: true,
+              avatar: expect.objectContaining({
+                id: expect.any(String),
+              }),
+            }),
           );
         });
     });
   });
 
   afterAll(async () => {
+    if (userID) await prisma.user.delete({ where: { id: userID } });
     await prisma.$disconnect();
     await app.close();
   });

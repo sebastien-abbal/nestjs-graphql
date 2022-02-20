@@ -1,18 +1,14 @@
+import { constants } from '@config';
 import faker from '@faker-js/faker';
+import { USERS } from '@features/database/data/seed/users.data';
+import { PrismaService } from '@features/database/services';
+import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
+import { UserService } from '@features/graphql/user/services';
+import { UserResolver } from '@features/graphql/user/user.resolver';
+import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  UserGender,
-  UserLocale,
-  UserRole,
-} from '../../../../@graphql/generated';
-import { constants } from '../../../../config';
-import { random } from '../../../../utils';
-import { USERS } from '../../../database/data/seed/users.data';
-import { PrismaService } from '../../../database/services';
-import { mockedPrismaService } from '../../../database/_mocks/database.service.mock';
-import { UserService } from '../services';
-import { UserResolver } from '../user.resolver';
-import { mockedUserService } from '../_mocks/user.service.mock';
+import { UserGender, UserLocale, UserRole } from '@types';
+import { random } from '@utils';
 
 describe('User resolver', () => {
   let app: TestingModule;

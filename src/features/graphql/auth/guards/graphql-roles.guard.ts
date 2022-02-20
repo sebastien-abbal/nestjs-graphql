@@ -1,9 +1,8 @@
+import { UserRoleNotRegistered } from '@features/graphql/auth/types';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { User, UserRole } from '../../../../@graphql/generated';
-import { AuthUserRole } from '../../../../@types';
-import { UserRoleNotRegistered } from '../../../graphql/auth/types';
+import { AuthUserRole, User, UserRole } from '@types';
 
 @Injectable()
 export class GraphQLRolesGuard implements CanActivate {

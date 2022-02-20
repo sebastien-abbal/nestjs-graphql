@@ -1,5 +1,5 @@
+import { prisma } from '@features/database/services/prisma.service';
 import { config as dotEnvConfig } from 'dotenv';
-import { prisma } from '../../src/features/database/services/prisma.service';
 
 dotEnvConfig();
 

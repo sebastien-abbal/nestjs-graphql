@@ -1,6 +1,6 @@
+import { RestAuthModule } from '@features/rest/auth/auth.module';
+import { DefaultModule } from '@features/rest/default/default.module';
 import { Module } from '@nestjs/common';
-import { RestAuthModule } from './auth/auth.module';
-import { DefaultModule } from './default/default.module';
 
 @Module({
   imports: [RestAuthModule, DefaultModule],

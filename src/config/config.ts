@@ -1,13 +1,13 @@
-import { config as dotEnvConfig } from 'dotenv';
-import * as envVar from 'env-var';
-import { join } from 'path';
 import {
   EnvType,
   IConfigApp,
   IConfigFull,
   IConfigGraphQL,
   IConfigJwt,
-} from '../@types';
+} from '@types';
+import { config as dotEnvConfig } from 'dotenv';
+import * as envVar from 'env-var';
+import { join } from 'path';
 import { constants, DEV_ENV, PREPROD_ENV, PROD_ENV } from './constants';
 export class Config {
   private static instance: Config;

@@ -1,4 +1,4 @@
-import { clamp, random } from '../../utils';
+import { clamp, random } from '@utils';
 
 describe('Utils (Number)', () => {
   describe('random function', () => {
