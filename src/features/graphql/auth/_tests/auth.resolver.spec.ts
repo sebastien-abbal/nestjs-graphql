@@ -1,5 +1,6 @@
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
+import { hashSync } from 'bcrypt';
 import { config } from '../../../../config';
 import { USERS } from '../../../database/data/seed';
 import { UserService } from '../../user/services';
@@ -10,6 +11,7 @@ import { GraphQLAuthService } from '../services';
 describe('GraphQL Auth resolver', () => {
   let app: TestingModule;
   let authResolver: GraphQLAuthResolver;
+  let authService: GraphQLAuthService;
   const CURRENT_USER = USERS[0];
   const BANNED_USER = USERS[3];
   const DELETED_USER = USERS[4];
@@ -30,6 +32,7 @@ describe('GraphQL Auth resolver', () => {
       .compile();
 
     authResolver = app.get<GraphQLAuthResolver>(GraphQLAuthResolver);
+    authService = app.get<GraphQLAuthService>(GraphQLAuthService);
   });
 
   describe('Resolver definition', () => {
@@ -112,6 +115,116 @@ describe('GraphQL Auth resolver', () => {
           expect.objectContaining({
             accessToken: expect.any(String),
             refreshToken: expect.any(String),
+          }),
+        );
+      });
+    });
+
+    describe('Mutation authRefresh', () => {
+      it('should be defined', async () => {
+        expect(authResolver.authRefresh).toBeDefined();
+      });
+
+      it('should returns an user auth payload', async () => {
+        const authUserPayload = authService.authUser({
+          data: {
+            email: CURRENT_USER.email,
+            password: CURRENT_USER.password,
+          },
+          targetedUser: {
+            ...CURRENT_USER,
+            password: hashSync(CURRENT_USER.password, 10),
+          },
+        });
+
+        expect(
+          await authResolver.authRefresh({
+            refreshToken: authUserPayload.refreshToken,
+          }),
+        ).toEqual(
+          expect.objectContaining({
+            // user: CURRENT_USER,
+            accessToken: expect.any(String),
+            refreshToken: expect.any(String),
+          }),
+        );
+      });
+
+      it('should returns an anonymous auth payload', async () => {
+        const authAnonymousPayload = authService.authAnonymous();
+
+        expect(
+          await authResolver.authRefresh({
+            refreshToken: authAnonymousPayload.refreshToken,
+          }),
+        ).toEqual(
+          expect.objectContaining({
+            user: null,
+            accessToken: expect.any(String),
+            refreshToken: expect.any(String),
+          }),
+        );
+      });
+
+      it('should return an error with code [UserBannedError]', async () => {
+        const authUserPayload = authService.authUser({
+          data: {
+            email: BANNED_USER.email,
+            password: BANNED_USER.password,
+          },
+          targetedUser: {
+            ...BANNED_USER,
+            password: hashSync(BANNED_USER.password, 10),
+          },
+        });
+
+        expect(
+          await authResolver.authRefresh({
+            refreshToken: authUserPayload.refreshToken,
+          }),
+        ).toEqual(
+          expect.objectContaining({
+            code: 'UserBannedError',
+            message: expect.any(String),
+          }),
+        );
+      });
+
+      it('should return an error with code [UserDeletedError]', async () => {
+        const authUserPayload = authService.authUser({
+          data: {
+            email: DELETED_USER.email,
+            password: DELETED_USER.password,
+          },
+          targetedUser: {
+            ...DELETED_USER,
+            password: hashSync(DELETED_USER.password, 10),
+          },
+        });
+
+        expect(
+          await authResolver.authRefresh({
+            refreshToken: authUserPayload.refreshToken,
+          }),
+        ).toEqual(
+          expect.objectContaining({
+            code: 'UserDeletedError',
+            message: expect.any(String),
+          }),
+        );
+      });
+
+      it('should return an error with code [WrongAuthTokenFormatError]', async () => {
+        const FAKE_REFRESH_TOKEN = 'eyJhbGciIUzI1.WRONG_TOKEN.NiIsInI6IkpXVCJ9';
+
+        expect(
+          await authResolver.authRefresh({
+            refreshToken: FAKE_REFRESH_TOKEN,
+          }),
+        ).toEqual(
+          expect.objectContaining({
+            code: 'WrongAuthTokenFormatError',
+            message: expect.any(String),
           }),
         );
       });

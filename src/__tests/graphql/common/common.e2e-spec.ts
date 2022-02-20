@@ -29,7 +29,7 @@ describe('GraphQL - CommonModule', () => {
       }
     `;
 
-    it('should return typename TestSuccess', async () => {
+    it('should return a typename [TestSuccess]', async () => {
       return request
         .post('/graphql')
         .send({

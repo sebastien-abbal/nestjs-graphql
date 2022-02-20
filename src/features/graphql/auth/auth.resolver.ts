@@ -3,14 +3,17 @@ import { TypenameGraphQLError } from '../../../utils';
 import { GraphQLAuthService } from '../auth/services';
 import {
   AuthAnonymousPayload,
+  AuthRefreshPayload,
   AuthUserInput,
   AuthUserPayload,
   AuthUserSuccess,
   UserBannedError,
   UserDeletedError,
+  WrongAuthTokenFormatError,
   WrongCredentialsError,
 } from '../auth/types';
 import { UserService } from '../user/services';
+import { AuthRefreshInput } from './types/inputs/auth-refresh.inputs';
 
 @Resolver(() => AuthUserSuccess)
 export class GraphQLAuthResolver {
@@ -28,7 +31,7 @@ export class GraphQLAuthResolver {
       where: { email },
     });
 
-    const authUserPayload = await this.authService.authUser({
+    const authUserPayload = this.authService.authUser({
       data,
       targetedUser,
     });
@@ -47,8 +50,40 @@ export class GraphQLAuthResolver {
 
   @Mutation(() => AuthAnonymousPayload)
   async authAnonymous(): Promise<typeof AuthAnonymousPayload> {
-    const authAnonymousPayload = await this.authService.authAnonymous();
+    return this.authService.authAnonymous();
+  }
 
-    return authAnonymousPayload;
+  @Mutation(() => AuthRefreshPayload)
+  async authRefresh(
+    @Args('data') data: AuthRefreshInput,
+  ): Promise<typeof AuthRefreshPayload> {
+    const { refreshToken } = data;
+    const decodedTokenPayload = this.authService.authenticateToken({
+      token: refreshToken,
+    });
+
+    if (
+      !decodedTokenPayload ||
+      typeof decodedTokenPayload !== 'object' ||
+      !('type' in decodedTokenPayload) ||
+      decodedTokenPayload.type !== 'REFRESH_TOKEN'
+    )
+      return new TypenameGraphQLError(WrongAuthTokenFormatError.name);
+
+    const targetedUser = decodedTokenPayload?.userID
+      ? await this.userService.getUser({
+          where: { id: decodedTokenPayload.userID },
+        })
+      : null;
+
+    if (targetedUser && Boolean(targetedUser.deletedAt))
+      return new TypenameGraphQLError(UserDeletedError.name);
+
+    if (targetedUser && Boolean(targetedUser.bannedAt))
+      return new TypenameGraphQLError(UserBannedError.name);
+
+    return this.authService.authRefresh({
+      targetedUser,
+    });
   }
 }

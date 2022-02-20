@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { compare } from 'bcrypt';
+import { compareSync } from 'bcrypt';
 import { User } from '../../../../@graphql/generated';
 import {
   AuthTokenType,
@@ -53,17 +53,17 @@ export class GraphQLAuthService {
     }
   }
 
-  public async authUser({
+  public authUser({
     data,
     targetedUser,
   }: {
     data: AuthUserInput;
     targetedUser: User;
-  }): Promise<AuthUserSuccess> {
-    const { email, password } = data;
+  }): AuthUserSuccess {
+    const { password } = data;
 
     if (targetedUser) {
-      const isPasswordValid = await compare(password, targetedUser.password);
+      const isPasswordValid = compareSync(password, targetedUser.password);
       if (isPasswordValid)
         return {
           user: targetedUser,
@@ -85,10 +85,28 @@ export class GraphQLAuthService {
     };
   }
 
-  public async authAnonymous(): Promise<AuthAnonymousSuccess> {
+  public authAnonymous(): AuthAnonymousSuccess {
     return {
       accessToken: this.createToken({ type: 'ACCESS_TOKEN' }),
       refreshToken: this.createToken({ type: 'REFRESH_TOKEN' }),
+    };
+  }
+
+  public authRefresh({
+    targetedUser,
+  }: {
+    targetedUser?: User;
+  }): AuthUserSuccess {
+    return {
+      user: targetedUser,
+      accessToken: this.createToken({
+        user: targetedUser,
+        type: 'ACCESS_TOKEN',
+      }),
+      refreshToken: this.createToken({
+        user: targetedUser,
+        type: 'REFRESH_TOKEN',
+      }),
     };
   }
 }

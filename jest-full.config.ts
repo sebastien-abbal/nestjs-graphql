@@ -12,14 +12,13 @@ module.exports = {
     '!src/features/**/lambda.ts',
     '!src/features/**/*.mock.ts',
     '!src/features/app.module.ts',
-    '!src/features/app.service.ts',
     '!src/features/database/services',
   ],
   coverageThreshold: {
     './src/features/': {
-      lines: 90,
-      smts: 90,
-      funcs: 90,
+      lines: 95,
+      smts: 95,
+      funcs: 95,
     },
     './src/utils/': {
       lines: 100,

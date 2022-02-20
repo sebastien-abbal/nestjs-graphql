@@ -30,7 +30,6 @@ export class Config {
     this.graphql = {
       schemaFilePath: join(this.app.rootPath, 'generated/schema.gql'),
       isPlaygroundEnabled: ![PROD_ENV, PREPROD_ENV].includes(this.env),
-      isDebugEnabled: ![PROD_ENV, PREPROD_ENV].includes(this.env),
     };
 
     this.auth = {

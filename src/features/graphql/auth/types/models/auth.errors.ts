@@ -14,6 +14,16 @@ export class WrongCredentialsError implements Error {
 @ObjectType({
   implements: () => [Error],
 })
+export class WrongAuthTokenFormatError implements Error {
+  @Field(() => String, {
+    defaultValue: WrongAuthTokenFormatError.name,
+  })
+  code: string;
+}
+
+@ObjectType({
+  implements: () => [Error],
+})
 export class UserBannedError implements Error {
   @Field(() => String, {
     defaultValue: UserBannedError.name,

@@ -9,6 +9,18 @@ type AuthAnonymousSuccess {
   refreshToken: String!
 }
 
+input AuthRefreshInput {
+  refreshToken: String!
+}
+
+union AuthRefreshPayload = AuthRefreshSuccess | UserBannedError | UserDeletedError | WrongAuthTokenFormatError
+
+type AuthRefreshSuccess {
+  accessToken: String!
+  refreshToken: String!
+  user: User
+}
+
 input AuthUserInput {
   email: String!
   password: String!
@@ -64,6 +76,7 @@ enum MediaStatus {
 
 type Mutation {
   authAnonymous: AuthAnonymousPayload!
+  authRefresh(data: AuthRefreshInput!): AuthRefreshPayload!
   authUser(data: AuthUserInput!): AuthUserPayload!
   userCreate(data: UserCreateInput!): UserCreatePayload!
   userDelete(where: UserWhereUniqueInput!): UserDeletePayload!
@@ -440,6 +453,11 @@ union UsersPayload = UsersSuccess
 
 type UsersSuccess {
   users: [User!]!
+}
+
+type WrongAuthTokenFormatError implements Error {
+  code: String!
+  message: String
 }
 
 type WrongCredentialsError implements Error {

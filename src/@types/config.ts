@@ -24,5 +24,4 @@ export interface IConfigJwt {
 export interface IConfigGraphQL {
   schemaFilePath: string;
   isPlaygroundEnabled: boolean;
-  isDebugEnabled: boolean;
 }

@@ -11,5 +11,5 @@ export class AuthUserInput {
   @Field(() => String)
   @IsNotEmpty()
   @IsString()
-  password?: string;
+  password: string;
 }

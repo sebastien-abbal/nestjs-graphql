@@ -103,7 +103,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename UserAlreadyExistsError', async () => {
+    it('should return a typename [UserAlreadyExistsError]', async () => {
       return request
         .post('/graphql')
         .set(
@@ -133,7 +133,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename UserSuccess with a new created user', async () => {
+    it('should return a typename [UserSuccess] with a new user', async () => {
       const FIRSTNAME = 'Elioth';
       return request
         .post('/graphql')
@@ -216,7 +216,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename UserNotFoundError', async () => {
+    it('should return a typename [UserNotFoundError]', async () => {
       return request
         .post('/graphql')
         .set(
@@ -248,7 +248,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename UserSuccess with the current user updated', async () => {
+    it('should return a typename [UserSuccess] with the current user updated', async () => {
       const FIRSTNAME = 'Vanessa';
       return request
         .post('/graphql')
@@ -285,7 +285,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename NotAuthorizedError because of user permission or role', async () => {
+    it('should return a typename [NotAuthorizedError] because of user permission or role', async () => {
       return request
         .post('/graphql')
         .set(
@@ -312,7 +312,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename UserSuccess with the updated target user from admin user', async () => {
+    it('should return a typename [UserSuccess] with the updated target user from admin user', async () => {
       const FIRSTNAME = 'Barbara';
 
       return request
@@ -376,7 +376,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename UserNotFoundError', async () => {
+    it('should return a typename [UserNotFoundError]', async () => {
       return request
         .post('/graphql')
         .set(
@@ -400,7 +400,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename DeletionSuccess from current user', async () => {
+    it('should return a typename [DeletionSuccess] from current user', async () => {
       return request
         .post('/graphql')
         .set(
@@ -424,7 +424,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename NotAuthorizedError because of user permission or role', async () => {
+    it('should return a typename [NotAuthorizedError] because of user permission or role', async () => {
       return request
         .post('/graphql')
         .set(
@@ -448,7 +448,7 @@ describe('GraphQL - UserModule (mutations)', () => {
         });
     });
 
-    it('should return typename DeletionSuccess from admin user', async () => {
+    it('should return a typename [DeletionSuccess] from admin user', async () => {
       await prisma.user.update({
         where: { id: userID },
         data: { deletedAt: null },

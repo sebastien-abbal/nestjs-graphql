@@ -2,9 +2,11 @@ import { createUnionType } from '@nestjs/graphql';
 import { TypenameGraphQLError } from '../../../../utils';
 import {
   AuthAnonymousSuccess,
+  AuthRefreshSuccess,
   AuthUserSuccess,
   UserBannedError,
   UserDeletedError,
+  WrongAuthTokenFormatError,
   WrongCredentialsError,
 } from '../../auth/types';
 
@@ -28,6 +30,21 @@ export const AuthAnonymousPayload = createUnionType({
   resolveType: (payload: TypenameGraphQLError | object) => {
     if (!(payload instanceof TypenameGraphQLError))
       return AuthAnonymousSuccess.name;
+    return payload.code;
+  },
+});
+
+export const AuthRefreshPayload = createUnionType({
+  name: 'AuthRefreshPayload',
+  types: () => [
+    AuthRefreshSuccess,
+    WrongAuthTokenFormatError,
+    UserBannedError,
+    UserDeletedError,
+  ],
+  resolveType: (payload: TypenameGraphQLError | object) => {
+    if (!(payload instanceof TypenameGraphQLError))
+      return AuthRefreshSuccess.name;
     return payload.code;
   },
 });

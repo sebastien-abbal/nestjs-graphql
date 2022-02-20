@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule as NESTJSGraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { config } from '../../config';
-import { AppService } from '../app.service';
 import { GraphQLAuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { UserModule } from './user/user.module';
@@ -16,7 +15,6 @@ import { GraphQLComplexityPlugin } from './_plugins';
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/@graphql/schema.gql'),
       sortSchema: true,
-      debug: config.graphql.isDebugEnabled,
       introspection: true,
       playground: config.graphql.isPlaygroundEnabled
         ? {
@@ -27,10 +25,6 @@ import { GraphQLComplexityPlugin } from './_plugins';
     UserModule,
     CommonModule,
   ],
-  providers: [AppService, GraphQLComplexityPlugin],
+  providers: [GraphQLComplexityPlugin],
 })
-export class GraphQLModule {
-  constructor(private readonly appService: AppService) {
-    if (!this.appService.checkEnv()) process.exit();
-  }
-}
+export class GraphQLModule {}

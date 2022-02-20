@@ -40,7 +40,7 @@ describe('GraphQL - UserModule (queries)', () => {
       }
     `;
 
-    it('should return typename UserNotFoundError', async () => {
+    it('should return a typename [UserNotFoundError]', async () => {
       return request
         .post('/graphql')
         .set(
@@ -64,7 +64,7 @@ describe('GraphQL - UserModule (queries)', () => {
         });
     });
 
-    it('should return typename UserSuccess and an user', async () => {
+    it('should return a typename [UserSuccess]', async () => {
       return request
         .post('/graphql')
         .set(
@@ -117,7 +117,7 @@ describe('GraphQL - UserModule (queries)', () => {
       }
     `;
 
-    it('should return typename UsersSuccess and an array of users where lastName is DOE', async () => {
+    it('should return a typename [UsersSuccess] and an array of users where lastName is DOE', async () => {
       return request
         .post('/graphql')
         .set(
