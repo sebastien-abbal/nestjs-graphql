@@ -23,6 +23,10 @@ jobs:
           POSTGRES_PASSWORD: password
 
     steps:
+      - checkout
+      - run:
+          name: Check postgres connection
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Install packages
           command: yarn install
@@ -35,6 +39,7 @@ jobs:
       - image: circleci/node:14
 
     steps:
+      - checkout
       - run:
           name: Install packages
           command: yarn install
