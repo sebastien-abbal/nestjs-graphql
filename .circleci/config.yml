@@ -23,18 +23,24 @@ jobs:
           POSTGRES_PASSWORD: password
 
     steps:
-      - name: Running tests
-      - run: yarn install
-      - run: yarn test
+      - run:
+          name: Install packages
+          command: yarn install
+      - run:
+          name: Test app
+          command: yarn test
 
   build:
     docker:
       - image: circleci/node:14
 
     steps:
-      - name: Build project
-      - run: yarn install
-      - run: yarn build
+      - run:
+          name: Install packages
+          command: yarn install
+      - run:
+          name: Build app
+          command: yarn build
 
 workflows:
   test_build:
