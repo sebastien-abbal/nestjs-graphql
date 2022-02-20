@@ -1,10 +1,10 @@
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <a href="https://www.mariaschools.com/" target="blank"><img src="/.github/assets/logo.png" alt="Maria Logo" /></a>
 </p>
 
 # Welcome to NestJS template
 
-This is a **[NestJS](https://nestjs.com/)** template made by **[Sébastien Abbal](https://github.com/sebastien-abbal)** based on node.js language with Typescript.
+This is a **[NestJS](https://nestjs.com/)** application based on the **[Sébastien Abbal](https://github.com/sebastien-abbal)** template, working with node.js language and Typescript.
 
 # 👾 Prerequistes
 
@@ -83,6 +83,8 @@ To test all the app with jest, you need to run this command line:
 
 ```
 $ yarn test
+$ yarn test:e2e
+$ yarn test:full
 ```
 
 # ♻️ Migrations
