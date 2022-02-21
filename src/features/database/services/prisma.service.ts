@@ -35,6 +35,10 @@ export class PrismaService
     if (config.env === 'prod' || config.env === 'preprod')
       throw new Error(`Seed can't be set to the env mode [${config.env}].`);
 
+    const isDataAlreadyInDatabase = await this.user.findFirst();
+    if (isDataAlreadyInDatabase)
+      throw new Error(`Seed can't be set because of database is not empty.`);
+
     await this.user.createMany({
       data: USERS.map((user) => ({
         ...user,
