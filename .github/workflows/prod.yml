@@ -62,7 +62,6 @@ jobs:
   deploy:
     name: Deploy
     needs: test
-    if: "${{ secrets.AWS_ACCESS_KEY_ID != '' }}"
     runs-on: ubuntu-latest
     env:
       AWS_KEY_REGION: ${{ secrets.AWS_KEY_REGION }}
@@ -72,7 +71,9 @@ jobs:
       DATABASE_URL_PROD: ${{ secrets.DATABASE_URL_PROD }}
       ASSETS_CDN_URL: https://from-serverless.cloudfront.net
       DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
 
+    if: "${{ env.AWS_ACCESS_KEY_ID != '' }}"
     steps:
       # Setup
       - name: Actions checkout
