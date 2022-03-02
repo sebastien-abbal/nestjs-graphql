@@ -1,6 +1,7 @@
 import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { Int } from '@nestjs/graphql';
+import { HideField } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserAvatarPictureCountAggregate {
@@ -35,7 +36,7 @@ export class UserAvatarPictureCountAggregate {
     @Field(() => Int, {nullable:false})
     fileToDeleteAt!: number;
 
-    @Field(() => Int, {nullable:false})
+    @HideField()
     userID!: number;
 
     @Field(() => Int, {nullable:false})

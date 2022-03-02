@@ -3,6 +3,7 @@ import { ObjectType } from '@nestjs/graphql';
 import { MediaProvider } from '../prisma/media-provider.enum';
 import { MediaStatus } from '../prisma/media-status.enum';
 import { Int } from '@nestjs/graphql';
+import { HideField } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserAvatarPictureMaxAggregate {
@@ -37,6 +38,6 @@ export class UserAvatarPictureMaxAggregate {
     @Field(() => Date, {nullable:true})
     fileToDeleteAt?: Date | string;
 
-    @Field(() => String, {nullable:true})
+    @HideField()
     userID?: string;
 }

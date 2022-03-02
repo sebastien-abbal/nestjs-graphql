@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 describe('Common service', () => {
   let commonService: CommonService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [CommonService],
     }).compile();

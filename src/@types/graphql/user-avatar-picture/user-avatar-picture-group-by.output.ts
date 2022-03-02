@@ -3,6 +3,7 @@ import { ObjectType } from '@nestjs/graphql';
 import { MediaProvider } from '../prisma/media-provider.enum';
 import { MediaStatus } from '../prisma/media-status.enum';
 import { Int } from '@nestjs/graphql';
+import { HideField } from '@nestjs/graphql';
 import { UserAvatarPictureCountAggregate } from './user-avatar-picture-count-aggregate.output';
 import { UserAvatarPictureAvgAggregate } from './user-avatar-picture-avg-aggregate.output';
 import { UserAvatarPictureSumAggregate } from './user-avatar-picture-sum-aggregate.output';
@@ -42,7 +43,7 @@ export class UserAvatarPictureGroupBy {
     @Field(() => Date, {nullable:true})
     fileToDeleteAt?: Date | string;
 
-    @Field(() => String, {nullable:false})
+    @HideField()
     userID!: string;
 
     @Field(() => UserAvatarPictureCountAggregate, {nullable:true})

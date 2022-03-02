@@ -1,5 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { HideField } from '@nestjs/graphql';
 
 @InputType()
 export class UserAvatarPictureMaxAggregateInput {
@@ -7,33 +8,33 @@ export class UserAvatarPictureMaxAggregateInput {
     @Field(() => Boolean, {nullable:true})
     id?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     provider?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     status?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     size?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     width?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     height?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     createdAt?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     updatedAt?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     deletedAt?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     fileToDeleteAt?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     userID?: true;
 }

@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 describe('User service', () => {
   let userService: UserService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserService],
     })

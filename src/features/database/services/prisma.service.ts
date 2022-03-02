@@ -1,13 +1,10 @@
-import { config } from '@config';
-import { USERS, USER_AVATARS } from '@features/database/data/seed';
 import {
   INestApplication,
   Injectable,
   OnModuleDestroy,
   OnModuleInit,
 } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
-import { hashSync } from 'bcrypt';
+import { PrismaClient } from '.prisma/client';
 
 @Injectable()
 export class PrismaService
@@ -29,23 +26,6 @@ export class PrismaService
 
   async onModuleDestroy() {
     await this.$disconnect();
-  }
-
-  async seedGenerator() {
-    if (config.env === 'prod' || config.env === 'preprod')
-      throw new Error(`Seed can't be set to the env mode [${config.env}].`);
-
-    const isDataAlreadyInDatabase = await this.user.findFirst();
-    if (isDataAlreadyInDatabase)
-      throw new Error(`Seed can't be set because of database is not empty.`);
-
-    await this.user.createMany({
-      data: USERS.map((user) => ({
-        ...user,
-        password: hashSync(user.password, 10),
-      })),
-    });
-    await this.userAvatarPicture.createMany({ data: USER_AVATARS });
   }
 
   static getInstance(): PrismaService {

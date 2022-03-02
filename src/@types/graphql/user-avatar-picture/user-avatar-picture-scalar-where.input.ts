@@ -2,6 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StringFilter } from '../prisma/string-filter.input';
 import { EnumMediaProviderFilter } from '../prisma/enum-media-provider-filter.input';
+import { HideField } from '@nestjs/graphql';
 import { EnumMediaStatusFilter } from '../prisma/enum-media-status-filter.input';
 import { IntNullableFilter } from '../prisma/int-nullable-filter.input';
 import { DateTimeFilter } from '../prisma/date-time-filter.input';
@@ -22,33 +23,33 @@ export class UserAvatarPictureScalarWhereInput {
     @Field(() => StringFilter, {nullable:true})
     id?: StringFilter;
 
-    @Field(() => EnumMediaProviderFilter, {nullable:true})
+    @HideField()
     provider?: EnumMediaProviderFilter;
 
-    @Field(() => EnumMediaStatusFilter, {nullable:true})
+    @HideField()
     status?: EnumMediaStatusFilter;
 
-    @Field(() => IntNullableFilter, {nullable:true})
+    @HideField()
     size?: IntNullableFilter;
 
-    @Field(() => IntNullableFilter, {nullable:true})
+    @HideField()
     width?: IntNullableFilter;
 
-    @Field(() => IntNullableFilter, {nullable:true})
+    @HideField()
     height?: IntNullableFilter;
 
-    @Field(() => DateTimeFilter, {nullable:true})
+    @HideField()
     createdAt?: DateTimeFilter;
 
-    @Field(() => DateTimeNullableFilter, {nullable:true})
+    @HideField()
     updatedAt?: DateTimeNullableFilter;
 
-    @Field(() => DateTimeNullableFilter, {nullable:true})
+    @HideField()
     deletedAt?: DateTimeNullableFilter;
 
-    @Field(() => DateTimeNullableFilter, {nullable:true})
+    @HideField()
     fileToDeleteAt?: DateTimeNullableFilter;
 
-    @Field(() => StringFilter, {nullable:true})
+    @HideField()
     userID?: StringFilter;
 }

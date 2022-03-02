@@ -1,16 +1,18 @@
 import { PrismaService } from '@features/database/services';
+import {
+  UserCreateOneInput,
+  UserUpdateOneInput,
+} from '@features/graphql/user/types';
 import { Injectable } from '@nestjs/common';
 import {
   User,
-  UserCreateInput,
   UserOrderByWithRelationInput,
   UserRole,
-  UserUpdateInput,
   UserWhereInput,
   UserWhereUniqueInput,
 } from '@types';
 import { capitalize } from '@utils';
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -49,7 +51,11 @@ export class UserService {
     });
   }
 
-  public async userCreate({ data }: { data: UserCreateInput }): Promise<User> {
+  public async userCreate({
+    data,
+  }: {
+    data: UserCreateOneInput;
+  }): Promise<User> {
     const { firstName, lastName, email, password, ...createData } = data;
 
     const user = await this.prisma.user.create({
@@ -59,7 +65,7 @@ export class UserService {
         firstName: firstName ? capitalize(firstName.toLowerCase()) : undefined,
         lastName: lastName ? lastName.toUpperCase() : undefined,
         email: email ? email.toLowerCase() : undefined,
-        password: password ? hashSync(data.password, 10) : undefined,
+        password: password ? hashSync(data.password) : undefined,
       },
     });
     return user;
@@ -70,7 +76,7 @@ export class UserService {
     data,
   }: {
     where: UserWhereUniqueInput;
-    data: UserUpdateInput;
+    data: UserUpdateOneInput;
   }): Promise<User> {
     const { firstName, lastName, email, password, ...updateData } = data;
 
@@ -81,7 +87,7 @@ export class UserService {
         firstName: firstName ? capitalize(firstName.toLowerCase()) : undefined,
         lastName: lastName ? lastName.toUpperCase() : undefined,
         email: email ? email.toLowerCase() : undefined,
-        password: password ? hashSync(data.password, 10) : undefined,
+        password: password ? hashSync(data.password) : undefined,
       },
     });
 

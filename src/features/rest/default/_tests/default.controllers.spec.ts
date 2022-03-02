@@ -73,9 +73,12 @@ describe('Default module (controllers)', () => {
       expect(configController.getConfig()).toMatchObject({
         name: expect.any(String),
         company: expect.any(String),
-        host: 'localhost',
         port: 3000,
         env: 'test',
+        hostname: expect.any(String),
+        os: expect.any(String),
+        memory: expect.any(String),
+        uptime: expect.any(String),
       });
     });
   });

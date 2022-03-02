@@ -1,3 +1,7 @@
-import { Logger } from '@nestjs/common';
+import pino from 'pino';
+import { config } from '../config';
 
-export const logger = new Logger();
+export const logger = pino({ enabled: config.app.isLoggerEnabled }).child({
+  region: config.app.region,
+  env: config.env,
+});

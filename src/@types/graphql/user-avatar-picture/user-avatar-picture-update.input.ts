@@ -1,43 +1,43 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { HideField } from '@nestjs/graphql';
 import { MediaProvider } from '../prisma/media-provider.enum';
 import { MediaStatus } from '../prisma/media-status.enum';
-import { Int } from '@nestjs/graphql';
 import { UserUpdateOneRequiredWithoutAvatarPicturesInput } from '../user/user-update-one-required-without-avatar-pictures.input';
 
 @InputType()
 export class UserAvatarPictureUpdateInput {
 
-    @Field(() => String, {nullable:true})
+    @HideField()
     id?: string;
 
-    @Field(() => MediaProvider, {nullable:true})
+    @HideField()
     provider?: keyof typeof MediaProvider;
 
-    @Field(() => MediaStatus, {nullable:true})
+    @HideField()
     status?: keyof typeof MediaStatus;
 
-    @Field(() => Int, {nullable:true})
+    @HideField()
     size?: number;
 
-    @Field(() => Int, {nullable:true})
+    @HideField()
     width?: number;
 
-    @Field(() => Int, {nullable:true})
+    @HideField()
     height?: number;
 
-    @Field(() => Date, {nullable:true})
+    @HideField()
     createdAt?: Date | string;
 
-    @Field(() => Date, {nullable:true})
+    @HideField()
     updatedAt?: Date | string;
 
-    @Field(() => Date, {nullable:true})
+    @HideField()
     deletedAt?: Date | string;
 
-    @Field(() => Date, {nullable:true})
+    @HideField()
     fileToDeleteAt?: Date | string;
 
-    @Field(() => UserUpdateOneRequiredWithoutAvatarPicturesInput, {nullable:true})
+    @HideField()
     user?: UserUpdateOneRequiredWithoutAvatarPicturesInput;
 }

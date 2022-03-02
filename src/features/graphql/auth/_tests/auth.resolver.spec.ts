@@ -1,12 +1,12 @@
 import { config } from '@config';
-import { USERS } from '@features/database/data/seed';
+import { USERS } from '@features/database/data';
 import { GraphQLAuthResolver } from '@features/graphql/auth/auth.resolver';
 import { GraphQLAuthService } from '@features/graphql/auth/services';
 import { UserService } from '@features/graphql/user/services';
 import { mockedUserService } from '@features/graphql/user/_mocks/user.service.mock';
 import { JwtModule } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcryptjs';
 
 describe('GraphQL Auth resolver', () => {
   let app: TestingModule;
@@ -133,7 +133,7 @@ describe('GraphQL Auth resolver', () => {
           },
           targetedUser: {
             ...CURRENT_USER,
-            password: hashSync(CURRENT_USER.password, 10),
+            password: hashSync(CURRENT_USER.password),
           },
         });
 
@@ -174,7 +174,7 @@ describe('GraphQL Auth resolver', () => {
           },
           targetedUser: {
             ...BANNED_USER,
-            password: hashSync(BANNED_USER.password, 10),
+            password: hashSync(BANNED_USER.password),
           },
         });
 
@@ -198,7 +198,7 @@ describe('GraphQL Auth resolver', () => {
           },
           targetedUser: {
             ...DELETED_USER,
-            password: hashSync(DELETED_USER.password, 10),
+            password: hashSync(DELETED_USER.password),
           },
         });
 

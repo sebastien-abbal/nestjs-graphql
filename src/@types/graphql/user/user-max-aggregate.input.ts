@@ -39,10 +39,16 @@ export class UserMaxAggregateInput {
     isPhoneVerified?: true;
 
     @Field(() => Boolean, {nullable:true})
-    urlLinkedin?: true;
+    linkedinUrl?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    description?: true;
 
     @HideField()
     termsAcceptedAt?: true;
+
+    @Field(() => Boolean, {nullable:true})
+    bornAt?: true;
 
     @HideField()
     bannedAt?: true;

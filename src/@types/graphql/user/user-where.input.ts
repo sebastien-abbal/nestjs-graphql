@@ -60,10 +60,16 @@ export class UserWhereInput {
     isPhoneVerified?: BoolFilter;
 
     @Field(() => StringNullableFilter, {nullable:true})
-    urlLinkedin?: StringNullableFilter;
+    linkedinUrl?: StringNullableFilter;
+
+    @Field(() => StringNullableFilter, {nullable:true})
+    description?: StringNullableFilter;
 
     @HideField()
     termsAcceptedAt?: DateTimeFilter;
+
+    @Field(() => DateTimeNullableFilter, {nullable:true})
+    bornAt?: DateTimeNullableFilter;
 
     @HideField()
     bannedAt?: DateTimeNullableFilter;

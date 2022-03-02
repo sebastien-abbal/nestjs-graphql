@@ -44,10 +44,16 @@ export class UserOrderByWithRelationInput {
     isPhoneVerified?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    urlLinkedin?: keyof typeof SortOrder;
+    linkedinUrl?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    description?: keyof typeof SortOrder;
 
     @HideField()
     termsAcceptedAt?: keyof typeof SortOrder;
+
+    @Field(() => SortOrder, {nullable:true})
+    bornAt?: keyof typeof SortOrder;
 
     @HideField()
     bannedAt?: keyof typeof SortOrder;

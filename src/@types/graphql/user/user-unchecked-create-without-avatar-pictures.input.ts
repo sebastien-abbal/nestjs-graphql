@@ -1,10 +1,10 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import * as Validator from 'class-validator';
 import { UserGender } from '../prisma/user-gender.enum';
 import { UserLocale } from '../prisma/user-locale.enum';
-import * as Validator from 'class-validator';
-import { HideField } from '@nestjs/graphql';
 import { UserCreaterolesInput } from '../prisma/user-createroles.input';
+import { HideField } from '@nestjs/graphql';
 
 @InputType()
 export class UserUncheckedCreateWithoutAvatarPicturesInput {
@@ -13,9 +13,13 @@ export class UserUncheckedCreateWithoutAvatarPicturesInput {
     id?: string;
 
     @Field(() => String, {nullable:false})
+    @Validator.MaxLength(50)
+    @Validator.IsOptional()
     firstName!: string;
 
     @Field(() => String, {nullable:false})
+    @Validator.MaxLength(50)
+    @Validator.IsOptional()
     lastName!: string;
 
     @Field(() => String, {nullable:false})
@@ -26,6 +30,9 @@ export class UserUncheckedCreateWithoutAvatarPicturesInput {
 
     @Field(() => UserLocale, {nullable:false})
     locale!: keyof typeof UserLocale;
+
+    @HideField()
+    roles?: UserCreaterolesInput;
 
     @Field(() => String, {nullable:false})
     @Validator.IsEmail()
@@ -49,10 +56,20 @@ export class UserUncheckedCreateWithoutAvatarPicturesInput {
     @Field(() => String, {nullable:true})
     @Validator.IsUrl()
     @Validator.IsOptional()
-    urlLinkedin?: string;
+    linkedinUrl?: string;
+
+    @Field(() => String, {nullable:true})
+    @Validator.IsOptional()
+    @Validator.MaxLength(2500)
+    description?: string;
 
     @HideField()
     termsAcceptedAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    @Validator.IsOptional()
+    @Validator.IsDate()
+    bornAt?: Date | string;
 
     @HideField()
     bannedAt?: Date | string;
@@ -68,7 +85,4 @@ export class UserUncheckedCreateWithoutAvatarPicturesInput {
 
     @HideField()
     deletedAt?: Date | string;
-
-    @HideField()
-    roles?: UserCreaterolesInput;
 }

@@ -1,22 +1,26 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
-import { HideField } from '@nestjs/graphql';
+import * as Validator from 'class-validator';
 import { UserGender } from '../prisma/user-gender.enum';
 import { UserLocale } from '../prisma/user-locale.enum';
-import * as Validator from 'class-validator';
 import { UserUpdaterolesInput } from '../prisma/user-updateroles.input';
+import { HideField } from '@nestjs/graphql';
 import { UserAvatarPictureUpdateManyWithoutUserInput } from '../user-avatar-picture/user-avatar-picture-update-many-without-user.input';
 
 @InputType()
 export class UserUpdateInput {
 
-    @HideField()
+    @Field(() => String, {nullable:true})
     id?: string;
 
     @Field(() => String, {nullable:true})
+    @Validator.MaxLength(50)
+    @Validator.IsOptional()
     firstName?: string;
 
     @Field(() => String, {nullable:true})
+    @Validator.MaxLength(50)
+    @Validator.IsOptional()
     lastName?: string;
 
     @Field(() => String, {nullable:true})
@@ -27,6 +31,9 @@ export class UserUpdateInput {
 
     @Field(() => UserLocale, {nullable:true})
     locale?: keyof typeof UserLocale;
+
+    @HideField()
+    roles?: UserUpdaterolesInput;
 
     @Field(() => String, {nullable:true})
     @Validator.IsEmail()
@@ -50,10 +57,20 @@ export class UserUpdateInput {
     @Field(() => String, {nullable:true})
     @Validator.IsUrl()
     @Validator.IsOptional()
-    urlLinkedin?: string;
+    linkedinUrl?: string;
+
+    @Field(() => String, {nullable:true})
+    @Validator.IsOptional()
+    @Validator.MaxLength(2500)
+    description?: string;
 
     @HideField()
     termsAcceptedAt?: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    @Validator.IsOptional()
+    @Validator.IsDate()
+    bornAt?: Date | string;
 
     @HideField()
     bannedAt?: Date | string;
@@ -69,9 +86,6 @@ export class UserUpdateInput {
 
     @HideField()
     deletedAt?: Date | string;
-
-    @HideField()
-    roles?: UserUpdaterolesInput;
 
     @HideField()
     avatarPictures?: UserAvatarPictureUpdateManyWithoutUserInput;

@@ -1,6 +1,6 @@
-import { constants } from '@config';
+import { config } from '@config';
 import faker from '@faker-js/faker';
-import { USERS } from '@features/database/data/seed/users.data';
+import { USERS } from '@features/database/data';
 import { PrismaService } from '@features/database/services';
 import { mockedPrismaService } from '@features/database/_mocks/database.service.mock';
 import { UserService } from '@features/graphql/user/services';
@@ -56,9 +56,9 @@ describe('User resolver', () => {
         expect(userResolver.user).toBeDefined();
       });
 
-      it(`should return an array of ${constants.graphql.query.defaultTakeResults} users`, async () => {
+      it(`should return an array of users`, async () => {
         const usersPayload = await userResolver.users({
-          take: constants.graphql.query.defaultTakeResults,
+          take: config.graphql.query.defaultTakeResults,
         });
 
         expect(usersPayload).toEqual(
@@ -69,7 +69,7 @@ describe('User resolver', () => {
           }),
         );
         expect(usersPayload.users.length).toBeLessThanOrEqual(
-          constants.graphql.query.defaultTakeResults,
+          config.graphql.query.defaultTakeResults,
         );
       });
     });

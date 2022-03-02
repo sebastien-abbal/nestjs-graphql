@@ -59,10 +59,16 @@ export class UserScalarWhereWithAggregatesInput {
     isPhoneVerified?: BoolWithAggregatesFilter;
 
     @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
-    urlLinkedin?: StringNullableWithAggregatesFilter;
+    linkedinUrl?: StringNullableWithAggregatesFilter;
+
+    @Field(() => StringNullableWithAggregatesFilter, {nullable:true})
+    description?: StringNullableWithAggregatesFilter;
 
     @HideField()
     termsAcceptedAt?: DateTimeWithAggregatesFilter;
+
+    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    bornAt?: DateTimeNullableWithAggregatesFilter;
 
     @HideField()
     bannedAt?: DateTimeNullableWithAggregatesFilter;

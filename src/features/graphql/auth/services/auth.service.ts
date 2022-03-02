@@ -7,8 +7,8 @@ import {
 import { UserService } from '@features/graphql/user/services';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { AuthTokenType, AuthUserRole, IAuthTokenPayload, User } from '@types';
-import { compareSync } from 'bcrypt';
+import { User, AuthTokenType, AuthUserRole, IAuthTokenPayload } from '@types';
+import { compareSync } from 'bcryptjs';
 
 @Injectable()
 export class GraphQLAuthService {

@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 describe('Health service', () => {
   let healthService: HealthService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [HealthService],
     }).compile();

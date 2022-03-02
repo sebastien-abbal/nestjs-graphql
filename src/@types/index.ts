@@ -1,4 +1,2 @@
-export * from './auth';
-export * from './aws';
-export * from './config';
+export * from './default';
 export * from './graphql';

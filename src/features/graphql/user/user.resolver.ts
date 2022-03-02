@@ -8,21 +8,21 @@ import { NotAuthorizedError } from '@features/graphql/common/types';
 import { UserService } from '@features/graphql/user/services';
 import {
   UserAlreadyExistsError,
+  UserCreateOneInput,
   UserCreatePayload,
   UserDeletePayload,
   UserNotFoundError,
   UserPayload,
   UsersPayload,
   UserSuccess,
+  UserUpdateOneInput,
   UserUpdatePayload,
 } from '@features/graphql/user/types';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   User,
-  UserCreateInput,
   UserOrderByWithRelationInput,
   UserRole,
-  UserUpdateInput,
   UserWhereInput,
   UserWhereUniqueInput,
 } from '@types';
@@ -68,28 +68,39 @@ export class UserResolver {
   @Mutation(() => UserCreatePayload)
   @GraphQLAuth(UserRoleNotRegistered.ANONYMOUS)
   async userCreate(
-    @Args('data') data: UserCreateInput,
+    @Args('data') data: UserCreateOneInput,
   ): Promise<typeof UserCreatePayload> {
-    const isUserAlreadyExists = Boolean(
-      await this.userService.getUser({
-        where: { email: data.email },
-      }),
-    );
+    const { email } = data;
+    const targetedUser = await this.userService.getUser({
+      where: { email },
+    });
 
-    if (isUserAlreadyExists)
+    if (targetedUser && !Boolean(targetedUser?.deletedAt))
       return new TypenameGraphQLError(UserAlreadyExistsError.name);
 
-    const createdUser = await this.userService.userCreate({
-      data,
-    });
-    return { user: createdUser };
+    return {
+      user: !Boolean(targetedUser?.deletedAt)
+        ? await this.userService.userCreate({
+            data,
+          })
+        : await this.userService.userUpdate({
+            where: { id: targetedUser.id },
+            data: {
+              firstName: data.firstName ? data.firstName : undefined,
+              lastName: data.lastName ? data.lastName : undefined,
+              password: data.password ? data.password : undefined,
+              roles: { set: [UserRole.USER] },
+              deletedAt: null,
+            },
+          }),
+    };
   }
 
   @Mutation(() => UserUpdatePayload)
   @GraphQLAuth(UserRole.USER)
   async userUpdate(
     @Args('where') where: UserWhereUniqueInput,
-    @Args('data') data: UserUpdateInput,
+    @Args('data') data: UserUpdateOneInput,
     @GraphQLCurrentUser() currentUser: User,
   ): Promise<typeof UserUpdatePayload> {
     const targetedUser = await this.userService.getUser({ where });

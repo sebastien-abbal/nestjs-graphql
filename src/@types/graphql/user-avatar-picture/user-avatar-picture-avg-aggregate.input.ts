@@ -1,15 +1,16 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
+import { HideField } from '@nestjs/graphql';
 
 @InputType()
 export class UserAvatarPictureAvgAggregateInput {
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     size?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     width?: true;
 
-    @Field(() => Boolean, {nullable:true})
+    @HideField()
     height?: true;
 }

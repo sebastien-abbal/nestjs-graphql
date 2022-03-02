@@ -5,9 +5,20 @@ on:
     types: [published]
 
 jobs:
-  build:
+  test:
+    name: Test
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
+    env:
+      NODE_ENV: test
+      AWS_KEY_REGION: eu-west-3
+      DATABASE_URL: postgresql://admin:password@localhost:5432/postgres?schema=public
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+      ASSETS_CDN_URL: https://test-domain-name.cloudfront.net
+      DOMAIN_URL: https://test-domain-name.com
     services:
       postgres:
         image: postgres:latest
@@ -24,13 +35,15 @@ jobs:
           --health-retries 5
 
     steps:
+      # Setup
       - name: Actions checkout
         uses: actions/checkout@v2
 
-      - name: Set up node
-        uses: actions/setup-node@v2-beta
+      - name: Set up node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
 
       # Build
       - name: Install packages
@@ -40,30 +53,44 @@ jobs:
         run: yarn build
 
       - name: Build database
-        run: yarn migrate:deploy && yarn script:seed-generator
-        env:
-          NODE_ENV: test
-          APP_PORT: 3000
-          APP_HOST: localhost
-          AWS_REGION: eu-west-3
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
-          JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000
-          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+        run: yarn migrate:deploy && yarn script:required-data-generator && yarn script:seed-data-generator
 
       # Test
       - name: Test app
         run: yarn test:full
-        env:
-          NODE_ENV: test
-          APP_PORT: 3000
-          APP_HOST: localhost
-          AWS_REGION: eu-west-3
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
-          JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000
-          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}
+
+  deploy:
+    name: Deploy
+    needs: test
+    if: "${{ secrets.AWS_ACCESS_KEY_ID != '' }}"
+    runs-on: ubuntu-latest
+    env:
+      AWS_KEY_REGION: ${{ secrets.AWS_KEY_REGION }}
+      NODE_ENV: prod
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+      DATABASE_URL_PROD: ${{ secrets.DATABASE_URL_PROD }}
+      ASSETS_CDN_URL: https://from-serverless.cloudfront.net
+      DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
+
+    steps:
+      # Setup
+      - name: Actions checkout
+        uses: actions/checkout@v2
+
+      - name: Set up node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'yarn'
+
+      # Build
+      - name: Install packages
+        run: yarn
+
+      # Deploy
+      - name: Authenticate serverless
+        run: npx sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Deploy serverless prod
+        run: yarn sls:deploy

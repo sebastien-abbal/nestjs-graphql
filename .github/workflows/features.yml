@@ -1,6 +1,7 @@
 name: CI-FEATURES
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - '*' # matches every branch that doesn't contain a '/'
@@ -12,15 +13,28 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: test
+      AWS_KEY_REGION: eu-west-3
+      DATABASE_URL: postgresql://admin:password@localhost:5432/postgres?schema=public
+      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+      ASSETS_CDN_URL: https://test-domain-name.cloudfront.net
+      DOMAIN_URL: https://test-domain-name.com
+    strategy:
+      matrix:
+        node-version: [14.x, 16.x]
 
     steps:
+      # Setup
       - name: Actions checkout
         uses: actions/checkout@v2
 
-      - name: Set up node
-        uses: actions/setup-node@v2-beta
+      - name: Set up node ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: ${{ matrix.node-version }}
+          cache: 'yarn'
 
       # Build
       - name: Install packages
@@ -32,14 +46,3 @@ jobs:
       # Test
       - name: Test app
         run: yarn test
-        env:
-          NODE_ENV: test
-          APP_PORT: 3000
-          APP_HOST: localhost
-          AWS_REGION: eu-west-3
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-          JWT_ACCESS_TOKEN_EXPIRATION_TIME: 86400
-          JWT_REFRESH_TOKEN_EXPIRATION_TIME: 2592000
-          ENCRYPTION_KEY: ${{ secrets.ENCRYPTION_KEY }}

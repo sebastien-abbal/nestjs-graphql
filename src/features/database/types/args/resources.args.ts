@@ -1,18 +1,18 @@
-import { constants } from '@config';
+import { config } from '@config';
 import { ArgsType, Field, Int } from '@nestjs/graphql';
 import { IsInt, IsOptional } from 'class-validator';
 
 @ArgsType()
 export class ResourcesFilters {
   @Field(() => Int, {
-    defaultValue: constants.graphql.query.defaultTakeResults,
+    defaultValue: config.graphql.query.defaultTakeResults,
   })
   @IsInt()
   @IsOptional()
   take?: number;
 
   @Field(() => Int, {
-    defaultValue: constants.graphql.query.defaultSkip,
+    defaultValue: config.graphql.query.defaultSkip,
   })
   @IsInt()
   @IsOptional()

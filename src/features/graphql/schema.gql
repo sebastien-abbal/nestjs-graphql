@@ -34,10 +34,297 @@ type AuthUserSuccess {
   user: User!
 }
 
+type Company {
+  _count: CompanyCount!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  name: String!
+  updatedAt: DateTime
+}
+
+type CompanyCount {
+  formations: Int!
+}
+
+type CompanyCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  name: Int!
+  updatedAt: Int!
+}
+
+type CompanyMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  name: String
+  updatedAt: DateTime
+}
+
+type CompanyMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  name: String
+  updatedAt: DateTime
+}
+
+type Course {
+  _count: CourseCount!
+  categories: [CourseCategory!]
+  createdAt: DateTime!
+  deletedAt: DateTime
+  format: SessionFormat!
+  id: ID!
+  teacher: Teacher!
+  teacherID: String!
+  title: String!
+  updatedAt: DateTime
+  versions: [CourseVersion!]
+}
+
+type CourseCategory {
+  _count: CourseCategoryCount!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  name: String!
+  updatedAt: DateTime
+}
+
+type CourseCategoryCount {
+  courses: Int!
+  tracks: Int!
+}
+
+type CourseCategoryCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  name: Int!
+  updatedAt: Int!
+}
+
+type CourseCategoryMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  name: String
+  updatedAt: DateTime
+}
+
+type CourseCategoryMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  name: String
+  updatedAt: DateTime
+}
+
+type CourseCount {
+  categories: Int!
+  versions: Int!
+}
+
+type CourseCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  format: Int!
+  id: Int!
+  teacherID: Int!
+  title: Int!
+  updatedAt: Int!
+}
+
+type CourseMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  format: SessionFormat
+  id: String
+  teacherID: String
+  title: String
+  updatedAt: DateTime
+}
+
+type CourseMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  format: SessionFormat
+  id: String
+  teacherID: String
+  title: String
+  updatedAt: DateTime
+}
+
+enum CourseSupportSourceType {
+  AUDIO
+  IMAGE
+  LINK
+  PDF
+  VIDEO
+  VIDEO_LINK
+}
+
+type CourseVersion {
+  _count: CourseVersionCount!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String!
+  duration: DateTime!
+  format: SessionFormat!
+  formationSessions: [FormationSession!]
+  id: ID!
+  supports: [CourseVersionSupportSource!]
+  updatedAt: DateTime
+  validatedAt: DateTime
+  validatedBy: User!
+  validatedByID: String!
+  versionNumber: Int!
+}
+
+type CourseVersionAvgAggregate {
+  versionNumber: Float
+}
+
+type CourseVersionCount {
+  formationSessions: Int!
+  supports: Int!
+}
+
+type CourseVersionCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  description: Int!
+  duration: Int!
+  format: Int!
+  id: Int!
+  updatedAt: Int!
+  validatedAt: Int!
+  validatedByID: Int!
+  versionNumber: Int!
+}
+
+type CourseVersionMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  duration: DateTime
+  format: SessionFormat
+  id: String
+  updatedAt: DateTime
+  validatedAt: DateTime
+  validatedByID: String
+  versionNumber: Int
+}
+
+type CourseVersionMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  duration: DateTime
+  format: SessionFormat
+  id: String
+  updatedAt: DateTime
+  validatedAt: DateTime
+  validatedByID: String
+  versionNumber: Int
+}
+
+type CourseVersionSumAggregate {
+  versionNumber: Int
+}
+
+type CourseVersionSupportSource {
+  course: CourseVersion!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: ID!
+  provider: MediaProvider
+  size: Int
+  status: MediaStatus!
+  type: CourseSupportSourceType!
+  updatedAt: DateTime
+  width: Int
+}
+
+type CourseVersionSupportSourceAvgAggregate {
+  height: Float
+  size: Float
+  width: Float
+}
+
+type CourseVersionSupportSourceCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  fileToDeleteAt: Int!
+  height: Int!
+  id: Int!
+  provider: Int!
+  size: Int!
+  status: Int!
+  type: Int!
+  updatedAt: Int!
+  width: Int!
+}
+
+type CourseVersionSupportSourceMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: String
+  provider: MediaProvider
+  size: Int
+  status: MediaStatus
+  type: CourseSupportSourceType
+  updatedAt: DateTime
+  width: Int
+}
+
+type CourseVersionSupportSourceMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: String
+  provider: MediaProvider
+  size: Int
+  status: MediaStatus
+  type: CourseSupportSourceType
+  updatedAt: DateTime
+  width: Int
+}
+
+type CourseVersionSupportSourceSumAggregate {
+  height: Int
+  size: Int
+  width: Int
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+input DateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
+}
 
 type DeletionSuccess {
   isDeleted: Boolean!
@@ -62,6 +349,210 @@ interface Error {
   message: String
 }
 
+type FormationClass {
+  _count: FormationClassCount!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  isEnabled: Boolean!
+  name: String!
+  updatedAt: DateTime
+}
+
+type FormationClassCount {
+  students: Int!
+  teachers: Int!
+}
+
+type FormationClassCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  isEnabled: Int!
+  name: Int!
+  updatedAt: Int!
+}
+
+type FormationClassMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isEnabled: Boolean
+  name: String
+  updatedAt: DateTime
+}
+
+type FormationClassMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isEnabled: Boolean
+  name: String
+  updatedAt: DateTime
+}
+
+type FormationCount {
+  owners: Int!
+  schools: Int!
+  sessions: Int!
+}
+
+type FormationCountAggregate {
+  _all: Int!
+  companyID: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  format: Int!
+  headMasterID: Int!
+  id: Int!
+  isEnabled: Int!
+  timeFormat: Int!
+  type: Int!
+  updatedAt: Int!
+}
+
+enum FormationFormat {
+  ELEARNING
+  LIVE
+  PRESENTIAL
+}
+
+type FormationMaxAggregate {
+  companyID: String
+  createdAt: DateTime
+  deletedAt: DateTime
+  format: FormationFormat
+  headMasterID: String
+  id: String
+  isEnabled: Boolean
+  timeFormat: FormationTimeFormat
+  type: FormationType
+  updatedAt: DateTime
+}
+
+type FormationMinAggregate {
+  companyID: String
+  createdAt: DateTime
+  deletedAt: DateTime
+  format: FormationFormat
+  headMasterID: String
+  id: String
+  isEnabled: Boolean
+  timeFormat: FormationTimeFormat
+  type: FormationType
+  updatedAt: DateTime
+}
+
+type FormationSession {
+  _count: FormationSessionCount!
+  course: CourseVersion!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  description: String!
+  endsAt: DateTime!
+  format: SessionFormat!
+  googleCalendarItem: GoogleCalendarItem
+  id: ID!
+  isEnabled: Boolean!
+  startsAt: DateTime!
+  summaryNote: String
+  thinkificItems: [ThinkificItem!]
+  title: String!
+  updatedAt: DateTime
+}
+
+type FormationSessionCount {
+  thinkificItems: Int!
+}
+
+type FormationSessionCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  description: Int!
+  endsAt: Int!
+  format: Int!
+  id: Int!
+  isEnabled: Int!
+  startsAt: Int!
+  summaryNote: Int!
+  title: Int!
+  updatedAt: Int!
+}
+
+type FormationSessionMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  endsAt: DateTime
+  format: SessionFormat
+  id: String
+  isEnabled: Boolean
+  startsAt: DateTime
+  summaryNote: String
+  title: String
+  updatedAt: DateTime
+}
+
+type FormationSessionMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  description: String
+  endsAt: DateTime
+  format: SessionFormat
+  id: String
+  isEnabled: Boolean
+  startsAt: DateTime
+  summaryNote: String
+  title: String
+  updatedAt: DateTime
+}
+
+enum FormationTimeFormat {
+  FULL_TIME
+  PART_TIME
+}
+
+enum FormationType {
+  B2B
+  B2C
+}
+
+type GoogleCalendarItem {
+  createdAt: DateTime!
+  createdBy: User!
+  createdByID: String!
+  deletedAt: DateTime
+  googleCalendarID: ID!
+  updatedAt: DateTime
+}
+
+type GoogleCalendarItemCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  createdByID: Int!
+  deletedAt: Int!
+  googleCalendarID: Int!
+  updatedAt: Int!
+}
+
+type GoogleCalendarItemMaxAggregate {
+  createdAt: DateTime
+  createdByID: String
+  deletedAt: DateTime
+  googleCalendarID: String
+  updatedAt: DateTime
+}
+
+type GoogleCalendarItemMinAggregate {
+  createdAt: DateTime
+  createdByID: String
+  deletedAt: DateTime
+  googleCalendarID: String
+  updatedAt: DateTime
+}
+
 enum MediaProvider {
   AWS
 }
@@ -78,9 +569,20 @@ type Mutation {
   authAnonymous: AuthAnonymousPayload!
   authRefresh(data: AuthRefreshInput!): AuthRefreshPayload!
   authUser(data: AuthUserInput!): AuthUserPayload!
-  userCreate(data: UserCreateInput!): UserCreatePayload!
+  userCreate(data: UserCreateOneInput!): UserCreatePayload!
   userDelete(where: UserWhereUniqueInput!): UserDeletePayload!
-  userUpdate(data: UserUpdateInput!, where: UserWhereUniqueInput!): UserUpdatePayload!
+  userUpdate(data: UserUpdateOneInput!, where: UserWhereUniqueInput!): UserUpdatePayload!
+}
+
+input NestedDateTimeNullableFilter {
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: NestedDateTimeNullableFilter
+  notIn: [DateTime!]
 }
 
 input NestedEnumUserGenderFilter {
@@ -141,6 +643,113 @@ enum QueryMode {
   insensitive
 }
 
+type School {
+  _count: SchoolCount!
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  isEnabled: Boolean!
+  name: String!
+  updatedAt: DateTime
+  websiteUrl: String
+}
+
+type SchoolCount {
+  formations: Int!
+  logoPictures: Int!
+  tracks: Int!
+}
+
+type SchoolCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  isEnabled: Int!
+  name: Int!
+  updatedAt: Int!
+  websiteUrl: Int!
+}
+
+type SchoolLogoPictureAvgAggregate {
+  height: Float
+  size: Float
+  width: Float
+}
+
+type SchoolLogoPictureCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  fileToDeleteAt: Int!
+  height: Int!
+  id: Int!
+  provider: Int!
+  size: Int!
+  status: Int!
+  updatedAt: Int!
+  width: Int!
+}
+
+type SchoolLogoPictureMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: String
+  provider: MediaProvider
+  size: Int
+  status: MediaStatus
+  updatedAt: DateTime
+  width: Int
+}
+
+type SchoolLogoPictureMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  fileToDeleteAt: DateTime
+  height: Int
+  id: String
+  provider: MediaProvider
+  size: Int
+  status: MediaStatus
+  updatedAt: DateTime
+  width: Int
+}
+
+type SchoolLogoPictureSumAggregate {
+  height: Int
+  size: Int
+  width: Int
+}
+
+type SchoolMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isEnabled: Boolean
+  name: String
+  updatedAt: DateTime
+  websiteUrl: String
+}
+
+type SchoolMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isEnabled: Boolean
+  name: String
+  updatedAt: DateTime
+  websiteUrl: String
+}
+
+enum SessionFormat {
+  COURSE
+  CUSTOM
+  DISCUSSION
+  WORKSHOP
+}
+
 enum SortOrder {
   asc
   desc
@@ -176,6 +785,73 @@ input StringNullableFilter {
   startsWith: String
 }
 
+type StudentCount {
+  formationClasses: Int!
+}
+
+type StudentCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  updatedAt: Int!
+}
+
+type StudentMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  updatedAt: DateTime
+}
+
+type StudentMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  updatedAt: DateTime
+}
+
+type Teacher {
+  _count: TeacherCount!
+  courses: [Course!]
+  createdAt: DateTime!
+  deletedAt: DateTime
+  id: ID!
+  isConfirmed: Boolean!
+  updatedAt: DateTime
+  user: User!
+}
+
+type TeacherCount {
+  courses: Int!
+  formationClasses: Int!
+}
+
+type TeacherCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  isConfirmed: Int!
+  updatedAt: Int!
+}
+
+type TeacherMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isConfirmed: Boolean
+  updatedAt: DateTime
+}
+
+type TeacherMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isConfirmed: Boolean
+  updatedAt: DateTime
+}
+
 type TestFailedError implements Error {
   code: String!
   message: String
@@ -187,11 +863,80 @@ type TestSuccess {
   status: String!
 }
 
+type ThinkificItem {
+  createdAt: DateTime!
+  createdBy: User!
+  createdByID: String!
+  deletedAt: DateTime
+  thinkificID: ID!
+  updatedAt: DateTime
+}
+
+type ThinkificItemCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  createdByID: Int!
+  deletedAt: Int!
+  thinkificID: Int!
+  updatedAt: Int!
+}
+
+type ThinkificItemMaxAggregate {
+  createdAt: DateTime
+  createdByID: String
+  deletedAt: DateTime
+  thinkificID: String
+  updatedAt: DateTime
+}
+
+type ThinkificItemMinAggregate {
+  createdAt: DateTime
+  createdByID: String
+  deletedAt: DateTime
+  thinkificID: String
+  updatedAt: DateTime
+}
+
+type TrackCount {
+  categories: Int!
+  schools: Int!
+}
+
+type TrackCountAggregate {
+  _all: Int!
+  createdAt: Int!
+  deletedAt: Int!
+  id: Int!
+  isEnabled: Int!
+  name: Int!
+  updatedAt: Int!
+}
+
+type TrackMaxAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isEnabled: Boolean
+  name: String
+  updatedAt: DateTime
+}
+
+type TrackMinAggregate {
+  createdAt: DateTime
+  deletedAt: DateTime
+  id: String
+  isEnabled: Boolean
+  name: String
+  updatedAt: DateTime
+}
+
 type User {
   _count: UserCount!
   avatar: UserAvatarPicture
+  bornAt: DateTime
   createdAt: DateTime!
   deletedAt: DateTime
+  description: String
   email: String!
   firstName: String!
   gender: UserGender!
@@ -203,12 +948,12 @@ type User {
   isTermsAccepted: Boolean!
   lastLoginAt: DateTime!
   lastName: String!
+  linkedinUrl: String
   locale: UserLocale!
   phoneIndex: String
   phoneNumber: String
   roles: [UserRole!]
   updatedAt: DateTime
-  urlLinkedin: String
 }
 
 type UserAlreadyExistsError implements Error {
@@ -226,8 +971,7 @@ type UserAvatarPicture {
   size: Int
   status: MediaStatus!
   updatedAt: DateTime
-  user: User!
-  userID: String!
+  url: String!
   width: Int
 }
 
@@ -248,7 +992,6 @@ type UserAvatarPictureCountAggregate {
   size: Int!
   status: Int!
   updatedAt: Int!
-  userID: Int!
   width: Int!
 }
 
@@ -262,7 +1005,6 @@ type UserAvatarPictureMaxAggregate {
   size: Int
   status: MediaStatus
   updatedAt: DateTime
-  userID: String
   width: Int
 }
 
@@ -276,7 +1018,6 @@ type UserAvatarPictureMinAggregate {
   size: Int
   status: MediaStatus
   updatedAt: DateTime
-  userID: String
   width: Int
 }
 
@@ -297,8 +1038,10 @@ type UserCount {
 
 type UserCountAggregate {
   _all: Int!
+  bornAt: Int!
   createdAt: Int!
   deletedAt: Int!
+  description: Int!
   email: Int!
   firstName: Int!
   gender: Int!
@@ -307,24 +1050,28 @@ type UserCountAggregate {
   isPhoneVerified: Int!
   lastLoginAt: Int!
   lastName: Int!
+  linkedinUrl: Int!
   locale: Int!
   phoneIndex: Int!
   phoneNumber: Int!
   roles: Int!
   updatedAt: Int!
-  urlLinkedin: Int!
 }
 
-input UserCreateInput {
+input UserCreateOneInput {
+  _avatarPictureID: String
+  bornAt: DateTime
+  description: String
   email: String!
   firstName: String!
   gender: UserGender!
+  id: String
   lastName: String!
+  linkedinUrl: String
   locale: UserLocale!
   password: String!
   phoneIndex: String
   phoneNumber: String
-  urlLinkedin: String
 }
 
 union UserCreatePayload = UserAlreadyExistsError | UserSuccess
@@ -349,8 +1096,10 @@ enum UserLocale {
 }
 
 type UserMaxAggregate {
+  bornAt: DateTime
   createdAt: DateTime
   deletedAt: DateTime
+  description: String
   email: String
   firstName: String
   gender: UserGender
@@ -359,16 +1108,18 @@ type UserMaxAggregate {
   isPhoneVerified: Boolean
   lastLoginAt: DateTime
   lastName: String
+  linkedinUrl: String
   locale: UserLocale
   phoneIndex: String
   phoneNumber: String
   updatedAt: DateTime
-  urlLinkedin: String
 }
 
 type UserMinAggregate {
+  bornAt: DateTime
   createdAt: DateTime
   deletedAt: DateTime
+  description: String
   email: String
   firstName: String
   gender: UserGender
@@ -377,11 +1128,11 @@ type UserMinAggregate {
   isPhoneVerified: Boolean
   lastLoginAt: DateTime
   lastName: String
+  linkedinUrl: String
   locale: UserLocale
   phoneIndex: String
   phoneNumber: String
   updatedAt: DateTime
-  urlLinkedin: String
 }
 
 type UserNotFoundError implements Error {
@@ -390,16 +1141,18 @@ type UserNotFoundError implements Error {
 }
 
 input UserOrderByWithRelationInput {
+  bornAt: SortOrder
+  description: SortOrder
   email: SortOrder
   firstName: SortOrder
   gender: SortOrder
   id: SortOrder
   lastName: SortOrder
+  linkedinUrl: SortOrder
   locale: SortOrder
   password: SortOrder
   phoneIndex: SortOrder
   phoneNumber: SortOrder
-  urlLinkedin: SortOrder
 }
 
 union UserPayload = UserNotFoundError | UserSuccess
@@ -414,16 +1167,20 @@ type UserSuccess {
   user: User!
 }
 
-input UserUpdateInput {
+input UserUpdateOneInput {
+  _avatarPictureID: String
+  bornAt: DateTime
+  description: String
   email: String
   firstName: String
   gender: UserGender
+  id: String
   lastName: String
+  linkedinUrl: String
   locale: UserLocale
   password: String
   phoneIndex: String
   phoneNumber: String
-  urlLinkedin: String
 }
 
 union UserUpdatePayload = NotAuthorizedError | UserNotFoundError | UserSuccess
@@ -432,16 +1189,18 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   NOT: [UserWhereInput!]
   OR: [UserWhereInput!]
+  bornAt: DateTimeNullableFilter
+  description: StringNullableFilter
   email: StringFilter
   firstName: StringFilter
   gender: EnumUserGenderFilter
   id: StringFilter
   lastName: StringFilter
+  linkedinUrl: StringNullableFilter
   locale: EnumUserLocaleFilter
   password: StringFilter
   phoneIndex: StringNullableFilter
   phoneNumber: StringNullableFilter
-  urlLinkedin: StringNullableFilter
 }
 
 input UserWhereUniqueInput {

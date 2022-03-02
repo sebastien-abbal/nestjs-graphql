@@ -6,7 +6,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 describe('User avatar service', () => {
   let userAvatarService: UserAvatarService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [UserAvatarService],
     })

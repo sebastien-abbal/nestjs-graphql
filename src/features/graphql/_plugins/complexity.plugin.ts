@@ -1,4 +1,4 @@
-import { constants } from '@config';
+import { config } from '@config';
 import { Plugin } from '@nestjs/apollo';
 import { PayloadTooLargeException } from '@nestjs/common';
 import { GraphQLSchemaHost } from '@nestjs/graphql';
@@ -29,13 +29,13 @@ export class GraphQLComplexityPlugin implements ApolloServerPlugin {
           estimators: [
             fieldExtensionsEstimator(),
             simpleEstimator({
-              defaultComplexity: constants.graphql.complexity.defaultValue,
+              defaultComplexity: config.graphql.complexity.defaultValue,
             }),
           ],
         });
-        if (complexity > constants.graphql.complexity.max) {
+        if (complexity > config.graphql.complexity.max) {
           throw new PayloadTooLargeException(
-            `Query is too complex: ${complexity} points. Maximum allowed complexity: ${constants.graphql.complexity.max}.`,
+            `Query is too complex: ${complexity} points. Maximum allowed complexity: ${config.graphql.complexity.max}.`,
           );
         }
       },

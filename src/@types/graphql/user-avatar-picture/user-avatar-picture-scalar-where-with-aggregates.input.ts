@@ -2,6 +2,7 @@ import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { StringWithAggregatesFilter } from '../prisma/string-with-aggregates-filter.input';
 import { EnumMediaProviderWithAggregatesFilter } from '../prisma/enum-media-provider-with-aggregates-filter.input';
+import { HideField } from '@nestjs/graphql';
 import { EnumMediaStatusWithAggregatesFilter } from '../prisma/enum-media-status-with-aggregates-filter.input';
 import { IntNullableWithAggregatesFilter } from '../prisma/int-nullable-with-aggregates-filter.input';
 import { DateTimeWithAggregatesFilter } from '../prisma/date-time-with-aggregates-filter.input';
@@ -22,33 +23,33 @@ export class UserAvatarPictureScalarWhereWithAggregatesInput {
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     id?: StringWithAggregatesFilter;
 
-    @Field(() => EnumMediaProviderWithAggregatesFilter, {nullable:true})
+    @HideField()
     provider?: EnumMediaProviderWithAggregatesFilter;
 
-    @Field(() => EnumMediaStatusWithAggregatesFilter, {nullable:true})
+    @HideField()
     status?: EnumMediaStatusWithAggregatesFilter;
 
-    @Field(() => IntNullableWithAggregatesFilter, {nullable:true})
+    @HideField()
     size?: IntNullableWithAggregatesFilter;
 
-    @Field(() => IntNullableWithAggregatesFilter, {nullable:true})
+    @HideField()
     width?: IntNullableWithAggregatesFilter;
 
-    @Field(() => IntNullableWithAggregatesFilter, {nullable:true})
+    @HideField()
     height?: IntNullableWithAggregatesFilter;
 
-    @Field(() => DateTimeWithAggregatesFilter, {nullable:true})
+    @HideField()
     createdAt?: DateTimeWithAggregatesFilter;
 
-    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    @HideField()
     updatedAt?: DateTimeNullableWithAggregatesFilter;
 
-    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    @HideField()
     deletedAt?: DateTimeNullableWithAggregatesFilter;
 
-    @Field(() => DateTimeNullableWithAggregatesFilter, {nullable:true})
+    @HideField()
     fileToDeleteAt?: DateTimeNullableWithAggregatesFilter;
 
-    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    @HideField()
     userID?: StringWithAggregatesFilter;
 }

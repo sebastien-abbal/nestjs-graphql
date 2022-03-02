@@ -1,7 +1,7 @@
-import { constants } from '@config';
+import { config } from '@config';
 import { Controller, Get } from '@nestjs/common';
 
-export const WELCOME_MESSAGE = `Welcome to ${constants.app.name}!`;
+export const WELCOME_MESSAGE = `Welcome to ${config.app.name}!`;
 
 @Controller()
 export class HomeController {

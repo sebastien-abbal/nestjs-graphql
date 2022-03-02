@@ -5,6 +5,7 @@ import { MediaProvider } from '../prisma/media-provider.enum';
 import { MediaStatus } from '../prisma/media-status.enum';
 import { Int } from '@nestjs/graphql';
 import { User } from '../user/user.model';
+import { HideField } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserAvatarPicture {
@@ -39,9 +40,9 @@ export class UserAvatarPicture {
     @Field(() => Date, {nullable:true})
     fileToDeleteAt!: Date | null;
 
-    @Field(() => User, {nullable:false})
+    @HideField()
     user?: User;
 
-    @Field(() => String, {nullable:false})
+    @HideField()
     userID!: string;
 }

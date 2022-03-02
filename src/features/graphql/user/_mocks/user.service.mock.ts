@@ -1,7 +1,11 @@
-import { USERS } from '@features/database/data/seed';
-import { UserCreateInput, UserUpdateInput, UserWhereUniqueInput } from '@types';
+import { USERS } from '@features/database/data';
+import {
+  UserCreateOneInput,
+  UserUpdateOneInput,
+} from '@features/graphql/user/types';
+import { UserWhereUniqueInput } from '@types';
 import { clamp } from '@utils';
-import { hashSync } from 'bcrypt';
+import { hashSync } from 'bcryptjs';
 
 export const mockedUserService = {
   getUser: jest
@@ -14,7 +18,7 @@ export const mockedUserService = {
         user
           ? {
               ...user,
-              password: hashSync(user.password, 10),
+              password: hashSync(user.password),
             }
           : null,
       );
@@ -23,18 +27,18 @@ export const mockedUserService = {
     Promise.resolve(
       USERS.slice(0, clamp(0, USERS.length, take)).map((user) => ({
         ...user,
-        password: hashSync(user.password, 10),
+        password: hashSync(user.password),
       })),
     ),
   ),
   userCreate: jest
     .fn()
-    .mockImplementation(async ({ data }: { data: UserCreateInput }) =>
+    .mockImplementation(async ({ data }: { data: UserCreateOneInput }) =>
       Promise.resolve({ ...USERS[0], ...data }),
     ),
   userUpdate: jest
     .fn()
-    .mockImplementation(async ({ data }: { data: UserUpdateInput }) =>
+    .mockImplementation(async ({ data }: { data: UserUpdateOneInput }) =>
       Promise.resolve({ ...USERS[0], ...data }),
     ),
   userDelete: jest.fn(),

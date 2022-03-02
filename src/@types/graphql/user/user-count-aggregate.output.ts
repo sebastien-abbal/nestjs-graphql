@@ -43,10 +43,16 @@ export class UserCountAggregate {
     isPhoneVerified!: number;
 
     @Field(() => Int, {nullable:false})
-    urlLinkedin!: number;
+    linkedinUrl!: number;
+
+    @Field(() => Int, {nullable:false})
+    description!: number;
 
     @HideField()
     termsAcceptedAt!: number;
+
+    @Field(() => Int, {nullable:false})
+    bornAt!: number;
 
     @HideField()
     bannedAt!: number;

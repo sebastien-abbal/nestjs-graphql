@@ -1,7 +1,7 @@
 import { config } from '@config';
 import { UserRoleNotRegistered } from '@features/graphql/auth/types';
 import { UserService } from '@features/graphql/user/services';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { IAuthTokenPayload } from '@types';
 import { ExtractJwt, Strategy } from 'passport-jwt';
@@ -22,6 +22,7 @@ export class GraphQLJwtStrategy extends PassportStrategy(Strategy) {
     if (!userID) return null;
 
     const user = await this.userService.getUser({ where: { id: userID } });
+    if (!user) throw new UnauthorizedException('Token invalid or expired.');
 
     return user;
   }

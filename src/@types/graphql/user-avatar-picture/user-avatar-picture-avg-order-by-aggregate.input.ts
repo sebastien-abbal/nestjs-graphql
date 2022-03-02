@@ -1,16 +1,17 @@
 import { Field } from '@nestjs/graphql';
 import { InputType } from '@nestjs/graphql';
 import { SortOrder } from '../prisma/sort-order.enum';
+import { HideField } from '@nestjs/graphql';
 
 @InputType()
 export class UserAvatarPictureAvgOrderByAggregateInput {
 
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     size?: keyof typeof SortOrder;
 
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     width?: keyof typeof SortOrder;
 
-    @Field(() => SortOrder, {nullable:true})
+    @HideField()
     height?: keyof typeof SortOrder;
 }

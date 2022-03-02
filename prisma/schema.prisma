@@ -2,7 +2,9 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  output        = "../node_modules/.prisma/client"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 generator nestgraphql {
@@ -51,9 +53,13 @@ enum MediaStatus {
 }
 
 model User {
-  /// @HideField({ match: ['UserCreateInput', 'UserUpdateInput'] })
+  /// @HideField({ match: ['UserCreateOneInput', 'UserUpdateOneInput'] })
   id              String              @id @default(uuid())
+  /// @Validator.MaxLength(50)
+  /// @Validator.IsOptional()
   firstName       String
+  /// @Validator.MaxLength(50)
+  /// @Validator.IsOptional()
   lastName        String
   /// @HideField({ output: true })
   password        String
@@ -74,9 +80,15 @@ model User {
   isPhoneVerified Boolean             @default(false)
   /// @Validator.IsUrl()
   /// @Validator.IsOptional()
-  urlLinkedin     String?
+  linkedinUrl     String?
+  /// @Validator.IsOptional()
+  /// @Validator.MaxLength(2500)
+  description     String?
   /// @HideField({ input: true, output: true })
   termsAcceptedAt DateTime            @default(now())
+  /// @Validator.IsOptional()
+  /// @Validator.IsDate()
+  bornAt          DateTime?
   /// @HideField({ input: true, output: true })
   bannedAt        DateTime?
   /// @HideField({ input: true })
@@ -87,21 +99,33 @@ model User {
   updatedAt       DateTime?           @updatedAt
   /// @HideField({ input: true })
   deletedAt       DateTime?
-  /// @HideField({ output: true, input: true })
-  avatarPictures  UserAvatarPicture[] @relation("UserAvatarPictures")
+  /// @HideField({ input: true, output: true })
+  avatarPictures  UserAvatarPicture[] @relation("UserAvatarPictures_OneToMany")
 }
 
 model UserAvatarPicture {
+  /// @HideField({ match: ['UserAvatarPictureCreateInput', 'UserAvatarPictureUpdateInput'] })
   id             String        @id @default(uuid())
+  /// @HideField({ input: true })
   provider       MediaProvider @default(AWS)
+  /// @HideField({ input: true })
   status         MediaStatus   @default(UPLOADING)
+  /// @HideField({ input: true })
   size           Int?
+  /// @HideField({ input: true })
   width          Int?
+  /// @HideField({ input: true })
   height         Int?
+  /// @HideField({ input: true })
   createdAt      DateTime      @default(now())
+  /// @HideField({ input: true })
   updatedAt      DateTime?     @updatedAt
+  /// @HideField({ input: true })
   deletedAt      DateTime?
+  /// @HideField({ input: true })
   fileToDeleteAt DateTime?
-  user           User          @relation("UserAvatarPictures", fields: [userID], references: [id])
+  /// @HideField({ input: true, output: true })
+  user           User          @relation("UserAvatarPictures_OneToMany", fields: [userID], references: [id])
+  /// @HideField({ input: true, output: true })
   userID         String
 }

@@ -2,7 +2,6 @@ import { UserRoleNotRegistered } from '@features/rest/auth/types';
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthUserRole, User, UserRole } from '@types';
-
 @Injectable()
 export class RestRolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}

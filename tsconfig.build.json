@@ -1,13 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "exclude": [
-    "node_modules",
-    "tests",
-    "dist",
+    "**/node_modules",
+    "**/__tests",
+    "**/dist",
+    "**/*.resource.ts",
     "**/*spec.ts",
     "**/*mock.ts",
-    "bin",
-    "prisma",
-    ".github"
+    "**/prisma",
+    "**/.github",
+    "*config.ts"
   ]
 }

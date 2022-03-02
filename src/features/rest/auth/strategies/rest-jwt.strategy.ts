@@ -22,7 +22,7 @@ export class RestJwtStrategy extends PassportStrategy(Strategy) {
     if (!userID) return null;
 
     const user = await this.userService.getUser({ where: { id: userID } });
-    if (!user) throw new UnauthorizedException();
+    if (!user) throw new UnauthorizedException('Token invalid or expired.');
 
     return user;
   }

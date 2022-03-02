@@ -48,10 +48,16 @@ export class User {
     isPhoneVerified!: boolean;
 
     @Field(() => String, {nullable:true})
-    urlLinkedin!: string | null;
+    linkedinUrl!: string | null;
+
+    @Field(() => String, {nullable:true})
+    description!: string | null;
 
     @HideField()
     termsAcceptedAt!: Date;
+
+    @Field(() => Date, {nullable:true})
+    bornAt!: Date | null;
 
     @HideField()
     bannedAt!: Date | null;

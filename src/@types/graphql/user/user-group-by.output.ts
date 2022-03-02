@@ -48,10 +48,16 @@ export class UserGroupBy {
     isPhoneVerified!: boolean;
 
     @Field(() => String, {nullable:true})
-    urlLinkedin?: string;
+    linkedinUrl?: string;
+
+    @Field(() => String, {nullable:true})
+    description?: string;
 
     @HideField()
     termsAcceptedAt!: Date | string;
+
+    @Field(() => Date, {nullable:true})
+    bornAt?: Date | string;
 
     @HideField()
     bannedAt?: Date | string;

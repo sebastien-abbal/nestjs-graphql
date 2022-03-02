@@ -21,10 +21,10 @@
     "resolveJsonModule": true,
     "paths": {
       "@features/*": ["./src/features/*"],
+      "@types": ["./src/@types"],
       "@tests/*": ["./__tests/*"],
       "@utils": ["./src/utils"],
-      "@config": ["./src/config"],
-      "@types": ["./src/@types"]
+      "@config": ["./src/config"]
     }
   }
 }

@@ -10,7 +10,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 describe('GraphQL Auth service', () => {
   let authService: GraphQLAuthService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         JwtModule.register({
