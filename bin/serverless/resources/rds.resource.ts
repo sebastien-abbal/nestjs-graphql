@@ -2,7 +2,7 @@ import * as envVar from 'env-var';
 import { config } from '../../../src/config';
 import { databaseUrlToParams } from '../../../src/utils';
 
-export const DATABASE_USER = 'maria';
+export const DATABASE_USER = 'admin';
 export const DATABASE_NAME = 'postgres';
 export const DATABASE_URL = envVar
   .get('DATABASE_URL_' + config.env.toUpperCase())

@@ -1,3 +1,8 @@
+import { config as dotEnvConfig } from 'dotenv';
+import * as envVar from 'env-var';
+import { isCloudFunction } from 'is-cloud-function';
+import { join } from 'path';
+import packageConfig from '../../package.json';
 import {
   AwsRegion,
   EnvType,
@@ -7,11 +12,6 @@ import {
   IConfigJwt,
   IConfigServerless,
 } from '../@types';
-import { config as dotEnvConfig } from 'dotenv';
-import * as envVar from 'env-var';
-import { isCloudFunction } from 'is-cloud-function';
-import { join } from 'path';
-import packageConfig from '../../package.json';
 
 export class Config {
   private static instance: Config;
@@ -38,10 +38,8 @@ export class Config {
 
     this.serverless = {
       alarmEmails: [],
-      alarmPhones: ['+33682793540'],
-      bastionAuthorizedIps: [
-        '176.170.89.67', // mariaschools IP
-      ],
+      alarmPhones: [],
+      bastionAuthorizedIps: [],
     };
 
     this.graphql = {
