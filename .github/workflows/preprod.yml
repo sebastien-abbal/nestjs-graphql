@@ -73,6 +73,7 @@ jobs:
       DATABASE_URL_PREPROD: ${{ secrets.DATABASE_URL_PREPROD }}
       ASSETS_CDN_URL: https://from-serverless.cloudfront.net
       DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
 
     steps:
       # Setup
@@ -87,18 +88,17 @@ jobs:
 
       # Build
       - name: Install packages
-        if: ${{ secrets.AWS_ACCESS_KEY_ID != '' }}
         run: yarn
 
       # Deploy
       - name: Authenticate serverless
-        if: ${{ secrets.AWS_ACCESS_KEY_ID != '' }}
+        if: ${{env.AWS_ACCESS_KEY_ID}} != ''
         run: npx sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Deploy serverless preprod
-        if: ${{ !secrets.AWS_ACCESS_KEY_ID }}
+        if: ${{env.AWS_ACCESS_KEY_ID}} != ''
         run: yarn sls:deploy
 
-      - name: Deploy serverless has been passed
-        if: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        run: echo "Deployment has been passed because of not AWS credentials available"
+      - name: Deployment has been passed
+        if: ${{env.AWS_ACCESS_KEY_ID}} == ''
+        run: echo "Deployment has been passed because there is no AWS credentials."
