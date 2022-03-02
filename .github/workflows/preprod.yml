@@ -98,7 +98,3 @@ jobs:
       - name: Deploy serverless preprod
         if: ${{env.AWS_ACCESS_KEY_ID}} != ''
         run: yarn sls:deploy
-
-      - name: Deployment has been passed
-        if: ${{env.AWS_ACCESS_KEY_ID}} == ''
-        run: echo "Deployment has been passed because there is no AWS credentials."
