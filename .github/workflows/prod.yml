@@ -59,37 +59,37 @@ jobs:
       - name: Test app
         run: yarn test:full
 
-  deploy:
-    name: Deploy
-    needs: test
-    runs-on: ubuntu-latest
-    env:
-      AWS_KEY_REGION: ${{ secrets.AWS_KEY_REGION }}
-      NODE_ENV: prod
-      JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
-      JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
-      DATABASE_URL_PROD: ${{ secrets.DATABASE_URL_PROD }}
-      ASSETS_CDN_URL: https://from-serverless.cloudfront.net
-      DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
+  # deploy:
+  #   name: Deploy
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     AWS_KEY_REGION: ${{ secrets.AWS_KEY_REGION }}
+  #     NODE_ENV: prod
+  #     JWT_PUBLIC_KEY: ${{ secrets.JWT_PUBLIC_KEY }}
+  #     JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
+  #     DATABASE_URL_PROD: ${{ secrets.DATABASE_URL_PROD }}
+  #     ASSETS_CDN_URL: https://from-serverless.cloudfront.net
+  #     DOMAIN_URL: ${{ secrets.DOMAIN_URL }}
 
-    steps:
-      # Setup
-      - name: Actions checkout
-        uses: actions/checkout@v2
+  #   steps:
+  #     # Setup
+  #     - name: Actions checkout
+  #       uses: actions/checkout@v2
 
-      - name: Set up node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: 'yarn'
+  #     - name: Set up node
+  #       uses: actions/setup-node@v2
+  #       with:
+  #         node-version: '14'
+  #         cache: 'yarn'
 
-      # Build
-      - name: Install packages
-        run: yarn
+  #     # Build
+  #     - name: Install packages
+  #       run: yarn
 
-      # Deploy
-      - name: Authenticate serverless
-        run: npx sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  #     # Deploy
+  #     - name: Authenticate serverless
+  #       run: npx sls config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Deploy serverless prod
-        run: yarn sls:deploy
+  #     - name: Deploy serverless prod
+  #       run: yarn sls:deploy
